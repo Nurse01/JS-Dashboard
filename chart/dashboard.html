@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- App css -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Hello World ChartJs</title>
+  </head>
+  <body>
+    <div>
+      <div>
+        <p class="text-center fs-2">Dashboard</p>
+      </div>
+      <!--//// CONTENT \\\\-->
+      <div class="m-5">
+        <div class="row d-flex justify-content-around">
+          <!-- OEE part -->
+          <div class="box-content border border-white col-sm-3">
+            <canvas id="contentChart"></canvas>
+          </div>
+
+          <div class="col-sm-3">
+            <div class="box-content border border-white m-3 p-2 text-center">
+              <p class="fs-3">
+                Good Parts <br />
+                <span class="fw-bolder">2.7 K</span>
+              </p>
+            </div>
+            <div class="box-content border border-white m-3 p-2 text-center">
+              <p class="fs-3">
+                Total Parts <br />
+                <span class="fw-bolder">3.1 K</span>
+              </p>
+            </div>
+          </div>
+          <div class="box-content border border-white col-sm-3">
+            <div>
+              <p class="fs-4">
+                Total Machine<br /><span class="px-4">5 pieces</span>
+              </p>
+            </div>
+            <div>
+              <p class="fs-4">
+                Total Working Machine<br /><span class="px-4">3 pieces</span>
+              </p>
+            </div>
+            <div>
+              <p class="fs-4">
+                Total Downtime<br /><span class="px-4">30 minute</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- each machine -->
+        <div
+          id="machines"
+          class="row p-0 m-0 d-flex justify-content-around py-5 gap-3"
+        ></div>
+
+        <!-- <div class="row d-flex justify-content-evenly py-5">
+          <div class="row gap-3">
+            <div class="col box-content text-center">
+              <a href="./machine.html">MC001</a>
+              <canvas id="semiChart" width="400" height="400"></canvas>
+            </div>
+            <div class="col box-content text-center">
+              <a href="./machine.html" >MC002</a>
+            </div>
+
+            <div class="col box-content text-center">
+              <a href="./machine.html" >MC003</a>
+            </div>
+          </div>
+        </div> -->
+      </div>
+    </div>
+
+    <!-- script -->
+    <script>
+      // let machines = [
+      //   { mc_id: "mc001", mc_name: "machinename001" },
+      //   { mc_id: "mc002", mc_name: "machinename002" },
+      //   { mc_id: "mc003", mc_name: "machinename003" },
+      //   { mc_id: "mc004", mc_name: "machinename004" },
+      //   { mc_id: "mc005", mc_name: "machinename005" },
+      //   { mc_id: "mc006", mc_name: "machinename006" },
+      // ];
+      let machines = [];
+
+
+      // OEE chart
+      let myChart = document.getElementById("contentChart").getContext("2d");
+      let massPopChart = new Chart(myChart, {
+        type: "doughnut",
+        data: {
+          labels: ["Done", "not done"],
+          datasets: [
+            {
+              data: [80, 20],
+              backgroundColor: ["#74c69d", "#f2e8cf"],
+              borderWidth: 1,
+              borderColor: "#000",
+              hoverBorderWidth: 3,
+              hoverBorderColor: "#000",
+            },
+          ],
+        },
+        options: {
+          title: {
+            display: false,
+          },
+          legend: {
+            display: true,
+            position: "right",
+            labels: {
+              fontColor: "#000",
+            },
+          },
+          layout: {
+            padding: {
+              left: 50,
+              right: 0,
+              top: 0,
+              bottom: 0,
+            },
+          },
+          tooltips: {
+            enabled: true,
+          },
+        },
+      });
+
+      // Machine semi-circle
+      let html_machines = "";
+      for (let i = 0; i < machines.length; i++) {
+        html_machines += `
+        <div class="col-3 p-0 m-0 box-content border border-white text-center" onclick="selectMachine(${
+          i + 1
+        })" >
+          <p class="fs-3">${machines[i].mc_name}
+          <canvas id="mc00${i + 1}" class=" p-3" ></canvas>
+        </div>
+        `;
+      }
+      document.getElementById("machines").innerHTML = html_machines;
+      for (let i = 0; i < machines.length; i++) {
+        let canvasElem = document
+          .getElementById(`mc00${i + 1}`)
+          .getContext("2d");
+        let semiChart = new Chart(canvasElem, {
+          type: "doughnut",
+          data: {
+            labels: ["Done", "not Done"],
+            datasets: [
+              {
+                data: [80, 30],
+                backgroundColor: ["#ccd5ae", "#fefae0"],
+                borderColor: "#777",
+                borderWidth: 1,
+              },
+            ],
+          },
+          options: {
+            rotation: -90,
+            circumference: 180,
+            cutout: "70%",
+          },
+        });
+      }
+      // for (let i = 0; i < machines.length; i++) {
+      //   let machinesElem = document.getElementById(`machines`);
+      //   let divElem = document.createElement("div");
+      //   divElem.className = "col box-content text-center fs-2";
+
+      //   let canvasElem = document.createElement("canvas");
+      //   canvasElem.setAttribute("id", `mc00${i + 1}`);
+      //   let pElem = document.createTextNode(`${machines[i].mc_name}`)
+      //   divElem.appendChild(pElem);
+      //   machinesElem.appendChild(divElem);
+      //   divElem.appendChild(canvasElem);
+
+      //   let semiChart = new Chart(canvasElem, {
+      //     type: "doughnut",
+      //     data: {
+      //       labels: ["", "Blue"],
+      //       datasets: [
+      //         {
+      //           label: "# of Votes",
+      //           data: [80, 30],
+      //           backgroundColor: ["#ccd5ae", "#fefae0"],
+      //           borderColor: "#777",
+      //           borderWidth: 1,
+      //         },
+      //       ],
+      //     },
+      //     options: {
+      //       rotation: -90,
+      //       circumference: 180,
+      //       cutout: "70%",
+      //     },
+      //   });
+      // }
+      function selectMachine(id) {
+        let mc_id = id;
+        window.location.href = `/mc00${mc_id}`;
+      }
+      function loadData(){
+        let data = JSON.parse(data)
+      }
+    </script>
+  </body>
+</html>

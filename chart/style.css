@@ -1,0 +1,16 @@
+body {
+    background-color: #22223b;
+    color: antiquewhite !important;
+  }
+  table{
+    color:  antiquewhite !important;
+  }
+  canvas{
+    color:  antiquewhite !important;
+  }
+  .box-content {
+    background-color: #4a4e69;
+  }
+/* #semiCircleChart{
+  width: 50%;
+} */

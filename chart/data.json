@@ -1,0 +1,164 @@
+[
+  {
+    "mc_id": "mc001",
+    "mc_name": "machinename001",
+    "parts": {
+      "expected_quantity": 1100,
+      "good_parts": 1000,
+      "total_parts": 1000
+    },
+    "availability": {
+      "planned_runtime": 480,
+      "actual_runtime": 360,
+      "unplanned_downtime": 0
+    },
+    "performance": {
+      "planned_quantity": 1000,
+      "actual_quantity": 900
+    },
+    "quality": {
+      "actual_quantity": 900,
+      "reject_quantity": 0
+    },
+    "oee": {
+      "availability": 79.17,
+      "performance": 87.72,
+      "quality": 100.0
+    }
+  },
+  {
+    "mc_id": "mc002",
+    "mc_name": "machinename002",
+    "parts": {
+      "expected_quantity": 1000,
+      "good_parts": 757,
+      "total_parts": 800
+    },
+    "availability": {
+      "planned_runtime": 550,
+      "actual_runtime": 540,
+      "unplanned_downtime": 10
+    },
+    "performance": {
+      "planned_quantity": 1000,
+      "actual_quantity": 800
+    },
+    "quality": {
+      "actual_quantity": 800,
+      "reject_quantity": 43
+    },
+    "oee": {
+      "availability": 90.00,
+      "performance": 49.38,
+      "quality": 94.63
+    }
+  },
+  {
+    "mc_id": "mc003",
+    "mc_name": "machinename003",
+    "parts": {
+      "expected_quantity": 1200,
+      "good_parts": 980,
+      "total_parts": 1000
+    },
+    "availability": {
+      "planned_runtime": 540,
+      "actual_runtime": 520,
+      "unplanned_downtime": 20
+    },
+    "performance": {
+      "planned_quantity": 1200,
+      "actual_quantity": 1000
+    },
+    "quality": {
+      "actual_quantity": 1000,
+      "reject_quantity": 20
+    },
+    "oee": {
+      "availability": 86.67,
+      "performance": 64.10,
+      "quality": 98.00
+    }
+  },
+  {
+    "mc_id": "mc004",
+    "mc_name": "machinename004",
+    "parts": {
+      "expected_quantity": 3500,
+      "good_parts": 2700,
+      "total_parts": 3100
+    },
+    "availability": {
+      "planned_runtime": 480,
+      "actual_runtime": 360,
+      "unplanned_downtime": 0
+    },
+    "performance": {
+      "planned_quantity": 1000,
+      "actual_quantity": 900
+    },
+    "quality": {
+      "actual_quantity": 900,
+      "reject_quantity": 0
+    },
+    "oee": {
+      "availability": 79.17,
+      "performance": 87.72,
+      "quality": 100.0
+    }
+  },
+  {
+    "mc_id": "mc005",
+    "mc_name": "machinename005",
+    "parts": {
+      "expected_quantity": 3500,
+      "good_parts": 2700,
+      "total_parts": 3100
+    },
+    "availability": {
+      "planned_runtime": 480,
+      "actual_runtime": 360,
+      "unplanned_downtime": 0
+    },
+    "performance": {
+      "planned_quantity": 1000,
+      "actual_quantity": 900
+    },
+    "quality": {
+      "actual_quantity": 900,
+      "reject_quantity": 0
+    },
+    "oee": {
+      "availability": 79.17,
+      "performance": 87.72,
+      "quality": 100.0
+    }
+  },
+  {
+    "mc_id": "mc006",
+    "mc_name": "machinename006",
+    "parts": {
+      "expected_quantity": 3500,
+      "good_parts": 2700,
+      "total_parts": 3100
+    },
+    "availability": {
+      "planned_runtime": 480,
+      "actual_runtime": 360,
+      "unplanned_downtime": 0
+    },
+    "performance": {
+      "planned_quantity": 1000,
+      "actual_quantity": 900
+    },
+    "quality": {
+      "actual_quantity": 900,
+      "reject_quantity": 0
+    },
+    "oee": {
+      "availability": 79.17,
+      "performance": 87.72,
+      "quality": 100.0
+    }
+  }
+]
