@@ -85,137 +85,167 @@
     </div>
 
     <!-- script -->
+    <!-- Socket js -->
+    <script src="/socket.io/socket.io.js"></script>
     <script>
-      // let machines = [
-      //   { mc_id: "mc001", mc_name: "machinename001" },
-      //   { mc_id: "mc002", mc_name: "machinename002" },
-      //   { mc_id: "mc003", mc_name: "machinename003" },
-      //   { mc_id: "mc004", mc_name: "machinename004" },
-      //   { mc_id: "mc005", mc_name: "machinename005" },
-      //   { mc_id: "mc006", mc_name: "machinename006" },
-      // ];
-      let machines = [];
+      var socket = io();
 
+      // let n_data = "hi"
+      // socket.emit("get_data", n_data)
+      // socket.on("got_data", function(data) {
+      //   console.log(data)
+      // })
+      // socket.emit("import_json_data", () => {
+      //   console.log("req json");
+      // });
 
-      // OEE chart
-      let myChart = document.getElementById("contentChart").getContext("2d");
-      let massPopChart = new Chart(myChart, {
-        type: "doughnut",
-        data: {
-          labels: ["Done", "not done"],
-          datasets: [
-            {
-              data: [80, 20],
-              backgroundColor: ["#74c69d", "#f2e8cf"],
-              borderWidth: 1,
-              borderColor: "#000",
-              hoverBorderWidth: 3,
-              hoverBorderColor: "#000",
-            },
-          ],
-        },
-        options: {
-          title: {
-            display: false,
-          },
-          legend: {
-            display: true,
-            position: "right",
-            labels: {
-              fontColor: "#000",
-            },
-          },
-          layout: {
-            padding: {
-              left: 50,
-              right: 0,
-              top: 0,
-              bottom: 0,
-            },
-          },
-          tooltips: {
-            enabled: true,
-          },
-        },
+      socket.on("allMachineName", (data) => {
+        console.log("allMachineName")
+        console.log(data);
       });
+      socket.on("test",(data)=>{
+        console.log(data)
+      })
 
-      // Machine semi-circle
-      let html_machines = "";
-      for (let i = 0; i < machines.length; i++) {
-        html_machines += `
-        <div class="col-3 p-0 m-0 box-content border border-white text-center" onclick="selectMachine(${
-          i + 1
-        })" >
-          <p class="fs-3">${machines[i].mc_name}
-          <canvas id="mc00${i + 1}" class=" p-3" ></canvas>
-        </div>
-        `;
-      }
-      document.getElementById("machines").innerHTML = html_machines;
-      for (let i = 0; i < machines.length; i++) {
-        let canvasElem = document
-          .getElementById(`mc00${i + 1}`)
-          .getContext("2d");
-        let semiChart = new Chart(canvasElem, {
+      socket.on("got_data", (data) => {
+        console.log(data);
+
+        
+        // OEE chart
+        let myChart = document.getElementById("contentChart").getContext("2d");
+        let massPopChart = new Chart(myChart, {
           type: "doughnut",
           data: {
-            labels: ["Done", "not Done"],
+            labels: ["Done", "not done"],
             datasets: [
               {
-                data: [80, 30],
-                backgroundColor: ["#ccd5ae", "#fefae0"],
-                borderColor: "#777",
+                data: [80, 20],
+                backgroundColor: ["#74c69d", "#f2e8cf"],
                 borderWidth: 1,
+                borderColor: "#000",
+                hoverBorderWidth: 3,
+                hoverBorderColor: "#000",
               },
             ],
           },
           options: {
-            rotation: -90,
-            circumference: 180,
-            cutout: "70%",
+            title: {
+              display: false,
+            },
+            legend: {
+              display: true,
+              position: "right",
+              labels: {
+                fontColor: "#000",
+              },
+            },
+            layout: {
+              padding: {
+                left: 50,
+                right: 0,
+                top: 0,
+                bottom: 0,
+              },
+            },
+            tooltips: {
+              enabled: true,
+            },
           },
         });
-      }
-      // for (let i = 0; i < machines.length; i++) {
-      //   let machinesElem = document.getElementById(`machines`);
-      //   let divElem = document.createElement("div");
-      //   divElem.className = "col box-content text-center fs-2";
 
-      //   let canvasElem = document.createElement("canvas");
-      //   canvasElem.setAttribute("id", `mc00${i + 1}`);
-      //   let pElem = document.createTextNode(`${machines[i].mc_name}`)
-      //   divElem.appendChild(pElem);
-      //   machinesElem.appendChild(divElem);
-      //   divElem.appendChild(canvasElem);
+        // Machine semi-circle
+        let html_machines = "";
+        for (let i = 0; i < allMachines.length; i++) {
+          // console.log(allMachines[i].mc_name)
+          html_machines += `
+                <div class="col-3 p-0 m-0 box-content border border-white text-center" onclick="selectMachine(${
+                  i + 1
+                })" >
+                  <p class="fs-3">${allMachines[i].mc_name}
+                  <canvas id="mc00${i + 1}" class=" p-3" ></canvas>
+                </div>
+                `;
+        }
+        document.getElementById("machines").innerHTML = html_machines;
+        for (let i = 0; i < allMachines.length; i++) {
+          let canvasElem = document
+            .getElementById(`mc00${i + 1}`)
+            .getContext("2d");
+          let semiChart = new Chart(canvasElem, {
+            type: "doughnut",
+            data: {
+              labels: ["Done", "not Done"],
+              datasets: [
+                {
+                  data: [80, 30],
+                  backgroundColor: ["#ccd5ae", "#fefae0"],
+                  borderColor: "#777",
+                  borderWidth: 1,
+                },
+              ],
+            },
+            options: {
+              rotation: -90,
+              circumference: 180,
+              cutout: "70%",
+            },
+          });
+        }
+        // for (let i = 0; i < machines.length; i++) {
+        //   let machinesElem = document.getElementById(`machines`);
+        //   let divElem = document.createElement("div");
+        //   divElem.className = "col box-content text-center fs-2";
 
-      //   let semiChart = new Chart(canvasElem, {
-      //     type: "doughnut",
-      //     data: {
-      //       labels: ["", "Blue"],
-      //       datasets: [
-      //         {
-      //           label: "# of Votes",
-      //           data: [80, 30],
-      //           backgroundColor: ["#ccd5ae", "#fefae0"],
-      //           borderColor: "#777",
-      //           borderWidth: 1,
-      //         },
-      //       ],
-      //     },
-      //     options: {
-      //       rotation: -90,
-      //       circumference: 180,
-      //       cutout: "70%",
-      //     },
+        //   let canvasElem = document.createElement("canvas");
+        //   canvasElem.setAttribute("id", `mc00${i + 1}`);
+        //   let pElem = document.createTextNode(`${machines[i].mc_name}`)
+        //   divElem.appendChild(pElem);
+        //   machinesElem.appendChild(divElem);
+        //   divElem.appendChild(canvasElem);
+
+        //   let semiChart = new Chart(canvasElem, {
+        //     type: "doughnut",
+        //     data: {
+        //       labels: ["", "Blue"],
+        //       datasets: [
+        //         {
+        //           label: "# of Votes",
+        //           data: [80, 30],
+        //           backgroundColor: ["#ccd5ae", "#fefae0"],
+        //           borderColor: "#777",
+        //           borderWidth: 1,
+        //         },
+        //       ],
+        //     },
+        //     options: {
+        //       rotation: -90,
+        //       circumference: 180,
+        //       cutout: "70%",
+        //     },
+        //   });
+        // }
+        function selectMachine(id) {
+          let mc_id = id;
+          window.location.href = `/mc00${mc_id}`;
+        }
+      });
+
+      let allMachines = {};
+
+      // fetch json
+      // fetch("./data.json")
+      //   .then(function (response) {
+      //     return response;
+      //   })
+      //   .then(function (data) {
+      //     allMachines = data.json();
+      //     console.log(allMachines);
+      //     return allMachines;
+      //   })
+      //   .catch(function (err) {
+      //     console.log("Fetch problem show: " + err.message);
       //   });
-      // }
-      function selectMachine(id) {
-        let mc_id = id;
-        window.location.href = `/mc00${mc_id}`;
-      }
-      function loadData(){
-        let data = JSON.parse(data)
-      }
+      // console.log(allMachines);
     </script>
   </body>
 </html>

@@ -1,7 +1,7 @@
 [
   {
     "mc_id": "mc001",
-    "mc_name": "machinename001",
+    "mc_name": "Spark01",
     "parts": {
       "expected_quantity": 1100,
       "good_parts": 1000,
@@ -28,7 +28,7 @@
   },
   {
     "mc_id": "mc002",
-    "mc_name": "machinename002",
+    "mc_name": "Copper02",
     "parts": {
       "expected_quantity": 1000,
       "good_parts": 757,
@@ -55,7 +55,7 @@
   },
   {
     "mc_id": "mc003",
-    "mc_name": "machinename003",
+    "mc_name": "Socket003",
     "parts": {
       "expected_quantity": 1200,
       "good_parts": 980,
@@ -82,7 +82,7 @@
   },
   {
     "mc_id": "mc004",
-    "mc_name": "machinename004",
+    "mc_name": "Cole004",
     "parts": {
       "expected_quantity": 3500,
       "good_parts": 2700,
@@ -109,7 +109,7 @@
   },
   {
     "mc_id": "mc005",
-    "mc_name": "machinename005",
+    "mc_name": "Evxx005",
     "parts": {
       "expected_quantity": 3500,
       "good_parts": 2700,
@@ -136,7 +136,7 @@
   },
   {
     "mc_id": "mc006",
-    "mc_name": "machinename006",
+    "mc_name": "Max006",
     "parts": {
       "expected_quantity": 3500,
       "good_parts": 2700,
