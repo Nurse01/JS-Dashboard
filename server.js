@@ -197,10 +197,7 @@ app.get("/:token", (req, res) => {
   res.sendFile(path.join(__dirname + "/chart/machine.html"));
 });
 
-// for (let i = 0; i < allMachines.length; i++) {
-//     let allMachinesName =  allMachines[i].mc_name;
-//     return allMachinesName;
-//    } 
+
 // Socket
 io.on("connection", function (socket) {
   console.log("Socket connected");
@@ -210,10 +207,7 @@ io.on("connection", function (socket) {
 
   });
   io.emit("test","testData")
-
-
-  // GET - all machines name
-  // socket.emit("allMachineName", allMachinesName)
+  io.emit("allMachines",allMachines)
 
   // GET - each machine
   // socket.on("", function(jsonData) {

@@ -89,7 +89,7 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
       var socket = io();
-
+      let allMachinesName = [];
       // let n_data = "hi"
       // socket.emit("get_data", n_data)
       // socket.on("got_data", function(data) {
@@ -99,18 +99,14 @@
       //   console.log("req json");
       // });
 
-      socket.on("allMachineName", (data) => {
-        console.log("allMachineName")
+  
+      socket.on("test", (data) => {
         console.log(data);
       });
-      socket.on("test",(data)=>{
-        console.log(data)
-      })
 
-      socket.on("got_data", (data) => {
-        console.log(data);
+      socket.on("allMachines", (allMachines) => {
+        console.log(allMachines);
 
-        
         // OEE chart
         let myChart = document.getElementById("contentChart").getContext("2d");
         let massPopChart = new Chart(myChart, {
@@ -156,7 +152,6 @@
         // Machine semi-circle
         let html_machines = "";
         for (let i = 0; i < allMachines.length; i++) {
-          // console.log(allMachines[i].mc_name)
           html_machines += `
                 <div class="col-3 p-0 m-0 box-content border border-white text-center" onclick="selectMachine(${
                   i + 1
@@ -230,22 +225,6 @@
         }
       });
 
-      let allMachines = {};
-
-      // fetch json
-      // fetch("./data.json")
-      //   .then(function (response) {
-      //     return response;
-      //   })
-      //   .then(function (data) {
-      //     allMachines = data.json();
-      //     console.log(allMachines);
-      //     return allMachines;
-      //   })
-      //   .catch(function (err) {
-      //     console.log("Fetch problem show: " + err.message);
-      //   });
-      // console.log(allMachines);
     </script>
   </body>
 </html>
