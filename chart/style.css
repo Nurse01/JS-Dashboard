@@ -1,5 +1,5 @@
 body {
-    background-color: #22223b;
+    background-color: #001d3d;
     color: antiquewhite !important;
   }
   table{
@@ -9,7 +9,12 @@ body {
     color:  antiquewhite !important;
   }
   .box-content {
-    background-color: #4a4e69;
+    background-color: #003566;
+  }
+  .pointer:hover{
+    cursor: pointer;
+    color: #cca000;
+    background-color: #000814;
   }
 /* #semiCircleChart{
   width: 50%;

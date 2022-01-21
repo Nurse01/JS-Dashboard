@@ -121,8 +121,8 @@ let allMachines = [
     mc_name: "Evxx005",
     parts: {
       expected_quantity: 3500,
-      good_parts: 2700,
-      total_parts: 3100,
+      good_parts: 1800,
+      total_parts: 2000,
     },
     availability: {
       planned_runtime: 480,
@@ -216,12 +216,6 @@ io.on("connection", function (socket) {
 
   // })
 
-  // socket.on("get_data", function(n_data) {
-  //     //query data
-  //     let data = n_data + " helllo"
-
-  //     socket.emit("got data", data)
-  // })
 });
 const PORT = 3000;
 //Set server port

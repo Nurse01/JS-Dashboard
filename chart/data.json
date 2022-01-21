@@ -31,7 +31,7 @@
     "mc_name": "Copper02",
     "parts": {
       "expected_quantity": 1000,
-      "good_parts": 757,
+      "good_parts": 300,
       "total_parts": 800
     },
     "availability": {
@@ -112,8 +112,8 @@
     "mc_name": "Evxx005",
     "parts": {
       "expected_quantity": 3500,
-      "good_parts": 2700,
-      "total_parts": 3100
+      "good_parts": 1800,
+      "total_parts": 2000
     },
     "availability": {
       "planned_runtime": 480,

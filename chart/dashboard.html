@@ -24,6 +24,7 @@
         <div class="row d-flex justify-content-around">
           <!-- OEE part -->
           <div class="box-content border border-white col-sm-3">
+            <p id="simple-OEE"></p>
             <canvas id="contentChart"></canvas>
           </div>
 
@@ -31,30 +32,36 @@
             <div class="box-content border border-white m-3 p-2 text-center">
               <p class="fs-3">
                 Good Parts <br />
-                <span class="fw-bolder">2.7 K</span>
+                <span id="sum-good-parts" class="fw-bolder"></span>
               </p>
             </div>
             <div class="box-content border border-white m-3 p-2 text-center">
               <p class="fs-3">
                 Total Parts <br />
-                <span class="fw-bolder">3.1 K</span>
+                <span id="sum-total-parts" class="fw-bolder"></span>
               </p>
             </div>
           </div>
           <div class="box-content border border-white col-sm-3">
             <div>
               <p class="fs-4">
-                Total Machine<br /><span class="px-4">5 pieces</span>
+                Total Machines<br /><span id="total-machines" class="px-4"
+                  >10 pieces</span
+                >
               </p>
             </div>
             <div>
               <p class="fs-4">
-                Total Working Machine<br /><span class="px-4">3 pieces</span>
+                Total Working Machines<br /><span
+                  id="total-working-machines"
+                  class="px-4"
+                ></span>
               </p>
             </div>
             <div>
               <p class="fs-4">
-                Total Downtime<br /><span class="px-4">30 minute</span>
+                Total Downtime<br /><span id="total-downtime" class="px-4">
+                </span>
               </p>
             </div>
           </div>
@@ -63,24 +70,8 @@
         <!-- each machine -->
         <div
           id="machines"
-          class="row p-0 m-0 d-flex justify-content-around py-5 gap-3"
+          class="row p-0 m-0 d-flex justify-content-around py-3 gap-4"
         ></div>
-
-        <!-- <div class="row d-flex justify-content-evenly py-5">
-          <div class="row gap-3">
-            <div class="col box-content text-center">
-              <a href="./machine.html">MC001</a>
-              <canvas id="semiChart" width="400" height="400"></canvas>
-            </div>
-            <div class="col box-content text-center">
-              <a href="./machine.html" >MC002</a>
-            </div>
-
-            <div class="col box-content text-center">
-              <a href="./machine.html" >MC003</a>
-            </div>
-          </div>
-        </div> -->
       </div>
     </div>
 
@@ -90,6 +81,13 @@
     <script>
       var socket = io();
       let allMachinesName = [];
+      let simpleOEE = 0;
+      let sumGoodParts = 0;
+      let sumTotalParts = 0;
+      let sumExpectedQuantity = 0;
+      let totalWorkingMachines = 0;
+      let totalDowntime = 0;
+
       // let n_data = "hi"
       // socket.emit("get_data", n_data)
       // socket.on("got_data", function(data) {
@@ -99,13 +97,32 @@
       //   console.log("req json");
       // });
 
-  
       socket.on("test", (data) => {
         console.log(data);
       });
 
       socket.on("allMachines", (allMachines) => {
         console.log(allMachines);
+        for (let i = 0; i < allMachines.length; i++) {
+          //parts scorecard
+          sumGoodParts += parseInt(allMachines[i].parts.good_parts);
+          sumTotalParts += parseInt(allMachines[i].parts.total_parts);
+          totalWorkingMachines = allMachines.length;
+          totalDowntime += parseInt(
+            allMachines[i].availability.unplanned_downtime
+          );
+          sumExpectedQuantity += parseInt(
+            allMachines[i].parts.expected_quantity
+          );
+        }
+        simpleOEE = ((sumGoodParts / sumExpectedQuantity)*100).toFixed(2);
+        document.getElementById("simple-OEE").innerHTML = simpleOEE + " %";
+        document.getElementById("sum-good-parts").innerHTML = sumGoodParts;
+        document.getElementById("sum-total-parts").innerHTML = sumTotalParts;
+        document.getElementById("total-working-machines").innerHTML =
+          totalWorkingMachines + " pieces";
+        document.getElementById("total-downtime").innerHTML =
+          totalDowntime + " minutes";
 
         // OEE chart
         let myChart = document.getElementById("contentChart").getContext("2d");
@@ -116,9 +133,9 @@
             datasets: [
               {
                 data: [80, 20],
-                backgroundColor: ["#74c69d", "#f2e8cf"],
+                backgroundColor: ["#1d8c51", "#f2e8cf"],
                 borderWidth: 1,
-                borderColor: "#000",
+                borderColor: "#777",
                 hoverBorderWidth: 3,
                 hoverBorderColor: "#000",
               },
@@ -153,27 +170,31 @@
         let html_machines = "";
         for (let i = 0; i < allMachines.length; i++) {
           html_machines += `
-                <div class="col-3 p-0 m-0 box-content border border-white text-center" onclick="selectMachine(${
-                  i + 1
-                })" >
+                <div class="pointer col-3 p-0 m-0 box-content border border-white text-center" onclick="selectMachine(${allMachines[i].mc_id})" >
                   <p class="fs-3">${allMachines[i].mc_name}
-                  <canvas id="mc00${i + 1}" class=" p-3" ></canvas>
+                  <canvas id="${allMachines[i].mc_id}" class=" p-3" ></canvas>
                 </div>
                 `;
         }
         document.getElementById("machines").innerHTML = html_machines;
         for (let i = 0; i < allMachines.length; i++) {
           let canvasElem = document
-            .getElementById(`mc00${i + 1}`)
+            .getElementById(`${allMachines[i].mc_id}`)
             .getContext("2d");
           let semiChart = new Chart(canvasElem, {
             type: "doughnut",
             data: {
-              labels: ["Done", "not Done"],
+              labels: ["total parts", "left parts"],
               datasets: [
                 {
-                  data: [80, 30],
-                  backgroundColor: ["#ccd5ae", "#fefae0"],
+                  data: [
+                    `${allMachines[i].parts.total_parts}`,
+                    `${
+                      allMachines[i].parts.expected_quantity -
+                      allMachines[i].parts.total_parts
+                    }`,
+                  ],
+                  backgroundColor: ["#40916c", "#fefae0"],
                   borderColor: "#777",
                   borderWidth: 1,
                 },
@@ -186,45 +207,13 @@
             },
           });
         }
-        // for (let i = 0; i < machines.length; i++) {
-        //   let machinesElem = document.getElementById(`machines`);
-        //   let divElem = document.createElement("div");
-        //   divElem.className = "col box-content text-center fs-2";
-
-        //   let canvasElem = document.createElement("canvas");
-        //   canvasElem.setAttribute("id", `mc00${i + 1}`);
-        //   let pElem = document.createTextNode(`${machines[i].mc_name}`)
-        //   divElem.appendChild(pElem);
-        //   machinesElem.appendChild(divElem);
-        //   divElem.appendChild(canvasElem);
-
-        //   let semiChart = new Chart(canvasElem, {
-        //     type: "doughnut",
-        //     data: {
-        //       labels: ["", "Blue"],
-        //       datasets: [
-        //         {
-        //           label: "# of Votes",
-        //           data: [80, 30],
-        //           backgroundColor: ["#ccd5ae", "#fefae0"],
-        //           borderColor: "#777",
-        //           borderWidth: 1,
-        //         },
-        //       ],
-        //     },
-        //     options: {
-        //       rotation: -90,
-        //       circumference: 180,
-        //       cutout: "70%",
-        //     },
-        //   });
-        // }
-        function selectMachine(id) {
-          let mc_id = id;
-          window.location.href = `/mc00${mc_id}`;
-        }
       });
 
+      function selectMachine(id) {
+        console.log(id.id);
+        let mc_id = id.id;
+        window.location.href = `/${mc_id}`;
+      }
     </script>
   </body>
 </html>
