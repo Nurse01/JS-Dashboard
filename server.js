@@ -195,6 +195,8 @@ app.get("/machine", (req, res) => {
 
 app.get("/:token", (req, res) => {
   res.sendFile(path.join(__dirname + "/chart/machine.html"));
+  // let machineId = req.params['token']
+  // console.log(machineId)
 });
 
 
@@ -206,16 +208,20 @@ io.on("connection", function (socket) {
     console.log("... socket disconnected");
 
   });
+  // dashboard page
   io.emit("test","testData")
   io.emit("allMachines",allMachines)
 
+
+  // machine page
   // GET - each machine
-  // socket.on("", function(jsonData) {
-  //     let data = jsonData
-  //     socket.on("got_json")
+  io.emit("machineDetail","machine detail")
 
-  // })
-
+  io.on("sendMachineId",(data)=>{
+    console.log("sent mc_id")
+    let machineId = data;
+    console.log(machineId);
+  })
 });
 const PORT = 3000;
 //Set server port

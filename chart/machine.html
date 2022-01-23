@@ -150,163 +150,178 @@
       </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <script>
-      // horizontal bar chart
-      let qtChart = document.getElementById("quantityChart").getContext("2d");
-      let quantityChart = new Chart(qtChart, {
-        data: {
-          labels: ["", "Product Quantity", ""],
-          datasets: [
-            {
-              type: "bar",
-              axis: "x",
-              data: [0, 50, 0, 100],
-              fill: false,
-              backgroundColor: "#74c69d",
-              borderColor: "#777",
-              borderWidth: 1,
-            },
-            {
-              type: "line",
-              label: "Expected Quantity",
-              data: [58, 58, 58],
-              fill: false,
-              borderColor: "rgb(54, 162, 235)",
-              pointStyle: "circle",
-            },
-          ],
-        },
-        options: {
-          color: "#f2e8cf",
-          indexAxis: "y",
-          // labels:{
-          //   fontColor : "#f2e8cf",
-          // }
-        },
+      var socket = io();
+      socket.on("test", (data) => {
+        console.log(data);
       });
 
-      // OEE-doughnut chart
-      let dnChart = document.getElementById("oeeChart").getContext("2d");
-      let oeeDn = new Chart(dnChart, {
-        type: "doughnut",
-        data: {
-          datasets: [
-            {
-              label: "OEE",
-              data: [86, 14],
-              backgroundColor: ["#74c69d", "#f2e8cf"],
-              borderWidth: 1,
-              borderColor: "#777",
-              hoverBorderWidth: 3,
-              hoverBorderColor: "#000",
-            },
-          ],
-        },
-        options: {
-          title: {
-            display: true,
-            text: "OEE",
-            fontSize: 25,
-          },
-          legend: {
-            display: true,
-            position: "right",
-          },
-          layout: {
-            padding: {
-              left: 50,
-              right: 0,
-              top: 0,
-              bottom: 0,
-            },
-          },
-        },
-      });
-
-      // availability-doughnut chart
-      let availabilityChart = document
-        .getElementById("availabilityChart")
-        .getContext("2d");
-      let availabilityDn = new Chart(availabilityChart, {
-        type: "doughnut",
-        data: {
-          datasets: [
-            {
-              label: "OEE",
-              data: [86, 14],
-              backgroundColor: ["#74c69d", "#f2e8cf"],
-              borderWidth: 1,
-              borderColor: "#777",
-              hoverBorderWidth: 3,
-              hoverBorderColor: "#000",
-            },
-          ],
-        },
-        options: {
-          title: {
-            display: true,
-            text: "OEE",
-            fontSize: 25,
-          },
-          legend: {
-            display: true,
-            position: "right",
-          },
-          layout: {
-            padding: {
-              left: 50,
-              right: 0,
-              top: 0,
-              bottom: 0,
-            },
-          },
-        },
-      });
-      //  semi circle chart
-      let scChart = document.getElementById("semiCircleChart").getContext("2d");
-      let semiCirlceChart = new Chart(scChart, {
-        type: "doughnut",
-        data: {
-          datasets: [
-            {
-              label: "OEE",
-              data: [86, 14],
-              backgroundColor: ["#74c69d", "#f2e8cf"],
-              borderWidth: 1,
-              borderColor: "#777",
-              hoverBorderWidth: 3,
-              hoverBorderColor: "#000",
-            },
-          ],
-        },
-        options: {
-          rotation: -90,
-          circumference: 180,
-          cutout: "70%",
-          title: {
-            display: false,
-          },
-          legend: {
-            display: true,
-            position: "right",
-          },
-          layout: {
-            padding: {
-              left: 50,
-              right: 0,
-              top: 0,
-              bottom: 0,
-            },
-          },
-        },
-      });
+      // socket.on("machineDetail", (data) => {
+      //   console.log(data);
+      // });
+    let machineId = window.localStorage.getItem("machineId");
+    console.log(machineId)
     
-  async function loadMachine(){
-        let mc_id = 0
-        let url = window.location.href
-        console.log(url)
-        
-  }
+      socket.emit("sendMachineId", (machineId) => {    
+        console.log(machineId);
+      });
+
+      socket.on("machineDetail", (data) => {
+        console.log(data);
+
+        // horizontal bar chart
+        let qtChart = document.getElementById("quantityChart").getContext("2d");
+        let quantityChart = new Chart(qtChart, {
+          data: {
+            labels: ["", "Product Quantity", ""],
+            datasets: [
+              {
+                type: "bar",
+                axis: "x",
+                data: [0, 50, 0, 100],
+                fill: false,
+                backgroundColor: "#74c69d",
+                borderColor: "#777",
+                borderWidth: 1,
+              },
+              {
+                type: "line",
+                label: "Expected Quantity",
+                data: [58, 58, 58],
+                fill: false,
+                borderColor: "rgb(54, 162, 235)",
+                pointStyle: "circle",
+              },
+            ],
+          },
+          options: {
+            color: "#f2e8cf",
+            indexAxis: "y",
+            // labels:{
+            //   fontColor : "#f2e8cf",
+            // }
+          },
+        });
+
+        // OEE-doughnut chart
+        let dnChart = document.getElementById("oeeChart").getContext("2d");
+        let oeeDn = new Chart(dnChart, {
+          type: "doughnut",
+          data: {
+            datasets: [
+              {
+                label: "OEE",
+                data: [86, 14],
+                backgroundColor: ["#74c69d", "#f2e8cf"],
+                borderWidth: 1,
+                borderColor: "#777",
+                hoverBorderWidth: 3,
+                hoverBorderColor: "#000",
+              },
+            ],
+          },
+          options: {
+            title: {
+              display: true,
+              text: "OEE",
+              fontSize: 25,
+            },
+            legend: {
+              display: true,
+              position: "right",
+            },
+            layout: {
+              padding: {
+                left: 50,
+                right: 0,
+                top: 0,
+                bottom: 0,
+              },
+            },
+          },
+        });
+
+        // availability-doughnut chart
+        let availabilityChart = document
+          .getElementById("availabilityChart")
+          .getContext("2d");
+        let availabilityDn = new Chart(availabilityChart, {
+          type: "doughnut",
+          data: {
+            datasets: [
+              {
+                label: "OEE",
+                data: [86, 14],
+                backgroundColor: ["#74c69d", "#f2e8cf"],
+                borderWidth: 1,
+                borderColor: "#777",
+                hoverBorderWidth: 3,
+                hoverBorderColor: "#000",
+              },
+            ],
+          },
+          options: {
+            title: {
+              display: true,
+              text: "OEE",
+              fontSize: 25,
+            },
+            legend: {
+              display: true,
+              position: "right",
+            },
+            layout: {
+              padding: {
+                left: 50,
+                right: 0,
+                top: 0,
+                bottom: 0,
+              },
+            },
+          },
+        });
+        //  semi circle chart
+        let scChart = document
+          .getElementById("semiCircleChart")
+          .getContext("2d");
+        let semiCirlceChart = new Chart(scChart, {
+          type: "doughnut",
+          data: {
+            datasets: [
+              {
+                label: "OEE",
+                data: [86, 14],
+                backgroundColor: ["#74c69d", "#f2e8cf"],
+                borderWidth: 1,
+                borderColor: "#777",
+                hoverBorderWidth: 3,
+                hoverBorderColor: "#000",
+              },
+            ],
+          },
+          options: {
+            rotation: -90,
+            circumference: 180,
+            cutout: "70%",
+            title: {
+              display: false,
+            },
+            legend: {
+              display: true,
+              position: "right",
+            },
+            layout: {
+              padding: {
+                left: 50,
+                right: 0,
+                top: 0,
+                bottom: 0,
+              },
+            },
+          },
+        });
+      });
     </script>
   </body>
 </html>

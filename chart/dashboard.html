@@ -80,7 +80,6 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
       var socket = io();
-      let allMachinesName = [];
       let simpleOEE = 0;
       let sumGoodParts = 0;
       let sumTotalParts = 0;
@@ -88,18 +87,6 @@
       let totalWorkingMachines = 0;
       let totalDowntime = 0;
 
-      // let n_data = "hi"
-      // socket.emit("get_data", n_data)
-      // socket.on("got_data", function(data) {
-      //   console.log(data)
-      // })
-      // socket.emit("import_json_data", () => {
-      //   console.log("req json");
-      // });
-
-      socket.on("test", (data) => {
-        console.log(data);
-      });
 
       socket.on("allMachines", (allMachines) => {
         console.log(allMachines);
@@ -210,9 +197,10 @@
       });
 
       function selectMachine(id) {
-        console.log(id.id);
         let mc_id = id.id;
         window.location.href = `/${mc_id}`;
+        window.localStorage.setItem("machineId",mc_id);
+        
       }
     </script>
   </body>
