@@ -17,14 +17,13 @@
   <body class="p-4 m-0">
     <div class="p-0 m-0">
       <!-- Quantity Detail -->
-      <p class="fs-2">
-        <a href="./dashboard.html" class="link">< </a> Machine Name
-      </p>
+      <a href="./dashboard.html" class="link">< Back</a>
+      <p id="machine-name" class="fs-2"></p>
       <div class="row p-0 m-0">
         <div class="col">
           <!-- Product Quantity  -->
           <div class="border border-white box-content row me-2 p-2">
-            <canvas id="quantityChart" style="max-height: 150px"></canvas>
+            <canvas id="quantityBarChart" style="max-height: 150px"></canvas>
           </div>
           <div class="row">
             <div
@@ -32,7 +31,7 @@
             >
               <p class="fs-4">
                 Good Parts <br />
-                <span class="fw-bolder">2.7 K</span>
+                <span id="good-parts" class="fw-bolder"></span>
               </p>
             </div>
             <div
@@ -40,7 +39,7 @@
             >
               <p class="fs-4">
                 Total Parts <br />
-                <span class="fw-bolder">3.1 K</span>
+                <span id="total-parts" class="fw-bolder"></span>
               </p>
             </div>
           </div>
@@ -71,21 +70,21 @@
               <thead class="thead-light">
                 <tr>
                   <th>Availability</th>
-                  <th>79.17 %</th>
+                  <th id="availability"></th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>Planned Runtime</td>
-                  <td>480 minute</td>
+                  <td id="planned-runtime"></td>
                 </tr>
                 <tr>
                   <td>Actual Runtime</td>
-                  <td>360 minute</td>
+                  <td id="actual-runtime"></td>
                 </tr>
                 <tr>
                   <td>Unplanned Downtime</td>
-                  <td>0 minute</td>
+                  <td id="unplanned-downtime"></td>
                 </tr>
               </tbody>
             </table>
@@ -95,7 +94,7 @@
         <!-- Performance -->
         <div class="col">
           <div>
-            <p>perf graph</p>
+            <canvas id="performanceChart"></canvas>
           </div>
           <!-- performance table -->
           <div>
@@ -103,17 +102,17 @@
               <thead class="thead-light">
                 <tr>
                   <th>Performance</th>
-                  <th>42.06 %</th>
+                  <th id="performance"></th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>Planned Quantity</td>
-                  <td>1000 parts</td>
+                  <td id="planned-quantity"></td>
                 </tr>
                 <tr>
                   <td>Actual Quantity</td>
-                  <td>900 parts</td>
+                  <td id="actual-quantity"></td>
                 </tr>
               </tbody>
             </table>
@@ -123,7 +122,7 @@
         <!-- Quality -->
         <div class="col">
           <div>
-            <p>quality</p>
+            <canvas id="quantityChart"></canvas>
           </div>
           <!-- quality table -->
           <div>
@@ -131,17 +130,17 @@
               <thead class="thead-light">
                 <tr>
                   <th>Quality</th>
-                  <th>100 %</th>
+                  <th id="quality"></th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>actual Quantity</td>
-                  <td>900 parts</td>
+                  <td>Actual Quantity</td>
+                  <td id="total-quantity"></td>
                 </tr>
                 <tr>
                   <td>Reject Quantity</td>
-                  <td>0 parts</td>
+                  <td id="reject-quantity"></td>
                 </tr>
               </tbody>
             </table>
@@ -153,33 +152,47 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
       var socket = io();
+
       socket.on("test", (data) => {
         console.log(data);
       });
 
-      // socket.on("machineDetail", (data) => {
-      //   console.log(data);
-      // });
-    let machineId = window.localStorage.getItem("machineId");
-    console.log(machineId)
-    
-      socket.emit("sendMachineId", (machineId) => {    
-        console.log(machineId);
-      });
+      let machineId = window.localStorage.getItem("machineId");
+      socket.emit("sendMachineId", machineId);
 
       socket.on("machineDetail", (data) => {
-        console.log(data);
+        let machine = data;
+
+        // Overall
+        document.getElementById("machine-name").innerHTML = machine.mc_name;
+        document.getElementById("good-parts").innerHTML = machine.parts.good_parts;
+        document.getElementById("total-parts").innerHTML = machine.parts.total_parts;
+        // oee
+        document.getElementById("availability").innerHTML = machine.oee.availability +" %";
+        document.getElementById("performance").innerHTML = machine.oee.performance+" %";
+        document.getElementById("quality").innerHTML = machine.oee.quality+" %";
+        // Availability
+        document.getElementById("planned-runtime").innerHTML = machine.availability.planned_runtime+" minute";
+        document.getElementById("actual-runtime").innerHTML = machine.availability.actual_runtime+" minute";
+        document.getElementById("unplanned-downtime").innerHTML = machine.availability.unplanned_downtime+" minute";
+        // Performance
+        document.getElementById("planned-quantity").innerHTML = machine.performance.planned_quantity+" parts";
+        document.getElementById("actual-quantity").innerHTML = machine.performance.actual_quantity+" parts"; 
+      // Quality
+        document.getElementById("total-quantity").innerHTML = machine.quality.actual_quantity+" parts";
+        document.getElementById("reject-quantity").innerHTML = machine.quality.reject_quantity+" parts";
 
         // horizontal bar chart
-        let qtChart = document.getElementById("quantityChart").getContext("2d");
-        let quantityChart = new Chart(qtChart, {
+        let qtChart = document.getElementById("quantityBarChart").getContext("2d");
+        let quantitybarChart = new Chart(qtChart, {
           data: {
             labels: ["", "Product Quantity", ""],
             datasets: [
               {
                 type: "bar",
+                label:"quantity",
                 axis: "x",
-                data: [0, 50, 0, 100],
+                data: [0, `${machine.parts.total_parts}`, 0 ],
                 fill: false,
                 backgroundColor: "#74c69d",
                 borderColor: "#777",
@@ -188,7 +201,7 @@
               {
                 type: "line",
                 label: "Expected Quantity",
-                data: [58, 58, 58],
+                data: [`${machine.parts.expected_quantity}`,`${machine.parts.expected_quantity}`,`${machine.parts.expected_quantity}`],
                 fill: false,
                 borderColor: "rgb(54, 162, 235)",
                 pointStyle: "circle",
@@ -251,8 +264,87 @@
           data: {
             datasets: [
               {
-                label: "OEE",
-                data: [86, 14],
+                label: "Availability",
+                data: [`${machine.oee.availability}`,`${100-machine.oee.availability}`],
+                backgroundColor: ["#74c69d", "#f2e8cf"],
+                borderWidth: 1,
+                borderColor: "#777",
+                hoverBorderWidth: 3,
+                hoverBorderColor: "#000",
+              },
+            ],
+          },
+          options: {
+            title: {
+              display: true,
+              text: "OEE",
+              fontSize: 25,
+            },
+            legend: {
+              display: true,
+              position: "right",
+            },
+            layout: {
+              padding: {
+                left: 50,
+                right: 0,
+                top: 0,
+                bottom: 0,
+              },
+            },
+          },
+        });
+       // Performance-doughnut chart
+       let performanceChart = document
+          .getElementById("performanceChart")
+          .getContext("2d");
+        let performanceDn = new Chart(performanceChart, {
+          type: "doughnut",
+          data: {
+            datasets: [
+              {
+                label: "Performance",
+                data: [`${machine.oee.performance}`,`${100-machine.oee.performance}`],
+                backgroundColor: ["#74c69d", "#f2e8cf"],
+                borderWidth: 1,
+                borderColor: "#777",
+                hoverBorderWidth: 3,
+                hoverBorderColor: "#000",
+              },
+            ],
+          },
+          options: {
+            title: {
+              display: true,
+              text: "OEE",
+              fontSize: 25,
+            },
+            legend: {
+              display: true,
+              position: "right",
+            },
+            layout: {
+              padding: {
+                left: 50,
+                right: 0,
+                top: 0,
+                bottom: 0,
+              },
+            },
+          },
+        });    
+           
+        // Quantity-doughnut chart
+        let quantityChart = document
+          .getElementById("quantityChart")
+          .getContext("2d");
+        let quantityDn = new Chart(quantityChart, {
+          type: "doughnut",
+          data: {
+            datasets: [
+              {
+                label: "Quantity",
+                data: [`${machine.oee.quality}`,`${100-machine.oee.quality}`],
                 backgroundColor: ["#74c69d", "#f2e8cf"],
                 borderWidth: 1,
                 borderColor: "#777",

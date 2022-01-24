@@ -199,29 +199,25 @@ app.get("/:token", (req, res) => {
   // console.log(machineId)
 });
 
-
 // Socket
 io.on("connection", function (socket) {
   console.log("Socket connected");
 
   socket.on("disconnect", function () {
     console.log("... socket disconnected");
-
   });
   // dashboard page
-  io.emit("test","testData")
-  io.emit("allMachines",allMachines)
+  socket.emit("test", "testData");
+  socket.emit("allMachines", allMachines);
 
-
-  // machine page
-  // GET - each machine
-  io.emit("machineDetail","machine detail")
-
-  io.on("sendMachineId",(data)=>{
-    console.log("sent mc_id")
+  socket.on("sendMachineId", (data) => {
+    console.log("sent mc_id");
     let machineId = data;
-    console.log(machineId);
-  })
+    let machineDetail = allMachines.find((item) => item.mc_id === machineId);
+    console.log(machineDetail);
+    socket.emit("machineDetail", machineDetail);
+  });
+   
 });
 const PORT = 3000;
 //Set server port

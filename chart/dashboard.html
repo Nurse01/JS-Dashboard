@@ -24,8 +24,8 @@
         <div class="row d-flex justify-content-around">
           <!-- OEE part -->
           <div class="box-content border border-white col-sm-3">
-            <p id="simple-OEE" class="row p-0 m-0 " ></p>
-            <canvas id="contentChart" ></canvas>
+            <p id="simple-OEE" class="row p-0 m-0"></p>
+            <canvas id="contentChart"></canvas>
           </div>
 
           <div class="col-sm-3">
@@ -87,7 +87,6 @@
       let totalWorkingMachines = 0;
       let totalDowntime = 0;
 
-
       socket.on("allMachines", (allMachines) => {
         console.log(allMachines);
         for (let i = 0; i < allMachines.length; i++) {
@@ -102,7 +101,7 @@
             allMachines[i].parts.expected_quantity
           );
         }
-        simpleOEE = ((sumGoodParts / sumExpectedQuantity)*100).toFixed(2);
+        simpleOEE = ((sumGoodParts / sumExpectedQuantity) * 100).toFixed(2);
         document.getElementById("simple-OEE").innerHTML = simpleOEE + " %";
         document.getElementById("sum-good-parts").innerHTML = sumGoodParts;
         document.getElementById("sum-total-parts").innerHTML = sumTotalParts;
@@ -112,6 +111,59 @@
           totalDowntime + " minutes";
 
         // OEE chart
+        // let myChart = document.getElementById("contentChart").getContext("2d");
+        // let massPopChart = new Chart(myChart, {
+        //   type: "doughnut",
+        //   data: {
+        //     labels: ["Done", "not done"],
+        //     datasets: [
+        //       {
+        //         data: [80, 20],
+        //         backgroundColor: ["#1d8c51", "#f2e8cf"],
+        //         borderWidth: 1,
+        //         borderColor: "#777",
+        //         hoverBorderWidth: 3,
+        //         hoverBorderColor: "#000",
+        //       },
+        //     ],
+        //   },
+        //   options: {
+        //     responsive: true,
+        //     title: {
+        //       display: false,
+        //     },
+        //     legend: {
+        //       display: false,
+        //       position: "right",
+        //       labels: {
+        //         fontColor: "#000",
+        //       },
+        //     },
+        //     tooltips: {
+        //       enabled: true,
+        //     },
+        //   },
+        // });
+
+        // Chart.pluginService.register({
+        //   beforeDraw: function (chart) {
+        //     var width = chart.chart.width,
+        //       height = chart.chart.height,
+        //       ctx = chart.chart.ctx;
+
+        //     ctx.restore();
+        //     var fontSize = (height / 114).toFixed(2);
+        //     ctx.font = fontSize + "em sans-serif";
+        //     ctx.textBaseline = "middle";
+
+        //     var text = "75%",
+        //       textX = Math.round((width - ctx.measureText(text).width) / 2),
+        //       textY = height / 2;
+
+        //     ctx.fillText(text, textX, textY);
+        //     ctx.save();
+        //   },
+        // });
         let myChart = document.getElementById("contentChart").getContext("2d");
         let massPopChart = new Chart(myChart, {
           type: "doughnut",
@@ -154,14 +206,15 @@
         });
 
         // Machine semi-circle
+
         let html_machines = "";
         for (let i = 0; i < allMachines.length; i++) {
           html_machines += `
-                <div class="pointer col-3 p-0 m-0 box-content border border-white text-center" onclick="selectMachine(${allMachines[i].mc_id})" >
-                  <p class="fs-3">${allMachines[i].mc_name}
-                  <canvas id="${allMachines[i].mc_id}" class=" p-3" ></canvas>
-                </div>
-                `;
+                      <div class="pointer col-3 p-0 m-0 box-content border border-white text-center" onclick="selectMachine(${allMachines[i].mc_id})" >
+                        <p class="fs-3">${allMachines[i].mc_name}
+                        <canvas id="${allMachines[i].mc_id}" class=" p-3" ></canvas>
+                      </div>
+                      `;
         }
         document.getElementById("machines").innerHTML = html_machines;
         for (let i = 0; i < allMachines.length; i++) {
@@ -199,8 +252,7 @@
       function selectMachine(id) {
         let mc_id = id.id;
         window.location.href = `/${mc_id}`;
-        window.localStorage.setItem("machineId",mc_id);
-        
+        window.localStorage.setItem("machineId", mc_id);
       }
     </script>
   </body>
