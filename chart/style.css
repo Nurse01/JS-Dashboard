@@ -1,19 +1,18 @@
 body {
     background-color: #001d3d;
-    color: antiquewhite !important;
+    color: white !important;
   }
   table{
-    color:  antiquewhite !important;
+    color:  white !important;
   }
   canvas{
-    color:  antiquewhite !important;
+    color:  white !important;
   }
   .box-content {
     background-color: #003566;
   }
   .pointer:hover{
     cursor: pointer;
-    color: #cca000;
     background-color: #000814;
   }
 /* #semiCircleChart{
