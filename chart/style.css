@@ -10,6 +10,9 @@ body {
   }
   .box-content {
     background-color: #003566;
+    border-radius: 5px;
+    padding: 2px;
+    margin: 5px;
   }
   .pointer:hover{
     cursor: pointer;

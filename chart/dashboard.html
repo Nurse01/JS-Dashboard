@@ -23,26 +23,26 @@
       <div class="m-5">
         <div class="row d-flex justify-content-around">
           <!-- OEE part -->
-          <div class="box-content border border-white col-sm-3">
-            <p id="simple-OEE" class="row p-0 m-0"></p>
+          <div class="box-content p-2 col-sm-3 text-center">
+            <p class="fs-3">OEE</p>
             <canvas id="contentChart"></canvas>
           </div>
 
           <div class="col-sm-3">
-            <div class="box-content border border-white m-3 p-2 text-center">
+            <div class="box-content m-3 p-2 text-center">
               <p class="fs-3">
                 Good Parts <br />
                 <span id="sum-good-parts" class="fw-bolder"></span>
               </p>
             </div>
-            <div class="box-content border border-white m-3 p-2 text-center">
+            <div class="box-content m-3 p-2 text-center">
               <p class="fs-3">
                 Total Parts <br />
                 <span id="sum-total-parts" class="fw-bolder"></span>
               </p>
             </div>
           </div>
-          <div class="box-content border border-white col-sm-3">
+          <div class="box-content col-sm-3">
             <div>
               <p class="fs-4">
                 Total Machines<br /><span id="total-machines" class="px-4"
@@ -67,6 +67,7 @@
           </div>
         </div>
 
+        <canvas id="ch-Doughnut"></canvas>
         <!-- each machine -->
         <div
           id="machines"
@@ -76,9 +77,106 @@
     </div>
 
     <!-- script -->
+    <script src="./assets/Chart.bundle.min.js"></script>
     <!-- Socket js -->
     <script src="/socket.io/socket.io.js"></script>
     <script>
+      Chart.pluginService.register({
+        beforeDraw: function (chart) {
+          if (chart.config.options.elements.center) {
+            //Get ctx from string
+            var ctx = chart.chart.ctx;
+
+            //Get options from the center object in options
+            var centerConfig = chart.config.options.elements.center;
+            var fontStyle = centerConfig.fontStyle || "Arial";
+            var txt = centerConfig.text;
+            var color = centerConfig.color || "#000";
+            var sidePadding = centerConfig.sidePadding || 20;
+            var sidePaddingCalculated =
+              (sidePadding / 100) * (chart.innerRadius * 2);
+            //Start with a base font of 30px
+            ctx.font = "50px " + fontStyle;
+
+            //Get the width of the string and also the width of the element minus 10 to give it 5px side padding
+            var stringWidth = ctx.measureText(txt).width;
+            var elementWidth = chart.innerRadius * 2 - sidePaddingCalculated;
+
+            // Find out how much the font can grow in width.
+            var widthRatio = elementWidth / stringWidth;
+            var newFontSize = Math.floor(30 * widthRatio);
+            var elementHeight = chart.innerRadius * 2;
+
+            // Pick a new font size so it will not be larger than the height of label.
+            var fontSizeToUse = Math.min(newFontSize, elementHeight);
+
+            //Set font settings to draw it correctly.
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            var centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
+            var centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
+            ctx.font = fontSizeToUse + "px " + fontStyle;
+            ctx.fillStyle = color;
+
+            //Draw text in center
+            ctx.fillText(txt, centerX, centerY);
+          }
+        },
+        // Important for showing all label values, but looks very bad
+        beforeRender: function (chart) {
+          // if (chart.config.options.showAllTooltips) {
+          //   // create an array of tooltips
+          //   // we can't use the chart tooltip because there is only one tooltip per chart
+          //   chart.pluginTooltips = [];
+          //   chart.config.data.datasets.forEach(function(dataset, i) {
+          //     chart.getDatasetMeta(i).data.forEach(function(sector, j) {
+          //       chart.pluginTooltips.push(
+          //         new Chart.Tooltip(
+          //           {
+          //             _chart: chart.chart,
+          //             _chartInstance: chart,
+          //             _data: chart.data,
+          //             _options: chart.options.tooltips,
+          //             _active: [sector]
+          //           },
+          //           chart
+          //         )
+          //       );
+          //     });
+          //   });
+          //   // turn off normal tooltips
+          //   chart.options.tooltips.enabled = false;
+          // }
+        },
+        // Important for showing all label values, but looks very bad
+        afterDraw: function (chart, easing) {
+          // if (chart.config.options.showAllTooltips) {
+          //   // we don't want the permanent tooltips to animate, so don't do anything till the animation runs atleast once
+          //   if (!chart.allTooltipsOnce) {
+          //     if (easing !== 1) return;
+          //     chart.allTooltipsOnce = true;
+          //   }
+          //   // turn on tooltips
+          //   chart.options.tooltips.enabled = true;
+          //   Chart.helpers.each(chart.pluginTooltips, function(tooltip) {
+          //     tooltip.initialize();
+          //     tooltip._options.bodyFontFamily = "'Lato', sans-serif"
+          //     tooltip._options.displayColors = false;
+          //     tooltip._options.bodyFontSize = tooltip._chart.height * 0.06;
+          //     tooltip._options.yPadding = 0;
+          //     tooltip._options.xPadding = 0;
+          //     // tooltip._options.position = 'average';
+          //     // tooltip._options.caretSize = tooltip._options.bodyFontSize * 0.5;
+          //     //tooltip._options.cornerRadius = tooltip._options.bodyFontSize * 0.5;
+          //     tooltip.update();
+          //     // we don't actually need this since we are not animating tooltips
+          //     tooltip.pivot();
+          //     tooltip.transition(easing).draw();
+          //   });
+          //   chart.options.tooltips.enabled = false;
+          // }
+        },
+      });
       var socket = io();
       let simpleOEE = 0;
       let sumGoodParts = 0;
@@ -102,7 +200,6 @@
           );
         }
         simpleOEE = ((sumGoodParts / sumExpectedQuantity) * 100).toFixed(2);
-        document.getElementById("simple-OEE").innerHTML = simpleOEE + " %";
         document.getElementById("sum-good-parts").innerHTML = sumGoodParts;
         document.getElementById("sum-total-parts").innerHTML = sumTotalParts;
         document.getElementById("total-working-machines").innerHTML =
@@ -202,15 +299,25 @@
             tooltips: {
               enabled: true,
             },
+            elements: {
+              center: {
+                text: String(simpleOEE + "\n%"), // .replace(/\n/g, "<br />")
+                color: "#ffffff",
+                fontStyle: "Helvetica",
+                fontSize: 5,
+                sidePadding: 0, //Default 20 (as a percentage)
+              },
+            },
           },
         });
 
         // Machine semi-circle
-
         let html_machines = "";
         for (let i = 0; i < allMachines.length; i++) {
-          html_machines += `
-                      <div class="pointer col-3 p-0 m-0 box-content border border-white text-center" onclick="selectMachine(${allMachines[i].mc_id})" >
+          html_machines +=
+            /*html*/
+            `
+                      <div class="pointer col-3 p-0 m-0 box-content text-center" onclick="selectMachine(${allMachines[i].mc_id})" >
                         <p class="fs-3">${allMachines[i].mc_name}
                         <canvas id="${allMachines[i].mc_id}" class=" p-3" ></canvas>
                       </div>
@@ -241,9 +348,9 @@
               ],
             },
             options: {
-              rotation: -90,
-              circumference: 180,
-              cutout: "70%",
+              rotation: Math.PI * 1,
+              circumference: Math.PI * 1,
+              cutoutPercentage: 70,
             },
           });
         }

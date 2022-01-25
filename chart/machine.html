@@ -10,7 +10,9 @@
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
-    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
     <link rel="stylesheet" href="style.css" />
     <title>Hello World ChartJs</title>
   </head>
@@ -18,38 +20,38 @@
     <div class="p-0 m-0">
       <!--Detail -->
       <div class="row p-0 m-0">
-        <!-- <a href="./dashboard.html" class="col-1">< Back</a> -->
+        <a href="./dashboard.html" class="col-1">< Back</a>
         <p id="machine-name" class="fs-2 col-5"></p>
-        <div class="box-content col border border-white text-center">
+        <div class="box-content col text-center ">
           <p>Date</p>
           <p id="date" class="fs-3" ></p>
         </div>
-        <div class="box-content col border border-white text-center"> 
+        <div class="box-content col text-center"> 
           <p >Time</p>
           <p id="time" class="fs-3"></p>
         </div>
       </div>
       <div class="row p-0 m-0 text-center">
-        <div id="statusMachine" class="box-content border border-white col m-3 ">
+        <div id="statusMachine" class="box-content col  ">
           <p>Status Machine</p>
           <p class="fs-3" style="background-color:#74c69d;">RUNNING</p>
         </div>
-        <div id="statusMachine" class="box-content  col m-3 ">
+        <div id="statusMachine" class="box-content  col " >
           <p>Total Stoptime</p>
           <p class="fs-3" style="color:#e01e37;">20 minute</p>
         </div>
       </div>
       
 
-      <div class="row p-0 m-0">
+      <div class="row p-0 ">
         <div class="col">
           <!-- Product Quantity  -->
-          <div class="border border-white box-content row me-2 p-2">
+          <div class=" box-content row ">
             <canvas id="quantityBarChart" style="max-height: 150px"></canvas>
           </div>
           <div class="row">
             <div
-              class="col  border border-white my-3 p-2 text-center"
+              class="col box-content text-center"
             >
               <p class="fs-4">
                 Good Parts <br />
@@ -57,7 +59,7 @@
               </p>
             </div>
             <div
-              class="col box-content border border-white m-3 p-2 text-center"
+              class="col box-content text-center"
             >
               <p class="fs-4">
                 Total Parts <br />
@@ -75,7 +77,7 @@
       </div> -->
 
       <!-- Key Performance Indicators -->
-      <div class="row p-0 m-0 box-content">
+      <div class="row p-0  box-content">
         <!-- Availability -->
         <div class="col">
           <div class="">
@@ -171,9 +173,106 @@
         </div>
       </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <!-- <script src="./assets/Chart.bundle.min.js"></script> -->
     <script>
+      const plugin = {
+        beforeDraw: function (chart) {
+          if (chart.config.options.elements.center) {
+            //Get ctx from string
+            var ctx = chart.chart.ctx;
+
+            //Get options from the center object in options
+            var centerConfig = chart.config.options.elements.center;
+            var fontStyle = centerConfig.fontStyle || "Arial";
+            var txt = centerConfig.text;
+            var color = centerConfig.color || "#000";
+            var sidePadding = centerConfig.sidePadding || 20;
+            var sidePaddingCalculated =
+              (sidePadding / 100) * (chart.innerRadius * 2);
+            //Start with a base font of 30px
+            ctx.font = "50px " + fontStyle;
+
+            //Get the width of the string and also the width of the element minus 10 to give it 5px side padding
+            var stringWidth = ctx.measureText(txt).width;
+            var elementWidth = chart.innerRadius * 2 - sidePaddingCalculated;
+
+            // Find out how much the font can grow in width.
+            var widthRatio = elementWidth / stringWidth;
+            var newFontSize = Math.floor(30 * widthRatio);
+            var elementHeight = chart.innerRadius * 2;
+
+            // Pick a new font size so it will not be larger than the height of label.
+            var fontSizeToUse = Math.min(newFontSize, elementHeight);
+
+            //Set font settings to draw it correctly.
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            var centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
+            var centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
+            ctx.font = fontSizeToUse + "px " + fontStyle;
+            ctx.fillStyle = color;
+
+            //Draw text in center
+            ctx.fillText(txt, centerX, centerY);
+          }
+        },
+        // Important for showing all label values, but looks very bad
+        beforeRender: function (chart) {
+          // if (chart.config.options.showAllTooltips) {
+          //   // create an array of tooltips
+          //   // we can't use the chart tooltip because there is only one tooltip per chart
+          //   chart.pluginTooltips = [];
+          //   chart.config.data.datasets.forEach(function(dataset, i) {
+          //     chart.getDatasetMeta(i).data.forEach(function(sector, j) {
+          //       chart.pluginTooltips.push(
+          //         new Chart.Tooltip(
+          //           {
+          //             _chart: chart.chart,
+          //             _chartInstance: chart,
+          //             _data: chart.data,
+          //             _options: chart.options.tooltips,
+          //             _active: [sector]
+          //           },
+          //           chart
+          //         )
+          //       );
+          //     });
+          //   });
+          //   // turn off normal tooltips
+          //   chart.options.tooltips.enabled = false;
+          // }
+        },
+        // Important for showing all label values, but looks very bad
+        afterDraw: function (chart, easing) {
+          // if (chart.config.options.showAllTooltips) {
+          //   // we don't want the permanent tooltips to animate, so don't do anything till the animation runs atleast once
+          //   if (!chart.allTooltipsOnce) {
+          //     if (easing !== 1) return;
+          //     chart.allTooltipsOnce = true;
+          //   }
+          //   // turn on tooltips
+          //   chart.options.tooltips.enabled = true;
+          //   Chart.helpers.each(chart.pluginTooltips, function(tooltip) {
+          //     tooltip.initialize();
+          //     tooltip._options.bodyFontFamily = "'Lato', sans-serif"
+          //     tooltip._options.displayColors = false;
+          //     tooltip._options.bodyFontSize = tooltip._chart.height * 0.06;
+          //     tooltip._options.yPadding = 0;
+          //     tooltip._options.xPadding = 0;
+          //     // tooltip._options.position = 'average';
+          //     // tooltip._options.caretSize = tooltip._options.bodyFontSize * 0.5;
+          //     //tooltip._options.cornerRadius = tooltip._options.bodyFontSize * 0.5;
+          //     tooltip.update();
+          //     // we don't actually need this since we are not animating tooltips
+          //     tooltip.pivot();
+          //     tooltip.transition(easing).draw();
+          //   });
+          //   chart.options.tooltips.enabled = false;
+          // }
+        },
+      };
+      
       let socket = io();
       setInterval(myTimer, 1000);
 
@@ -236,6 +335,23 @@
         let qtChart = document
           .getElementById("quantityBarChart")
           .getContext("2d");
+//           var mixedChart = new Chart(qtChart, {
+//   type: 'bar',
+//   data: {
+//     datasets: [{
+//           label: 'Bar Dataset',
+//           data: [10, 20, 30, 40]
+//         }, {
+//           label: 'Line Dataset',
+//           data: [50, 50, 50, 50],
+
+//           // Changes this dataset to become a line
+//           type: 'line'
+//         }],
+//     labels: ['January', 'February', 'March', 'April']
+//   }
+// });
+
         let quantitybarChart = new Chart(qtChart, {
           data: {
             labels: ["", "Product Quantity", ""],
@@ -271,6 +387,7 @@
             //   fontColor : "#f2e8cf",
             // }
           },
+          plugins: `${plugin}`
         });
 
         // OEE-doughnut chart
@@ -302,10 +419,19 @@
             },
             layout: {
               padding: {
-                left: 50,
+                left: 0,
                 right: 0,
                 top: 0,
                 bottom: 0,
+              },
+            },
+            elements: {
+              center: {
+                text: String("25.00" + "\n%"), // .replace(/\n/g, "<br />")
+                color: "#ffffff",
+                fontStyle: "Helvetica",
+                fontSize: 5,
+                sidePadding: 0, //Default 20 (as a percentage)
               },
             },
           },
