@@ -20,7 +20,7 @@
         <p class="text-center fs-2">Dashboard</p>
       </div>
       <!--//// CONTENT \\\\-->
-      <div class="m-5">
+      <div class="m-3">
         <div class="row d-flex justify-content-around">
           <!-- OEE part -->
           <div class="box-content p-2 col-sm-3 text-center">
@@ -314,14 +314,16 @@
         // Machine semi-circle
         let html_machines = "";
         for (let i = 0; i < allMachines.length; i++) {
+          percentageParts = `${(allMachines[i].parts.total_parts / allMachines[i].parts.expected_quantity*100).toFixed(2)}`;
           html_machines +=
             /*html*/
             `
-                      <div class="pointer col-3 p-0 m-0 box-content text-center" onclick="selectMachine(${allMachines[i].mc_id})" >
-                        <p class="fs-3">${allMachines[i].mc_name}
-                        <canvas id="${allMachines[i].mc_id}" class=" p-3" ></canvas>
-                      </div>
-                      `;
+              <div class="pointer col-3 p-0 m-0 box-content text-center" onclick="selectMachine(${allMachines[i].mc_id})" >
+                <p class="fs-3">${allMachines[i].mc_name}</p>
+                <canvas id="${allMachines[i].mc_id}" class=" p-3" ></canvas>
+                <p class="fs-4">${percentageParts} %</p>
+              </div>
+            `;
         }
         document.getElementById("machines").innerHTML = html_machines;
         for (let i = 0; i < allMachines.length; i++) {

@@ -1,95 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- App css -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-      crossorigin="anonymous"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- App css -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
-    <link rel="stylesheet" href="style.css" />
-    <title>Hello World ChartJs</title>
-  </head>
-  <body class="p-4 m-0">
-    <div class="p-0 m-0">
-      <!--Detail -->
-      <div class="row p-0 m-0">
-        <a href="./dashboard.html" class="col-1">< Back</a>
-        <p id="machine-name" class="fs-2 col-5"></p>
-        <div class="box-content col text-center ">
-          <p>Date</p>
-          <p id="date" class="fs-3" ></p>
-        </div>
-        <div class="box-content col text-center"> 
-          <p >Time</p>
-          <p id="time" class="fs-3"></p>
-        </div>
+  <link rel="stylesheet" href="style.css" />
+  <title>Hello World ChartJs</title>
+</head>
+
+<body class="p-4 m-0 ">
+  <div class="p-0 m-0">
+    <!--Detail -->
+    <div class="row p-0 m-0 ">
+      <!-- <a href="./dashboard.htmls" class="col-1">
+        < Back</a> -->
+      <p id="machine-name" class="box-content fs-1 col-4 p-2 "></p>
+      <div id="statusMachine" class="box-content col  text-center">
+        <p>Status Machine</p>
+        <p class="fs-3" style="background-color:#74c69d;">RUNNING</p>
       </div>
-      <div class="row p-0 m-0 text-center">
-        <div id="statusMachine" class="box-content col  ">
-          <p>Status Machine</p>
-          <p class="fs-3" style="background-color:#74c69d;">RUNNING</p>
-        </div>
-        <div id="statusMachine" class="box-content  col " >
-          <p>Total Stoptime</p>
-          <p class="fs-3" style="color:#e01e37;">20 minute</p>
-        </div>
+      <div class="box-content col text-center ">
+        <p>Date</p>
+        <p id="date" class="fs-3"></p>
       </div>
-      
+      <div class="box-content col text-center">
+        <p>Time</p>
+        <p id="time" class="fs-3"></p>
+      </div>
+    </div>
 
-      <div class="row p-0 ">
-        <div class="col">
-          <!-- Product Quantity  -->
-          <div class=" box-content row ">
-            <canvas id="quantityBarChart" style="max-height: 150px"></canvas>
-          </div>
-          <div class="row">
-            <div
-              class="col box-content text-center"
-            >
-              <p class="fs-4">
-                Good Parts <br />
-                <span id="good-parts" class="fw-bolder"></span>
-              </p>
-            </div>
-            <div
-              class="col box-content text-center"
-            >
-              <p class="fs-4">
-                Total Parts <br />
-                <span id="total-parts" class="fw-bolder"></span>
-              </p>
-            </div>
-          </div>
-        </div>
+    <!-- Key Performance Indicators -->
+    <div class="row p-0 m-0 ">
+      <!-- OEE -->
+      <div class="col-xl-3 col-md-2 col-1 my-auto p-1 box-content">
+        <canvas id="oeeChart"></canvas>
+      </div>
+      <div class="col p-0 m-0">
+        <div class="row p-0 m-0">
 
-        <!-- Production Rate -->
-        <!-- <div class="col-4 p-3 mb-3 box-content border border-white">
-          <p class="col-12 fs-3 mx-2">Production Rate</p>
-          <canvas id="semiCircleChart" style="max-height: 150px"></canvas>
-        </div>
-      </div> -->
-
-      <!-- Key Performance Indicators -->
-      <div class="row p-0  box-content">
-        <!-- Availability -->
-        <div class="col">
-          <div class="">
-            <canvas id="availabilityChart"></canvas>
-          </div>
+          <!-- Availability -->
+          <!-- <div class="col">
+            <div class="">
+              <canvas id="availabilityChart"></canvas>
+            </div> -->
           <!-- availability table -->
-          <div>
+          <div class="col box-content p-2 p-lg-3 p-xl-4">
             <table class="table table-bordered">
               <thead class="thead-light">
                 <tr style="background-color: white; color: #000814;">
                   <th>Availability</th>
-                  <th id="availability" ></th>
+                  <th id="availability"></th>
                 </tr>
               </thead>
               <tbody>
@@ -107,16 +73,16 @@
                 </tr>
               </tbody>
             </table>
+            <!-- </div> -->
           </div>
-        </div>
 
-        <!-- Performance -->
-        <div class="col">
-          <div>
-            <canvas id="performanceChart"></canvas>
-          </div>
+          <!-- Performance -->
+          <!-- <div class="col">
+            <div>
+              <canvas id="performanceChart"></canvas>
+            </div> -->
           <!-- performance table -->
-          <div>
+          <div class="col box-content p-2 p-lg-3 p-xl-4">
             <table class="table table-bordered">
               <thead class="thead-light">
                 <tr style="background-color: white; color: #000814;">
@@ -135,16 +101,16 @@
                 </tr>
               </tbody>
             </table>
+            <!-- </div> -->
           </div>
-        </div>
 
-        <!-- Quality -->
-        <div class="col">
-          <div>
-            <canvas id="quantityChart"></canvas>
-          </div>
+          <!-- Quality -->
+          <!-- <div class="col">
+            <div>
+              <canvas id="quantityChart"></canvas>
+            </div> -->
           <!-- quality table -->
-          <div>
+          <div class="col box-content p-2 p-lg-3 p-xl-4">
             <table class="table table-bordered">
               <thead class="thead-light">
                 <tr style="background-color: white; color: #000814;">
@@ -163,15 +129,61 @@
                 </tr>
               </tbody>
             </table>
+            <!-- </div> -->
+
           </div>
-    
+
         </div>
-              <!-- OEE -->
-          <div class="col my-auto">
-            <p class="text-center">OEE</p>
-            <canvas id="oeeChart"></canvas>
+        <!-- Product Quantity  -->
+        <div class=" box-content row p-2 p-lg-3 p-xl-4">
+          <canvas id="quantityBarChart" style="max-height: 150px"></canvas>
         </div>
       </div>
+    </div>
+    <div class="row p-0 ">
+      <div class="col">
+        <div class="row m-0 text-center">
+          <div id="operationTime" class="col box-content  ">
+            <p>Operation Time</p>
+            <p class="fs-3" style="color:#74c69d;">300 minutes</p>
+          </div>
+          <div id="totalStoptime" class="col box-content  ">
+            <p>Total Stoptime</p>
+            <p class="fs-3" style="color:#e01e37;">20 minutes</p>
+          </div>
+          <div class="col box-content">
+            <p>
+              Good Parts <br />
+              <span id="good-parts" class="fs-3" style="color: #74c69d;"></span>
+            </p>
+          </div>
+          <div class="col box-content">
+            <p>
+              Total Parts <br />
+              <span id="total-parts" class="fs-3"></span>
+            </p>
+          </div>
+          <div class="col box-content">
+            <p>
+              Expected Quantity<br />
+              <span id="expected-quantity" class="fs-3" style="color: #74c69d;"></span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Production Rate -->
+      <!-- <div class="col-4 p-3 mb-3 box-content border border-white">
+          <p class="col-12 fs-3 mx-2">Production Rate</p>
+          <canvas id="semiCircleChart" style="max-height: 150px"></canvas>
+        </div>
+      </div> -->
+
+    </div>
+    <!-- Machine Log -->
+    <div class="box-content col-5">
+      <p>Machine Log</p>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <!-- <script src="./assets/Chart.bundle.min.js"></script> -->
@@ -272,7 +284,7 @@
           // }
         },
       };
-      
+
       let socket = io();
       setInterval(myTimer, 1000);
 
@@ -287,12 +299,7 @@
       socket.on("test", (data) => {
         console.log(data);
       });
-      //  setInterval(setDateTime,1000)
-      // function setDateTime() {
-      // let dt = new Date();
-      // let date =dt.getFullYear() +"-" +(dt.getMonth() + 1) +"-" +dt.getDate();
-      // document.getElementById("date").innerHTML = date+ date.toLocaleTimeString();
-      // }
+
 
       let machineId = window.localStorage.getItem("machineId");
       socket.emit("sendMachineId", machineId);
@@ -335,28 +342,27 @@
         let qtChart = document
           .getElementById("quantityBarChart")
           .getContext("2d");
-//           var mixedChart = new Chart(qtChart, {
-//   type: 'bar',
-//   data: {
-//     datasets: [{
-//           label: 'Bar Dataset',
-//           data: [10, 20, 30, 40]
-//         }, {
-//           label: 'Line Dataset',
-//           data: [50, 50, 50, 50],
+        //           var mixedChart = new Chart(qtChart, {
+        //   type: 'bar',
+        //   data: {
+        //     datasets: [{
+        //           label: 'Bar Dataset',
+        //           data: [10, 20, 30, 40]
+        //         }, {
+        //           label: 'Line Dataset',
+        //           data: [50, 50, 50, 50],
 
-//           // Changes this dataset to become a line
-//           type: 'line'
-//         }],
-//     labels: ['January', 'February', 'March', 'April']
-//   }
-// });
+        //           // Changes this dataset to become a line
+        //           type: 'line'
+        //         }],
+        //     labels: ['January', 'February', 'March', 'April']
+        //   }
+        // });
 
         let quantitybarChart = new Chart(qtChart, {
           data: {
             labels: ["", "Product Quantity", ""],
-            datasets: [
-              {
+            datasets: [{
                 type: "bar",
                 label: "quantity",
                 axis: "x",
@@ -395,17 +401,15 @@
         let oeeDn = new Chart(dnChart, {
           type: "doughnut",
           data: {
-            datasets: [
-              {
-                label: "OEE",
-                data: [86, 14],
-                backgroundColor: ["#74c69d", "#f2e8cf"],
-                borderWidth: 1,
-                borderColor: "#777",
-                hoverBorderWidth: 3,
-                hoverBorderColor: "#000",
-              },
-            ],
+            datasets: [{
+              label: "OEE",
+              data: [86, 14],
+              backgroundColor: ["#74c69d", "#f2e8cf"],
+              borderWidth: 1,
+              borderColor: "#777",
+              hoverBorderWidth: 3,
+              hoverBorderColor: "#000",
+            }, ],
           },
           options: {
             title: {
@@ -438,46 +442,47 @@
         });
 
         //  semi circle chart
-      //   let scChart = document
-      //     .getElementById("semiCircleChart")
-      //     .getContext("2d");
-      //   let semiCirlceChart = new Chart(scChart, {
-      //     type: "doughnut",
-      //     data: {
-      //       datasets: [
-      //         {
-      //           label: "OEE",
-      //           data: [86, 14],
-      //           backgroundColor: ["#74c69d", "#f2e8cf"],
-      //           borderWidth: 1,
-      //           borderColor: "#777",
-      //           hoverBorderWidth: 3,
-      //           hoverBorderColor: "#000",
-      //         },
-      //       ],
-      //     },
-      //     options: {
-      //       rotation: -90,
-      //       circumference: 180,
-      //       cutout: "70%",
-      //       title: {
-      //         display: false,
-      //       },
-      //       legend: {
-      //         display: true,
-      //         position: "right",
-      //       },
-      //       layout: {
-      //         padding: {
-      //           left: 50,
-      //           right: 0,
-      //           top: 0,
-      //           bottom: 0,
-      //         },
-      //       },
-      //     },
-      //   });
-       });
+        //   let scChart = document
+        //     .getElementById("semiCircleChart")
+        //     .getContext("2d");
+        //   let semiCirlceChart = new Chart(scChart, {
+        //     type: "doughnut",
+        //     data: {
+        //       datasets: [
+        //         {
+        //           label: "OEE",
+        //           data: [86, 14],
+        //           backgroundColor: ["#74c69d", "#f2e8cf"],
+        //           borderWidth: 1,
+        //           borderColor: "#777",
+        //           hoverBorderWidth: 3,
+        //           hoverBorderColor: "#000",
+        //         },
+        //       ],
+        //     },
+        //     options: {
+        //       rotation: -90,
+        //       circumference: 180,
+        //       cutout: "70%",
+        //       title: {
+        //         display: false,
+        //       },
+        //       legend: {
+        //         display: true,
+        //         position: "right",
+        //       },
+        //       layout: {
+        //         padding: {
+        //           left: 50,
+        //           right: 0,
+        //           top: 0,
+        //           bottom: 0,
+        //         },
+        //       },
+        //     },
+        //   });
+      });
     </script>
-  </body>
+</body>
+
 </html>
