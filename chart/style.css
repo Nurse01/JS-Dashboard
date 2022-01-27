@@ -1,23 +1,31 @@
 body {
-    background-color: #001d3d;
-    color: white !important;
-  }
-  table{
-    color:  white !important;
-  }
-  canvas{
-    color:  white !important;
-  }
-  .box-content {
-    background-color: #003566;
-    border-radius: 5px;
-    padding: 2px;
-    margin: 5px;
-  }
-  .pointer:hover{
-    cursor: pointer;
-    background-color: #000814;
-  }
+  /* background-color: #000814; */
+  background-color: #323a46;
+  color: white !important;
+}
+
+table {
+  color: white !important;
+}
+
+canvas {
+  color: white !important;
+}
+
+.box-content {
+  /* background-color: #323a46; */
+
+  border-radius: 5px;
+  padding: 2px;
+  margin: 5px;
+  box-shadow: 0 0 15px 10px #00000030;
+}
+
+.pointer:hover {
+  cursor: pointer;
+  background-color: #00000030;
+}
+
 /* #semiCircleChart{
   width: 50%;
 } */

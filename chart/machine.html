@@ -8,40 +8,74 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-
   <link rel="stylesheet" href="style.css" />
   <title>Hello World ChartJs</title>
 </head>
 
 <body class="p-4 m-0 ">
   <div class="p-0 m-0">
-    <!--Detail -->
+    <!--1st row -->
     <div class="row p-0 m-0 ">
       <!-- <a href="./dashboard.htmls" class="col-1">
         < Back</a> -->
-      <p id="machine-name" class="box-content fs-1 col-4 p-2 "></p>
+      <div class="box-content col-4 px-1">
+        <p id="machine-name" class=" fs-1  "></p>
+        <p class="px-3">Product : DM234 | line: 3</p>
+      </div>
       <div id="statusMachine" class="box-content col  text-center">
         <p>Status Machine</p>
         <p class="fs-3" style="background-color:#74c69d;">RUNNING</p>
       </div>
       <div class="box-content col text-center ">
-        <p>Date</p>
-        <p id="date" class="fs-3"></p>
+        <p>Total Time</p>
+        <p id="totalTime" class="fs-3">1200 minutes</p>
       </div>
       <div class="box-content col text-center">
+        <p>Operation Time</p>
+        <p id="operationTime" class="fs-3">600 minutes</p>
+      </div>
+      <!-- <div class="box-content col text-center ">
+        <p>Date</p>
+        <p id="date" class="fs-3"></p>
+      </div> -->
+      <!-- <div class="box-content col text-center">
         <p>Time</p>
         <p id="time" class="fs-3"></p>
-      </div>
+      </div> -->
     </div>
 
+    <!-- 2nd row -->
+    <div class="row p-0 m-0 text-center ">
+      <!-- <div class="box-content col">
+        <p>Operation Time</p>
+        <p id="operationTime" class="fs-3">600 minutes</p>
+      </div> -->
+      <div class="box-content col ">
+        <p>Total Time</p>
+        <p id="totalTime" class="fs-3">1200 minutes</p>
+      </div>
+      <div id="remainingTime" class="col box-content ">
+        <p>Remaining Time</p>
+        <p class="fs-3" style="color:#74c69d;">300 minutes</p>
+      </div>
+      <div id="totalStoptime" class="col box-content">
+        <p>Total Stoptime</p>
+        <p class="fs-3" style="color:#e01e37;">20 minutes</p>
+      </div>
+    </div>
+    <!-- 3rd row -->
     <!-- Key Performance Indicators -->
     <div class="row p-0 m-0 ">
       <!-- OEE -->
-      <div class="col-xl-3 col-md-2 col-1 my-auto p-1 box-content">
-        <canvas id="oeeChart"></canvas>
+      <div class="col-auto box-content">
+        <div class="p-lg-1 p-xl-0 p-3  border border-warning " style="width: 437px;" >
+          <div class=" border border-primary">
+            <canvas id="oeeChart"></canvas>
+          </div>       
+        </div>
+        
       </div>
-      <div class="col p-0 m-0">
+      <div class="col p-0 m-0 align-self-stretch">
         <div class="row p-0 m-0">
 
           <!-- Availability -->
@@ -136,37 +170,33 @@
         </div>
         <!-- Product Quantity  -->
         <div class=" box-content row p-2 p-lg-3 p-xl-4">
-          <canvas id="quantityBarChart" style="max-height: 150px"></canvas>
+            <canvas id="quantityBarChart" style="max-height: 150px"></canvas>
         </div>
       </div>
     </div>
+
+    <!-- 4th row -->
     <div class="row p-0 ">
       <div class="col">
         <div class="row m-0 text-center">
-          <div id="operationTime" class="col box-content  ">
-            <p>Operation Time</p>
-            <p class="fs-3" style="color:#74c69d;">300 minutes</p>
+          <div id="actual-quantity" class="col box-content">
+            <p>Actual Quantity</p>
+            <p class="fs-3" style="color:#74c69d;">200 parts</p>
           </div>
-          <div id="totalStoptime" class="col box-content  ">
-            <p>Total Stoptime</p>
-            <p class="fs-3" style="color:#e01e37;">20 minutes</p>
+
+          <div class="col box-content">
+            <p>Good Parts</p>
+            <p id="good-parts" class="fs-3" style="color: #74c69d;"></p>
+
           </div>
           <div class="col box-content">
-            <p>
-              Good Parts <br />
-              <span id="good-parts" class="fs-3" style="color: #74c69d;"></span>
-            </p>
+            <p>Total Parts </p>
+            <p id="total-parts" class="fs-3"></p>
+
           </div>
           <div class="col box-content">
-            <p>
-              Total Parts <br />
-              <span id="total-parts" class="fs-3"></span>
-            </p>
-          </div>
-          <div class="col box-content">
-            <p>
-              Expected Quantity<br />
-              <span id="expected-quantity" class="fs-3" style="color: #74c69d;"></span>
+            <p>Expected Quantity<br />
+            <p id="expected-quantity" class="fs-3" style="color: #74c69d;"></p>
             </p>
           </div>
         </div>
@@ -187,120 +217,66 @@
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <!-- <script src="./assets/Chart.bundle.min.js"></script> -->
+    <script src="./assets/Chart_2.9.3.js"></script>
+    <script src="./assets/Chart_doughnutlabel.js"></script>
     <script>
-      const plugin = {
-        beforeDraw: function (chart) {
-          if (chart.config.options.elements.center) {
-            //Get ctx from string
-            var ctx = chart.chart.ctx;
+      // const plugin = {
+      //   beforeDraw: function (chart) {
+      //     if (chart.config.options.elements.center) {
+      //       //Get ctx from string
+      //       var ctx = chart.chart.ctx;
 
-            //Get options from the center object in options
-            var centerConfig = chart.config.options.elements.center;
-            var fontStyle = centerConfig.fontStyle || "Arial";
-            var txt = centerConfig.text;
-            var color = centerConfig.color || "#000";
-            var sidePadding = centerConfig.sidePadding || 20;
-            var sidePaddingCalculated =
-              (sidePadding / 100) * (chart.innerRadius * 2);
-            //Start with a base font of 30px
-            ctx.font = "50px " + fontStyle;
+      //       //Get options from the center object in options
+      //       var centerConfig = chart.config.options.elements.center;
+      //       var fontStyle = centerConfig.fontStyle || "Arial";
+      //       var txt = centerConfig.text;
+      //       var color = centerConfig.color || "#000";
+      //       var sidePadding = centerConfig.sidePadding || 20;
+      //       var sidePaddingCalculated =
+      //         (sidePadding / 100) * (chart.innerRadius * 2);
+      //       //Start with a base font of 30px
+      //       ctx.font = "50px " + fontStyle;
 
-            //Get the width of the string and also the width of the element minus 10 to give it 5px side padding
-            var stringWidth = ctx.measureText(txt).width;
-            var elementWidth = chart.innerRadius * 2 - sidePaddingCalculated;
+      //       //Get the width of the string and also the width of the element minus 10 to give it 5px side padding
+      //       var stringWidth = ctx.measureText(txt).width;
+      //       var elementWidth = chart.innerRadius * 2 - sidePaddingCalculated;
 
-            // Find out how much the font can grow in width.
-            var widthRatio = elementWidth / stringWidth;
-            var newFontSize = Math.floor(30 * widthRatio);
-            var elementHeight = chart.innerRadius * 2;
+      //       // Find out how much the font can grow in width.
+      //       var widthRatio = elementWidth / stringWidth;
+      //       var newFontSize = Math.floor(30 * widthRatio);
+      //       var elementHeight = chart.innerRadius * 2;
 
-            // Pick a new font size so it will not be larger than the height of label.
-            var fontSizeToUse = Math.min(newFontSize, elementHeight);
+      //       // Pick a new font size so it will not be larger than the height of label.
+      //       var fontSizeToUse = Math.min(newFontSize, elementHeight);
 
-            //Set font settings to draw it correctly.
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            var centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
-            var centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
-            ctx.font = fontSizeToUse + "px " + fontStyle;
-            ctx.fillStyle = color;
+      //       //Set font settings to draw it correctly.
+      //       ctx.textAlign = "center";
+      //       ctx.textBaseline = "middle";
+      //       var centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
+      //       var centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
+      //       ctx.font = fontSizeToUse + "px " + fontStyle;
+      //       ctx.fillStyle = color;
 
-            //Draw text in center
-            ctx.fillText(txt, centerX, centerY);
-          }
-        },
-        // Important for showing all label values, but looks very bad
-        beforeRender: function (chart) {
-          // if (chart.config.options.showAllTooltips) {
-          //   // create an array of tooltips
-          //   // we can't use the chart tooltip because there is only one tooltip per chart
-          //   chart.pluginTooltips = [];
-          //   chart.config.data.datasets.forEach(function(dataset, i) {
-          //     chart.getDatasetMeta(i).data.forEach(function(sector, j) {
-          //       chart.pluginTooltips.push(
-          //         new Chart.Tooltip(
-          //           {
-          //             _chart: chart.chart,
-          //             _chartInstance: chart,
-          //             _data: chart.data,
-          //             _options: chart.options.tooltips,
-          //             _active: [sector]
-          //           },
-          //           chart
-          //         )
-          //       );
-          //     });
-          //   });
-          //   // turn off normal tooltips
-          //   chart.options.tooltips.enabled = false;
-          // }
-        },
-        // Important for showing all label values, but looks very bad
-        afterDraw: function (chart, easing) {
-          // if (chart.config.options.showAllTooltips) {
-          //   // we don't want the permanent tooltips to animate, so don't do anything till the animation runs atleast once
-          //   if (!chart.allTooltipsOnce) {
-          //     if (easing !== 1) return;
-          //     chart.allTooltipsOnce = true;
-          //   }
-          //   // turn on tooltips
-          //   chart.options.tooltips.enabled = true;
-          //   Chart.helpers.each(chart.pluginTooltips, function(tooltip) {
-          //     tooltip.initialize();
-          //     tooltip._options.bodyFontFamily = "'Lato', sans-serif"
-          //     tooltip._options.displayColors = false;
-          //     tooltip._options.bodyFontSize = tooltip._chart.height * 0.06;
-          //     tooltip._options.yPadding = 0;
-          //     tooltip._options.xPadding = 0;
-          //     // tooltip._options.position = 'average';
-          //     // tooltip._options.caretSize = tooltip._options.bodyFontSize * 0.5;
-          //     //tooltip._options.cornerRadius = tooltip._options.bodyFontSize * 0.5;
-          //     tooltip.update();
-          //     // we don't actually need this since we are not animating tooltips
-          //     tooltip.pivot();
-          //     tooltip.transition(easing).draw();
-          //   });
-          //   chart.options.tooltips.enabled = false;
-          // }
-        },
-      };
+      //       //Draw text in center
+      //       ctx.fillText(txt, centerX, centerY);
+      //     }
+      //   }
+      // };
 
       let socket = io();
-      setInterval(myTimer, 1000);
+      // setInterval(myTimer, 1000);
 
-      function myTimer() {
-        let dt = new Date();
-        let date =
-          dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
-        document.getElementById("date").innerHTML = date;
-        document.getElementById("time").innerHTML = dt.toLocaleTimeString();
-      }
+      // function myTimer() {
+      //   let dt = new Date();
+      //   let date =
+      //     dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
+      //   document.getElementById("date").innerHTML = date;
+      //   document.getElementById("time").innerHTML = dt.toLocaleTimeString();
+      // }
 
       socket.on("test", (data) => {
         console.log(data);
       });
-
-
       let machineId = window.localStorage.getItem("machineId");
       socket.emit("sendMachineId", machineId);
 
@@ -337,7 +313,9 @@
           machine.quality.actual_quantity + " parts";
         document.getElementById("reject-quantity").innerHTML =
           machine.quality.reject_quantity + " parts";
-
+        //Detail
+        document.getElementById("expected-quantity").innerHTML =
+          machine.parts.expected_quantity
         // horizontal bar chart
         let qtChart = document
           .getElementById("quantityBarChart")
@@ -359,42 +337,42 @@
         //   }
         // });
 
-        let quantitybarChart = new Chart(qtChart, {
-          data: {
-            labels: ["", "Product Quantity", ""],
-            datasets: [{
-                type: "bar",
-                label: "quantity",
-                axis: "x",
-                data: [0, `${machine.parts.total_parts}`, 0],
-                fill: false,
-                backgroundColor: "#74c69d",
-                borderColor: "#777",
-                borderWidth: 1,
-              },
-              {
-                type: "line",
-                label: "Expected Quantity",
-                data: [
-                  `${machine.parts.expected_quantity}`,
-                  `${machine.parts.expected_quantity}`,
-                  `${machine.parts.expected_quantity}`,
-                ],
-                fill: false,
-                borderColor: "rgb(54, 162, 235)",
-                pointStyle: "circle",
-              },
-            ],
-          },
-          options: {
-            color: "#f2e8cf",
-            indexAxis: "y",
-            // labels:{
-            //   fontColor : "#f2e8cf",
-            // }
-          },
-          plugins: `${plugin}`
-        });
+        // let quantitybarChart = new Chart(qtChart, {
+        //   data: {
+        //     labels: ["", "Product Quantity", ""],
+        //     datasets: [{
+        //         type: "bar",
+        //         label: "quantity",
+        //         axis: "x",
+        //         data: [0, `${machine.parts.total_parts}`, 0],
+        //         fill: false,
+        //         backgroundColor: "#74c69d",
+        //         borderColor: "#777",
+        //         borderWidth: 1,
+        //       },
+        //       {
+        //         type: "line",
+        //         label: "Expected Quantity",
+        //         data: [
+        //           `${machine.parts.expected_quantity}`,
+        //           `${machine.parts.expected_quantity}`,
+        //           `${machine.parts.expected_quantity}`,
+        //         ],
+        //         fill: false,
+        //         borderColor: "rgb(54, 162, 235)",
+        //         pointStyle: "circle",
+        //       },
+        //     ],
+        //   },
+        //   options: {
+        //     color: "#f2e8cf",
+        //     indexAxis: "y",
+        //     // labels:{
+        //     //   fontColor : "#f2e8cf",
+        //     // }
+        //   },
+        //   // plugins: [plugin]
+        // });
 
         // OEE-doughnut chart
         let dnChart = document.getElementById("oeeChart").getContext("2d");
@@ -421,67 +399,65 @@
               display: true,
               position: "right",
             },
-            layout: {
-              padding: {
-                left: 0,
-                right: 0,
-                top: 0,
-                bottom: 0,
-              },
-            },
-            elements: {
-              center: {
-                text: String("25.00" + "\n%"), // .replace(/\n/g, "<br />")
-                color: "#ffffff",
-                fontStyle: "Helvetica",
-                fontSize: 5,
-                sidePadding: 0, //Default 20 (as a percentage)
-              },
-            },
-          },
+            plugins:{
+              doughnutlabel :{
+                labels:[
+                  {
+                    text:"80 %",
+                    font:{
+                      size:25
+                    },
+                    color:"#fff"
+                  }
+                ]
+              }
+            }
+          }
         });
 
+
         //  semi circle chart
-        //   let scChart = document
-        //     .getElementById("semiCircleChart")
-        //     .getContext("2d");
-        //   let semiCirlceChart = new Chart(scChart, {
-        //     type: "doughnut",
-        //     data: {
-        //       datasets: [
-        //         {
-        //           label: "OEE",
-        //           data: [86, 14],
-        //           backgroundColor: ["#74c69d", "#f2e8cf"],
-        //           borderWidth: 1,
-        //           borderColor: "#777",
-        //           hoverBorderWidth: 3,
-        //           hoverBorderColor: "#000",
-        //         },
-        //       ],
-        //     },
-        //     options: {
-        //       rotation: -90,
-        //       circumference: 180,
-        //       cutout: "70%",
-        //       title: {
-        //         display: false,
-        //       },
-        //       legend: {
-        //         display: true,
-        //         position: "right",
-        //       },
-        //       layout: {
-        //         padding: {
-        //           left: 50,
-        //           right: 0,
-        //           top: 0,
-        //           bottom: 0,
-        //         },
-        //       },
-        //     },
-        //   });
-      });
+          // let scChart = document
+          //   .getElementById("semiCircleChart")
+          //   .getContext("2d");
+          // let semiCirlceChart = new Chart(scChart, {
+          //   type: "doughnut",
+          //   data: {
+          //     datasets: [
+          //       {
+          //         label: "OEE",
+          //         data: [86, 14],
+          //         backgroundColor: ["#74c69d", "#f2e8cf"],
+          //         borderWidth: 1,
+          //         borderColor: "#777",
+          //         hoverBorderWidth: 3,
+          //         hoverBorderColor: "#000",
+          //       },
+          //     ],
+          //   },
+          //   options: {
+          //     rotation: -90,
+          //     circumference: 180,
+          //     cutout: "70%",
+          //     title: {
+          //       display: false,
+          //     },
+          //     legend: {
+          //       display: true,
+          //       position: "right",
+          //     },
+          //     layout: {
+          //       padding: {
+          //         left: 50,
+          //         right: 0,
+          //         top: 0,
+          //         bottom: 0,
+          //       },
+          //     },
+          //   },
+          // });
+      // dont touch this backet
+        });
     </script>
 </body>
 
