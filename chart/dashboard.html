@@ -1,52 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- App css -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-      crossorigin="anonymous"
-    />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
     <link rel="stylesheet" href="style.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Hello World ChartJs</title>
-  </head>
-  <body>
-    <div>
-      <div>
-        <p class="text-center fs-2">Dashboard</p>
-      </div>
-      <!--//// CONTENT \\\\-->
-      <div class="m-3">
-        <div class="row d-flex justify-content-around">
-          <!-- OEE part -->
-          <div class="box-content p-2 col-sm-3 text-center">
-            <p class="fs-3">OEE</p>
-            <canvas id="contentChart"></canvas>
-          </div>
+</head>
 
-          <div class="col-sm-3">
-            <div class="box-content m-3 p-2 text-center">
-              <p class="fs-3">
-                Good Parts <br />
-                <span id="sum-good-parts" class="fw-bolder"></span>
-              </p>
-            </div>
-            <div class="box-content m-3 p-2 text-center">
-              <p class="fs-3">
-                Total Parts <br />
-                <span id="sum-total-parts" class="fw-bolder"></span>
-              </p>
-            </div>
-          </div>
-          <div class="box-content col-sm-3">
-            <div>
-              <p class="fs-4">
-                Total Machines<br /><span id="total-machines" class="px-4"
-                  >10 pieces</span
+<body>
+    <div>
+        <div>
+            <p class="text-center fs-2">Dashboard</p>
+        </div>
+        <!--//// CONTENT \\\\-->
+        <div class="m-3">
+            <div class="row d-flex justify-content-around">
+                <!-- OEE part -->
+                <div class="box-content p-2 col-sm-3 text-center">
+                    <p class="fs-3">OEE</p>
+                    <canvas id="contentChart"></canvas>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="box-content m-3 p-2 text-center">
+                        <p class="fs-3">
+                            Good Parts <br />
+                            <span id="sum-good-parts" class="fw-bolder"></span>
+                        </p>
+                    </div>
+                    <div class="box-content m-3 p-2 text-center">
+                        <p class="fs-3">
+                            Total Parts <br />
+                            <span id="sum-total-parts" class="fw-bolder"></span>
+                        </p>
+                    </div>
+                </div>
+                <div class="box-content col-sm-3">
+                    <div>
+                        <p class="fs-4">
+                            Total Machines<br /><span id="total-machines" class="px-4">10 pieces</span
                 >
               </p>
             </div>
@@ -56,313 +52,323 @@
                   id="total-working-machines"
                   class="px-4"
                 ></span>
-              </p>
-            </div>
-            <div>
-              <p class="fs-4">
-                Total Downtime<br /><span id="total-downtime" class="px-4">
+                        </p>
+                    </div>
+                    <div>
+                        <p class="fs-4">
+                            Total Downtime<br /><span id="total-downtime" class="px-4">
                 </span>
-              </p>
+                        </p>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
 
-        <canvas id="ch-Doughnut"></canvas>
-        <!-- each machine -->
-        <div
-          id="machines"
-          class="row p-0 m-0 d-flex justify-content-around py-3 gap-4"
-        ></div>
-      </div>
+            <canvas id="ch-Doughnut"></canvas>
+            <!-- each machine -->
+            <div id="machines" class="row p-0 m-0 d-flex justify-content-around py-3 gap-4"></div>
+        </div>
     </div>
 
     <!-- script -->
     <script src="./assets/Chart.bundle.min.js"></script>
+    <script src="./assets/Jquery_3.6.0.js"></script>
     <!-- Socket js -->
     <script src="/socket.io/socket.io.js"></script>
     <script>
-      Chart.pluginService.register({
-        beforeDraw: function (chart) {
-          if (chart.config.options.elements.center) {
-            //Get ctx from string
-            var ctx = chart.chart.ctx;
+        Chart.pluginService.register({
+            beforeDraw: function(chart) {
+                if (chart.config.options.elements.center) {
+                    //Get ctx from string
+                    var ctx = chart.chart.ctx;
 
-            //Get options from the center object in options
-            var centerConfig = chart.config.options.elements.center;
-            var fontStyle = centerConfig.fontStyle || "Arial";
-            var txt = centerConfig.text;
-            var color = centerConfig.color || "#000";
-            var sidePadding = centerConfig.sidePadding || 20;
-            var sidePaddingCalculated =
-              (sidePadding / 100) * (chart.innerRadius * 2);
-            //Start with a base font of 30px
-            ctx.font = "50px " + fontStyle;
+                    //Get options from the center object in options
+                    var centerConfig = chart.config.options.elements.center;
+                    var fontStyle = centerConfig.fontStyle || "Arial";
+                    var txt = centerConfig.text;
+                    var color = centerConfig.color || "#000";
+                    var sidePadding = centerConfig.sidePadding || 20;
+                    var sidePaddingCalculated =
+                        (sidePadding / 100) * (chart.innerRadius * 2);
+                    //Start with a base font of 30px
+                    ctx.font = "50px " + fontStyle;
 
-            //Get the width of the string and also the width of the element minus 10 to give it 5px side padding
-            var stringWidth = ctx.measureText(txt).width;
-            var elementWidth = chart.innerRadius * 2 - sidePaddingCalculated;
+                    //Get the width of the string and also the width of the element minus 10 to give it 5px side padding
+                    var stringWidth = ctx.measureText(txt).width;
+                    var elementWidth = chart.innerRadius * 2 - sidePaddingCalculated;
 
-            // Find out how much the font can grow in width.
-            var widthRatio = elementWidth / stringWidth;
-            var newFontSize = Math.floor(30 * widthRatio);
-            var elementHeight = chart.innerRadius * 2;
+                    // Find out how much the font can grow in width.
+                    var widthRatio = elementWidth / stringWidth;
+                    var newFontSize = Math.floor(30 * widthRatio);
+                    var elementHeight = chart.innerRadius * 2;
 
-            // Pick a new font size so it will not be larger than the height of label.
-            var fontSizeToUse = Math.min(newFontSize, elementHeight);
+                    // Pick a new font size so it will not be larger than the height of label.
+                    var fontSizeToUse = Math.min(newFontSize, elementHeight);
 
-            //Set font settings to draw it correctly.
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            var centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
-            var centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
-            ctx.font = fontSizeToUse + "px " + fontStyle;
-            ctx.fillStyle = color;
+                    //Set font settings to draw it correctly.
+                    ctx.textAlign = "center";
+                    ctx.textBaseline = "middle";
+                    var centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
+                    var centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
+                    ctx.font = fontSizeToUse + "px " + fontStyle;
+                    ctx.fillStyle = color;
 
-            //Draw text in center
-            ctx.fillText(txt, centerX, centerY);
-          }
-        },
-        // Important for showing all label values, but looks very bad
-        beforeRender: function (chart) {
-          // if (chart.config.options.showAllTooltips) {
-          //   // create an array of tooltips
-          //   // we can't use the chart tooltip because there is only one tooltip per chart
-          //   chart.pluginTooltips = [];
-          //   chart.config.data.datasets.forEach(function(dataset, i) {
-          //     chart.getDatasetMeta(i).data.forEach(function(sector, j) {
-          //       chart.pluginTooltips.push(
-          //         new Chart.Tooltip(
-          //           {
-          //             _chart: chart.chart,
-          //             _chartInstance: chart,
-          //             _data: chart.data,
-          //             _options: chart.options.tooltips,
-          //             _active: [sector]
-          //           },
-          //           chart
-          //         )
-          //       );
-          //     });
-          //   });
-          //   // turn off normal tooltips
-          //   chart.options.tooltips.enabled = false;
-          // }
-        },
-        // Important for showing all label values, but looks very bad
-        afterDraw: function (chart, easing) {
-          // if (chart.config.options.showAllTooltips) {
-          //   // we don't want the permanent tooltips to animate, so don't do anything till the animation runs atleast once
-          //   if (!chart.allTooltipsOnce) {
-          //     if (easing !== 1) return;
-          //     chart.allTooltipsOnce = true;
-          //   }
-          //   // turn on tooltips
-          //   chart.options.tooltips.enabled = true;
-          //   Chart.helpers.each(chart.pluginTooltips, function(tooltip) {
-          //     tooltip.initialize();
-          //     tooltip._options.bodyFontFamily = "'Lato', sans-serif"
-          //     tooltip._options.displayColors = false;
-          //     tooltip._options.bodyFontSize = tooltip._chart.height * 0.06;
-          //     tooltip._options.yPadding = 0;
-          //     tooltip._options.xPadding = 0;
-          //     // tooltip._options.position = 'average';
-          //     // tooltip._options.caretSize = tooltip._options.bodyFontSize * 0.5;
-          //     //tooltip._options.cornerRadius = tooltip._options.bodyFontSize * 0.5;
-          //     tooltip.update();
-          //     // we don't actually need this since we are not animating tooltips
-          //     tooltip.pivot();
-          //     tooltip.transition(easing).draw();
-          //   });
-          //   chart.options.tooltips.enabled = false;
-          // }
-        },
-      });
-      var socket = io();
-      let simpleOEE = 0;
-      let sumGoodParts = 0;
-      let sumTotalParts = 0;
-      let sumExpectedQuantity = 0;
-      let totalWorkingMachines = 0;
-      let totalDowntime = 0;
-
-      socket.on("allMachines", (allMachines) => {
-        console.log(allMachines);
-        for (let i = 0; i < allMachines.length; i++) {
-          //parts scorecard
-          sumGoodParts += parseInt(allMachines[i].parts.good_parts);
-          sumTotalParts += parseInt(allMachines[i].parts.total_parts);
-          totalWorkingMachines = allMachines.length;
-          totalDowntime += parseInt(
-            allMachines[i].availability.unplanned_downtime
-          );
-          sumExpectedQuantity += parseInt(
-            allMachines[i].parts.expected_quantity
-          );
-        }
-        simpleOEE = ((sumGoodParts / sumExpectedQuantity) * 100).toFixed(2);
-        document.getElementById("sum-good-parts").innerHTML = sumGoodParts;
-        document.getElementById("sum-total-parts").innerHTML = sumTotalParts;
-        document.getElementById("total-working-machines").innerHTML =
-          totalWorkingMachines + " pieces";
-        document.getElementById("total-downtime").innerHTML =
-          totalDowntime + " minutes";
-
-        // OEE chart
-        // let myChart = document.getElementById("contentChart").getContext("2d");
-        // let massPopChart = new Chart(myChart, {
-        //   type: "doughnut",
-        //   data: {
-        //     labels: ["Done", "not done"],
-        //     datasets: [
-        //       {
-        //         data: [80, 20],
-        //         backgroundColor: ["#1d8c51", "#f2e8cf"],
-        //         borderWidth: 1,
-        //         borderColor: "#777",
-        //         hoverBorderWidth: 3,
-        //         hoverBorderColor: "#000",
-        //       },
-        //     ],
-        //   },
-        //   options: {
-        //     responsive: true,
-        //     title: {
-        //       display: false,
-        //     },
-        //     legend: {
-        //       display: false,
-        //       position: "right",
-        //       labels: {
-        //         fontColor: "#000",
-        //       },
-        //     },
-        //     tooltips: {
-        //       enabled: true,
-        //     },
-        //   },
-        // });
-
-        // Chart.pluginService.register({
-        //   beforeDraw: function (chart) {
-        //     var width = chart.chart.width,
-        //       height = chart.chart.height,
-        //       ctx = chart.chart.ctx;
-
-        //     ctx.restore();
-        //     var fontSize = (height / 114).toFixed(2);
-        //     ctx.font = fontSize + "em sans-serif";
-        //     ctx.textBaseline = "middle";
-
-        //     var text = "75%",
-        //       textX = Math.round((width - ctx.measureText(text).width) / 2),
-        //       textY = height / 2;
-
-        //     ctx.fillText(text, textX, textY);
-        //     ctx.save();
-        //   },
-        // });
-        let myChart = document.getElementById("contentChart").getContext("2d");
-        let massPopChart = new Chart(myChart, {
-          type: "doughnut",
-          data: {
-            labels: ["Done", "not done"],
-            datasets: [
-              {
-                data: [80, 20],
-                backgroundColor: ["#1d8c51", "#f2e8cf"],
-                borderWidth: 1,
-                borderColor: "#777",
-                hoverBorderWidth: 3,
-                hoverBorderColor: "#000",
-              },
-            ],
-          },
-          options: {
-            title: {
-              display: false,
+                    //Draw text in center
+                    ctx.fillText(txt, centerX, centerY);
+                }
             },
-            legend: {
-              display: true,
-              position: "right",
-              labels: {
-                fontColor: "#000",
-              },
+            // Important for showing all label values, but looks very bad
+            beforeRender: function(chart) {
+                // if (chart.config.options.showAllTooltips) {
+                //   // create an array of tooltips
+                //   // we can't use the chart tooltip because there is only one tooltip per chart
+                //   chart.pluginTooltips = [];
+                //   chart.config.data.datasets.forEach(function(dataset, i) {
+                //     chart.getDatasetMeta(i).data.forEach(function(sector, j) {
+                //       chart.pluginTooltips.push(
+                //         new Chart.Tooltip(
+                //           {
+                //             _chart: chart.chart,
+                //             _chartInstance: chart,
+                //             _data: chart.data,
+                //             _options: chart.options.tooltips,
+                //             _active: [sector]
+                //           },
+                //           chart
+                //         )
+                //       );
+                //     });
+                //   });
+                //   // turn off normal tooltips
+                //   chart.options.tooltips.enabled = false;
+                // }
             },
-            layout: {
-              padding: {
-                left: 0,
-                right: 0,
-                top: 0,
-                bottom: 0,
-              },
+            // Important for showing all label values, but looks very bad
+            afterDraw: function(chart, easing) {
+                // if (chart.config.options.showAllTooltips) {
+                //   // we don't want the permanent tooltips to animate, so don't do anything till the animation runs atleast once
+                //   if (!chart.allTooltipsOnce) {
+                //     if (easing !== 1) return;
+                //     chart.allTooltipsOnce = true;
+                //   }
+                //   // turn on tooltips
+                //   chart.options.tooltips.enabled = true;
+                //   Chart.helpers.each(chart.pluginTooltips, function(tooltip) {
+                //     tooltip.initialize();
+                //     tooltip._options.bodyFontFamily = "'Lato', sans-serif"
+                //     tooltip._options.displayColors = false;
+                //     tooltip._options.bodyFontSize = tooltip._chart.height * 0.06;
+                //     tooltip._options.yPadding = 0;
+                //     tooltip._options.xPadding = 0;
+                //     // tooltip._options.position = 'average';
+                //     // tooltip._options.caretSize = tooltip._options.bodyFontSize * 0.5;
+                //     //tooltip._options.cornerRadius = tooltip._options.bodyFontSize * 0.5;
+                //     tooltip.update();
+                //     // we don't actually need this since we are not animating tooltips
+                //     tooltip.pivot();
+                //     tooltip.transition(easing).draw();
+                //   });
+                //   chart.options.tooltips.enabled = false;
+                // }
             },
-            tooltips: {
-              enabled: true,
-            },
-            elements: {
-              center: {
-                text: String(simpleOEE + "\n%"), // .replace(/\n/g, "<br />")
-                color: "#ffffff",
-                fontStyle: "Helvetica",
-                fontSize: 5,
-                sidePadding: 0, //Default 20 (as a percentage)
-              },
-            },
-          },
         });
+        var socket = io();
+        let simpleOEE = 0;
+        let sumGoodParts = 0;
+        let sumTotalParts = 0;
+        let sumExpectedQuantity = 0;
+        let totalWorkingMachines = 0;
+        let totalDowntime = 0;
 
-        // Machine semi-circle
-        let html_machines = "";
-        for (let i = 0; i < allMachines.length; i++) {
-          percentageParts = `${(allMachines[i].parts.total_parts / allMachines[i].parts.expected_quantity*100).toFixed(2)}`;
-          html_machines +=
-            /*html*/
-            `
-              <div class="pointer col-3 p-0 m-0 box-content text-center" onclick="selectMachine(${allMachines[i].mc_id})" >
+        socket.on("allMachines", (allMachines) => {
+            console.log(allMachines);
+            for (let i = 0; i < allMachines.length; i++) {
+                //parts scorecard
+                sumGoodParts += parseInt(allMachines[i].parts.good_parts);
+                sumTotalParts += parseInt(allMachines[i].parts.total_parts);
+                totalWorkingMachines = allMachines.length;
+                totalDowntime += parseInt(
+                    allMachines[i].availability.unplanned_downtime
+                );
+                sumExpectedQuantity += parseInt(
+                    allMachines[i].parts.expected_quantity
+                );
+            }
+            simpleOEE = ((sumGoodParts / sumExpectedQuantity) * 100).toFixed(2);
+            document.getElementById("sum-good-parts").innerHTML = sumGoodParts;
+            document.getElementById("sum-total-parts").innerHTML = sumTotalParts;
+            document.getElementById("total-working-machines").innerHTML =
+                totalWorkingMachines + " pieces";
+            document.getElementById("total-downtime").innerHTML =
+                totalDowntime + " minutes";
+
+            // OEE chart
+            // let myChart = document.getElementById("contentChart").getContext("2d");
+            // let massPopChart = new Chart(myChart, {
+            //   type: "doughnut",
+            //   data: {
+            //     labels: ["Done", "not done"],
+            //     datasets: [
+            //       {
+            //         data: [80, 20],
+            //         backgroundColor: ["#1d8c51", "#f2e8cf"],
+            //         borderWidth: 1,
+            //         borderColor: "#777",
+            //         hoverBorderWidth: 3,
+            //         hoverBorderColor: "#000",
+            //       },
+            //     ],
+            //   },
+            //   options: {
+            //     responsive: true,
+            //     title: {
+            //       display: false,
+            //     },
+            //     legend: {
+            //       display: false,
+            //       position: "right",
+            //       labels: {
+            //         fontColor: "#000",
+            //       },
+            //     },
+            //     tooltips: {
+            //       enabled: true,
+            //     },
+            //   },
+            // });
+
+            // Chart.pluginService.register({
+            //   beforeDraw: function (chart) {
+            //     var width = chart.chart.width,
+            //       height = chart.chart.height,
+            //       ctx = chart.chart.ctx;
+
+            //     ctx.restore();
+            //     var fontSize = (height / 114).toFixed(2);
+            //     ctx.font = fontSize + "em sans-serif";
+            //     ctx.textBaseline = "middle";
+
+            //     var text = "75%",
+            //       textX = Math.round((width - ctx.measureText(text).width) / 2),
+            //       textY = height / 2;
+
+            //     ctx.fillText(text, textX, textY);
+            //     ctx.save();
+            //   },
+            // });
+            let myChart = document.getElementById("contentChart").getContext("2d");
+            let massPopChart = new Chart(myChart, {
+                type: "doughnut",
+                data: {
+                    labels: ["Done", "not done"],
+                    datasets: [{
+                        data: [80, 20],
+                        backgroundColor: ["#1d8c51", "#f2e8cf"],
+                        borderWidth: 1,
+                        borderColor: "#777",
+                        hoverBorderWidth: 3,
+                        hoverBorderColor: "#000",
+                    }, ],
+                },
+                options: {
+                    title: {
+                        display: false,
+                    },
+                    legend: {
+                        display: true,
+                        position: "right",
+                        labels: {
+                            fontColor: "#000",
+                        },
+                    },
+                    layout: {
+                        padding: {
+                            left: 0,
+                            right: 0,
+                            top: 0,
+                            bottom: 0,
+                        },
+                    },
+                    tooltips: {
+                        enabled: true,
+                    },
+                    elements: {
+                        center: {
+                            text: String(simpleOEE + "\n%"), // .replace(/\n/g, "<br />")
+                            color: "#ffffff",
+                            fontStyle: "Helvetica",
+                            fontSize: 5,
+                            sidePadding: 0, //Default 20 (as a percentage)
+                        },
+                    },
+                },
+            });
+
+            // Machine semi-circle
+            let html_machines = "";
+
+            for (let i = 0; i < allMachines.length; i++) {
+                percentageParts = `${(
+            (allMachines[i].parts.total_parts /
+              allMachines[i].parts.expected_quantity) *
+            100
+          ).toFixed(2)}`;
+                html_machines +=
+                    /*html*/
+                    `
+              <div class="borderMachine box-content pointer col-3 p-0 m-0  text-center" onclick="selectMachine(${allMachines[i].mc_id})" >
                 <p class="fs-3">${allMachines[i].mc_name}</p>
                 <canvas id="${allMachines[i].mc_id}" class=" p-3" ></canvas>
                 <p class="fs-4">${percentageParts} %</p>
               </div>
             `;
-        }
-        document.getElementById("machines").innerHTML = html_machines;
-        for (let i = 0; i < allMachines.length; i++) {
-          let canvasElem = document
-            .getElementById(`${allMachines[i].mc_id}`)
-            .getContext("2d");
-          let semiChart = new Chart(canvasElem, {
-            type: "doughnut",
-            data: {
-              labels: ["total parts", "left parts"],
-              datasets: [
-                {
-                  data: [
-                    `${allMachines[i].parts.total_parts}`,
-                    `${
+
+                // if (percentageParts <= 59) {
+                // $( `.${allMachines[i].mc_id}`  ).addClass( "bad-border" );
+                //     console.log("red");
+                // } else {
+                // $( `.${allMachines[i].mc_id}`  ).addClass( "good-border" );
+                //     console.log("green")
+                // }
+
+
+            }
+            document.getElementById("machines").innerHTML = html_machines;
+            for (let i = 0; i < allMachines.length; i++) {
+                let canvasElem = document
+                    .getElementById(`${allMachines[i].mc_id}`)
+                    .getContext("2d");
+                let semiChart = new Chart(canvasElem, {
+                    type: "doughnut",
+                    data: {
+                        labels: ["total parts", "left parts"],
+                        datasets: [{
+                            data: [
+                                `${allMachines[i].parts.total_parts}`,
+                                `${
                       allMachines[i].parts.expected_quantity -
                       allMachines[i].parts.total_parts
                     }`,
-                  ],
-                  backgroundColor: ["#40916c", "#fefae0"],
-                  borderColor: "#777",
-                  borderWidth: 1,
-                },
-              ],
-            },
-            options: {
-              rotation: Math.PI * 1,
-              circumference: Math.PI * 1,
-              cutoutPercentage: 70,
-            },
-          });
-        }
-      });
+                            ],
+                            backgroundColor: ["#40916c", "#fefae0"],
+                            borderColor: "#777",
+                            borderWidth: 1,
+                        }, ],
+                    },
+                    options: {
+                        rotation: Math.PI * 1,
+                        circumference: Math.PI * 1,
+                        cutoutPercentage: 70,
+                    },
+                });
+            }
+        });
 
-      function selectMachine(id) {
-        let mc_id = id.id;
-        window.location.href = `/${mc_id}`;
-        window.localStorage.setItem("machineId", mc_id);
-      }
+        function selectMachine(id) {
+            let mc_id = id.id;
+            window.location.href = `/${mc_id}`;
+            window.localStorage.setItem("machineId", mc_id);
+        }
     </script>
-  </body>
+</body>
+
 </html>

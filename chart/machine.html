@@ -2,463 +2,473 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- App css -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link rel="stylesheet" href="style.css" />
-  <title>Hello World ChartJs</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- App css -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css" />
+    <title>Hello World ChartJs</title>
 </head>
 
 <body class="p-4 m-0 ">
-  <div class="p-0 m-0">
-    <!--1st row -->
-    <div class="row p-0 m-0 ">
-      <!-- <a href="./dashboard.htmls" class="col-1">
+    <div class="p-0 m-0">
+        <!--1st row -->
+        <div class="row p-0 m-0 ">
+            <!-- <a href="./dashboard.htmls" class="col-1">
         < Back</a> -->
-      <div class="box-content col-4 px-1">
-        <p id="machine-name" class=" fs-1  "></p>
-        <p class="px-3">Product : DM234 | line: 3</p>
-      </div>
-      <div id="statusMachine" class="box-content col  text-center">
-        <p>Status Machine</p>
-        <p class="fs-3" style="background-color:#74c69d;">RUNNING</p>
-      </div>
-      <div class="box-content col text-center ">
-        <p>Total Time</p>
-        <p id="totalTime" class="fs-3">1200 minutes</p>
-      </div>
-      <div class="box-content col text-center">
-        <p>Operation Time</p>
-        <p id="operationTime" class="fs-3">600 minutes</p>
-      </div>
-      <!-- <div class="box-content col text-center ">
+            <div class="box-content col-4 px-1">
+                <p id="machine-name" class=" fs-1 mx-2"></p>
+                <p class="px-4">Product : DM234 | line: 3</p>
+            </div>
+            <div id="statusMachine" class="box-content col  text-center">
+                <p>Status Machine</p>
+                <p class="fs-3" style="background-color:#31ce77;">RUNNING</p>
+            </div>
+            <div class="box-content col text-center ">
+                <p>Date Time </p>
+                <p id="dateTime" class="fs-4"></p>
+                </span>
+            </div>
+            <div class="box-content col text-center">
+                <p>Operation Time</p>
+                <p id="operationTime" class="fs-3">600 minutes</p>
+            </div>
+            <!-- <div class="box-content col text-center ">
         <p>Date</p>
         <p id="date" class="fs-3"></p>
       </div> -->
-      <!-- <div class="box-content col text-center">
+            <!-- <div class="box-content col text-center">
         <p>Time</p>
         <p id="time" class="fs-3"></p>
       </div> -->
-    </div>
+        </div>
 
-    <!-- 2nd row -->
-    <div class="row p-0 m-0 text-center ">
-      <!-- <div class="box-content col">
+        <!-- 2nd row -->
+        <div class="row p-0 m-0 text-center ">
+            <!-- <div class="box-content col">
         <p>Operation Time</p>
         <p id="operationTime" class="fs-3">600 minutes</p>
       </div> -->
-      <div class="box-content col ">
-        <p>Total Time</p>
-        <p id="totalTime" class="fs-3">1200 minutes</p>
-      </div>
-      <div id="remainingTime" class="col box-content ">
-        <p>Remaining Time</p>
-        <p class="fs-3" style="color:#74c69d;">300 minutes</p>
-      </div>
-      <div id="totalStoptime" class="col box-content">
-        <p>Total Stoptime</p>
-        <p class="fs-3" style="color:#e01e37;">20 minutes</p>
-      </div>
-    </div>
-    <!-- 3rd row -->
-    <!-- Key Performance Indicators -->
-    <div class="row p-0 m-0 ">
-      <!-- OEE -->
-      <div class="col-auto box-content">
-        <div class="p-lg-1 p-xl-0 p-3  border border-warning " style="width: 437px;" >
-          <div class=" border border-primary">
-            <canvas id="oeeChart"></canvas>
-          </div>       
+            <div class="box-content col ">
+                <p>Total Time</p>
+                <p id="totalTime" class="fs-3">1200 minutes</p>
+            </div>
+            <div id="remainingTime" class="col box-content ">
+                <p>Remaining Time</p>
+                <p class="fs-3 good-value">300 minutes</p>
+            </div>
+            <div class="col box-content ">
+                <p>Production Rate</p>
+                <p id="productionRate" class="fs-3">100 parts/minute</p>
+            </div>
+            <div id="totalStoptime" class="col box-content">
+                <p>Total Stoptime</p>
+                <p class="fs-3 bad-value">20 minutes</p>
+            </div>
         </div>
-        
-      </div>
-      <div class="col p-0 m-0 align-self-stretch">
-        <div class="row p-0 m-0">
+        <!-- 3rd row -->
+        <!-- Key Performance Indicators -->
+        <div class="row p-0 m-0 ">
+            <!-- OEE -->
+            <div class="col-auto box-content" style="width: 437px;">
+                <canvas id="oeeChart" width="350" height="350"></canvas>
+            </div>
+            <div class="col p-0 m-0 align-self-stretch">
+                <div class="row p-0 m-0">
 
-          <!-- Availability -->
-          <!-- <div class="col">
+                    <!-- Availability -->
+                    <!-- <div class="col">
             <div class="">
               <canvas id="availabilityChart"></canvas>
             </div> -->
-          <!-- availability table -->
-          <div class="col box-content p-2 p-lg-3 p-xl-4">
-            <table class="table table-bordered">
-              <thead class="thead-light">
-                <tr style="background-color: white; color: #000814;">
-                  <th>Availability</th>
-                  <th id="availability"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Planned Runtime</td>
-                  <td id="planned-runtime"></td>
-                </tr>
-                <tr>
-                  <td>Actual Runtime</td>
-                  <td id="actual-runtime"></td>
-                </tr>
-                <tr>
-                  <td>Unplanned Downtime</td>
-                  <td id="unplanned-downtime"></td>
-                </tr>
-              </tbody>
-            </table>
-            <!-- </div> -->
-          </div>
+                    <!-- availability table -->
+                    <div class="col box-content p-2 p-lg-3 p-xl-4">
+                        <table class="table table-bordered">
+                            <thead class="thead-light">
+                                <tr style="background-color: white; color: #000814;">
+                                    <th>Availability</th>
+                                    <th id="availability"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Planned Runtime</td>
+                                    <td id="planned-runtime"></td>
+                                </tr>
+                                <tr>
+                                    <td>Actual Runtime</td>
+                                    <td id="actual-runtime"></td>
+                                </tr>
+                                <tr>
+                                    <td>Unplanned Downtime</td>
+                                    <td id="unplanned-downtime"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- </div> -->
+                    </div>
 
-          <!-- Performance -->
-          <!-- <div class="col">
+                    <!-- Performance -->
+                    <!-- <div class="col">
             <div>
               <canvas id="performanceChart"></canvas>
             </div> -->
-          <!-- performance table -->
-          <div class="col box-content p-2 p-lg-3 p-xl-4">
-            <table class="table table-bordered">
-              <thead class="thead-light">
-                <tr style="background-color: white; color: #000814;">
-                  <th>Performance</th>
-                  <th id="performance"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Planned Quantity</td>
-                  <td id="planned-quantity"></td>
-                </tr>
-                <tr>
-                  <td>Actual Quantity</td>
-                  <td id="actual-quantity"></td>
-                </tr>
-              </tbody>
-            </table>
-            <!-- </div> -->
-          </div>
+                    <!-- performance table -->
+                    <div class="col box-content p-2 p-lg-3 p-xl-4">
+                        <table class="table table-bordered">
+                            <thead class="thead-light">
+                                <tr style="background-color: white; color: #000814;">
+                                    <th>Performance</th>
+                                    <th id="performance"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Planned Quantity</td>
+                                    <td id="planned-quantity"></td>
+                                </tr>
+                                <tr>
+                                    <td>Actual Quantity</td>
+                                    <td id="actual-quantity"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- </div> -->
+                    </div>
 
-          <!-- Quality -->
-          <!-- <div class="col">
+                    <!-- Quality -->
+                    <!-- <div class="col">
             <div>
               <canvas id="quantityChart"></canvas>
             </div> -->
-          <!-- quality table -->
-          <div class="col box-content p-2 p-lg-3 p-xl-4">
-            <table class="table table-bordered">
-              <thead class="thead-light">
-                <tr style="background-color: white; color: #000814;">
-                  <th>Quality</th>
-                  <th id="quality"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Actual Quantity</td>
-                  <td id="total-quantity"></td>
-                </tr>
-                <tr>
-                  <td>Reject Quantity</td>
-                  <td id="reject-quantity"></td>
-                </tr>
-              </tbody>
-            </table>
-            <!-- </div> -->
+                    <!-- quality table -->
+                    <div class="col box-content p-2 p-lg-3 p-xl-4">
+                        <table class="table table-bordered">
+                            <thead class="thead-light">
+                                <tr style="background-color: white; color: #000814;">
+                                    <th>Quality</th>
+                                    <th id="quality"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Actual Quantity</td>
+                                    <td id="total-quantity"></td>
+                                </tr>
+                                <tr>
+                                    <td>Reject Quantity</td>
+                                    <td id="reject-quantity"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- </div> -->
 
-          </div>
+                    </div>
 
+                </div>
+                <!-- Product Quantity  -->
+                <div class=" box-content row p-2 p-lg-3 p-xl-4">
+                    <canvas id="quantityBarChart" style="max-height: 150px"></canvas>
+                </div>
+            </div>
         </div>
-        <!-- Product Quantity  -->
-        <div class=" box-content row p-2 p-lg-3 p-xl-4">
-            <canvas id="quantityBarChart" style="max-height: 150px"></canvas>
-        </div>
-      </div>
-    </div>
 
-    <!-- 4th row -->
-    <div class="row p-0 ">
-      <div class="col">
-        <div class="row m-0 text-center">
-          <div id="actual-quantity" class="col box-content">
-            <p>Actual Quantity</p>
-            <p class="fs-3" style="color:#74c69d;">200 parts</p>
-          </div>
+        <!-- 4th row -->
+        <div class="row p-0 ">
+            <div class="col">
+                <div class="row m-0 text-center">
+                    <div id="actual-quantity" class="col box-content">
+                        <p>Actual Quantity</p>
+                        <p class="fs-3">200 parts</p>
+                    </div>
 
-          <div class="col box-content">
-            <p>Good Parts</p>
-            <p id="good-parts" class="fs-3" style="color: #74c69d;"></p>
+                    <div class="col box-content">
+                        <p>Good Parts</p>
+                        <p id="good-parts" class="fs-3 good-value"></p>
 
-          </div>
-          <div class="col box-content">
-            <p>Total Parts </p>
-            <p id="total-parts" class="fs-3"></p>
+                    </div>
+                    <div class="col box-content">
+                        <p>Total Parts </p>
+                        <p id="total-parts" class="fs-3"></p>
 
-          </div>
-          <div class="col box-content">
-            <p>Expected Quantity<br />
-            <p id="expected-quantity" class="fs-3" style="color: #74c69d;"></p>
-            </p>
-          </div>
-        </div>
-      </div>
+                    </div>
+                    <div class="col box-content">
+                        <p>Expected Quantity<br />
+                            <p id="expected-quantity" class="fs-3"></p>
+                        </p>
+                    </div>
+                </div>
+            </div>
 
 
-      <!-- Production Rate -->
-      <!-- <div class="col-4 p-3 mb-3 box-content border border-white">
+
+            <!-- Production Rate -->
+            <!-- <div class="col-4 p-3 mb-3 box-content border border-white">
           <p class="col-12 fs-3 mx-2">Production Rate</p>
           <canvas id="semiCircleChart" style="max-height: 150px"></canvas>
         </div>
       </div> -->
 
-    </div>
-    <!-- Machine Log -->
-    <div class="box-content col-5">
-      <p>Machine Log</p>
-    </div>
-    <script src="/socket.io/socket.io.js"></script>
-    <!-- <script src="./assets/Chart.bundle.min.js"></script> -->
-    <script src="./assets/Chart_2.9.3.js"></script>
-    <script src="./assets/Chart_doughnutlabel.js"></script>
-    <script>
-      // const plugin = {
-      //   beforeDraw: function (chart) {
-      //     if (chart.config.options.elements.center) {
-      //       //Get ctx from string
-      //       var ctx = chart.chart.ctx;
+        </div>
+        <!-- Machine Log -->
+        <div class="box-content col-5">
+            <p>Machine Log</p>
+        </div>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="./assets/Chart_2.9.3.js"></script>
+        <script src="./assets/Chart_doughnutlabel.js"></script>
+        <script>
+            // const plugin = {
+            //   beforeDraw: function (chart) {
+            //     if (chart.config.options.elements.center) {
+            //       //Get ctx from string
+            //       var ctx = chart.chart.ctx;
 
-      //       //Get options from the center object in options
-      //       var centerConfig = chart.config.options.elements.center;
-      //       var fontStyle = centerConfig.fontStyle || "Arial";
-      //       var txt = centerConfig.text;
-      //       var color = centerConfig.color || "#000";
-      //       var sidePadding = centerConfig.sidePadding || 20;
-      //       var sidePaddingCalculated =
-      //         (sidePadding / 100) * (chart.innerRadius * 2);
-      //       //Start with a base font of 30px
-      //       ctx.font = "50px " + fontStyle;
+            //       //Get options from the center object in options
+            //       var centerConfig = chart.config.options.elements.center;
+            //       var fontStyle = centerConfig.fontStyle || "Arial";
+            //       var txt = centerConfig.text;
+            //       var color = centerConfig.color || "#000";
+            //       var sidePadding = centerConfig.sidePadding || 20;
+            //       var sidePaddingCalculated =
+            //         (sidePadding / 100) * (chart.innerRadius * 2);
+            //       //Start with a base font of 30px
+            //       ctx.font = "50px " + fontStyle;
 
-      //       //Get the width of the string and also the width of the element minus 10 to give it 5px side padding
-      //       var stringWidth = ctx.measureText(txt).width;
-      //       var elementWidth = chart.innerRadius * 2 - sidePaddingCalculated;
+            //       //Get the width of the string and also the width of the element minus 10 to give it 5px side padding
+            //       var stringWidth = ctx.measureText(txt).width;
+            //       var elementWidth = chart.innerRadius * 2 - sidePaddingCalculated;
 
-      //       // Find out how much the font can grow in width.
-      //       var widthRatio = elementWidth / stringWidth;
-      //       var newFontSize = Math.floor(30 * widthRatio);
-      //       var elementHeight = chart.innerRadius * 2;
+            //       // Find out how much the font can grow in width.
+            //       var widthRatio = elementWidth / stringWidth;
+            //       var newFontSize = Math.floor(30 * widthRatio);
+            //       var elementHeight = chart.innerRadius * 2;
 
-      //       // Pick a new font size so it will not be larger than the height of label.
-      //       var fontSizeToUse = Math.min(newFontSize, elementHeight);
+            //       // Pick a new font size so it will not be larger than the height of label.
+            //       var fontSizeToUse = Math.min(newFontSize, elementHeight);
 
-      //       //Set font settings to draw it correctly.
-      //       ctx.textAlign = "center";
-      //       ctx.textBaseline = "middle";
-      //       var centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
-      //       var centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
-      //       ctx.font = fontSizeToUse + "px " + fontStyle;
-      //       ctx.fillStyle = color;
+            //       //Set font settings to draw it correctly.
+            //       ctx.textAlign = "center";
+            //       ctx.textBaseline = "middle";
+            //       var centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
+            //       var centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
+            //       ctx.font = fontSizeToUse + "px " + fontStyle;
+            //       ctx.fillStyle = color;
 
-      //       //Draw text in center
-      //       ctx.fillText(txt, centerX, centerY);
-      //     }
-      //   }
-      // };
+            //       //Draw text in center
+            //       ctx.fillText(txt, centerX, centerY);
+            //     }
+            //   }
+            // };
 
-      let socket = io();
-      // setInterval(myTimer, 1000);
+            let socket = io();
+            setInterval(myTimer, 1000);
 
-      // function myTimer() {
-      //   let dt = new Date();
-      //   let date =
-      //     dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
-      //   document.getElementById("date").innerHTML = date;
-      //   document.getElementById("time").innerHTML = dt.toLocaleTimeString();
-      // }
-
-      socket.on("test", (data) => {
-        console.log(data);
-      });
-      let machineId = window.localStorage.getItem("machineId");
-      socket.emit("sendMachineId", machineId);
-
-      socket.on("machineDetail", (data) => {
-        let machine = data;
-
-        // Overall
-        document.getElementById("machine-name").innerHTML = machine.mc_name;
-        document.getElementById("good-parts").innerHTML =
-          machine.parts.good_parts;
-        document.getElementById("total-parts").innerHTML =
-          machine.parts.total_parts;
-        // oee
-        document.getElementById("availability").innerHTML =
-          machine.oee.availability + " %";
-        document.getElementById("performance").innerHTML =
-          machine.oee.performance + " %";
-        document.getElementById("quality").innerHTML =
-          machine.oee.quality + " %";
-        // Availability
-        document.getElementById("planned-runtime").innerHTML =
-          machine.availability.planned_runtime + " minute";
-        document.getElementById("actual-runtime").innerHTML =
-          machine.availability.actual_runtime + " minute";
-        document.getElementById("unplanned-downtime").innerHTML =
-          machine.availability.unplanned_downtime + " minute";
-        // Performance
-        document.getElementById("planned-quantity").innerHTML =
-          machine.performance.planned_quantity + " parts";
-        document.getElementById("actual-quantity").innerHTML =
-          machine.performance.actual_quantity + " parts";
-        // Quality
-        document.getElementById("total-quantity").innerHTML =
-          machine.quality.actual_quantity + " parts";
-        document.getElementById("reject-quantity").innerHTML =
-          machine.quality.reject_quantity + " parts";
-        //Detail
-        document.getElementById("expected-quantity").innerHTML =
-          machine.parts.expected_quantity
-        // horizontal bar chart
-        let qtChart = document
-          .getElementById("quantityBarChart")
-          .getContext("2d");
-        //           var mixedChart = new Chart(qtChart, {
-        //   type: 'bar',
-        //   data: {
-        //     datasets: [{
-        //           label: 'Bar Dataset',
-        //           data: [10, 20, 30, 40]
-        //         }, {
-        //           label: 'Line Dataset',
-        //           data: [50, 50, 50, 50],
-
-        //           // Changes this dataset to become a line
-        //           type: 'line'
-        //         }],
-        //     labels: ['January', 'February', 'March', 'April']
-        //   }
-        // });
-
-        // let quantitybarChart = new Chart(qtChart, {
-        //   data: {
-        //     labels: ["", "Product Quantity", ""],
-        //     datasets: [{
-        //         type: "bar",
-        //         label: "quantity",
-        //         axis: "x",
-        //         data: [0, `${machine.parts.total_parts}`, 0],
-        //         fill: false,
-        //         backgroundColor: "#74c69d",
-        //         borderColor: "#777",
-        //         borderWidth: 1,
-        //       },
-        //       {
-        //         type: "line",
-        //         label: "Expected Quantity",
-        //         data: [
-        //           `${machine.parts.expected_quantity}`,
-        //           `${machine.parts.expected_quantity}`,
-        //           `${machine.parts.expected_quantity}`,
-        //         ],
-        //         fill: false,
-        //         borderColor: "rgb(54, 162, 235)",
-        //         pointStyle: "circle",
-        //       },
-        //     ],
-        //   },
-        //   options: {
-        //     color: "#f2e8cf",
-        //     indexAxis: "y",
-        //     // labels:{
-        //     //   fontColor : "#f2e8cf",
-        //     // }
-        //   },
-        //   // plugins: [plugin]
-        // });
-
-        // OEE-doughnut chart
-        let dnChart = document.getElementById("oeeChart").getContext("2d");
-        let oeeDn = new Chart(dnChart, {
-          type: "doughnut",
-          data: {
-            datasets: [{
-              label: "OEE",
-              data: [86, 14],
-              backgroundColor: ["#74c69d", "#f2e8cf"],
-              borderWidth: 1,
-              borderColor: "#777",
-              hoverBorderWidth: 3,
-              hoverBorderColor: "#000",
-            }, ],
-          },
-          options: {
-            title: {
-              display: true,
-              text: "OEE",
-              fontSize: 25,
-            },
-            legend: {
-              display: true,
-              position: "right",
-            },
-            plugins:{
-              doughnutlabel :{
-                labels:[
-                  {
-                    text:"80 %",
-                    font:{
-                      size:25
-                    },
-                    color:"#fff"
-                  }
-                ]
-              }
+            function myTimer() {
+                let dt = new Date();
+                let date =
+                    dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
+                document.getElementById("dateTime").innerHTML = date + " " + dt.toLocaleTimeString();
             }
-          }
-        });
 
+            socket.on("test", (data) => {
+                console.log(data);
+            });
+            let machineId = window.localStorage.getItem("machineId");
+            socket.emit("sendMachineId", machineId);
 
-        //  semi circle chart
-          // let scChart = document
-          //   .getElementById("semiCircleChart")
-          //   .getContext("2d");
-          // let semiCirlceChart = new Chart(scChart, {
-          //   type: "doughnut",
-          //   data: {
-          //     datasets: [
-          //       {
-          //         label: "OEE",
-          //         data: [86, 14],
-          //         backgroundColor: ["#74c69d", "#f2e8cf"],
-          //         borderWidth: 1,
-          //         borderColor: "#777",
-          //         hoverBorderWidth: 3,
-          //         hoverBorderColor: "#000",
-          //       },
-          //     ],
-          //   },
-          //   options: {
-          //     rotation: -90,
-          //     circumference: 180,
-          //     cutout: "70%",
-          //     title: {
-          //       display: false,
-          //     },
-          //     legend: {
-          //       display: true,
-          //       position: "right",
-          //     },
-          //     layout: {
-          //       padding: {
-          //         left: 50,
-          //         right: 0,
-          //         top: 0,
-          //         bottom: 0,
-          //       },
-          //     },
-          //   },
-          // });
-      // dont touch this backet
-        });
-    </script>
+            socket.on("machineDetail", (data) => {
+                let machine = data;
+                // calculate OEE
+                let oee = ((machine.oee.availability / 100) * (machine.oee.performance / 100) * (machine.oee.quality / 100) * 100).toFixed(2)
+                console.log(oee)
+
+                // Overall
+                document.getElementById("machine-name").innerHTML = machine.mc_name;
+                document.getElementById("good-parts").innerHTML =
+                    machine.parts.good_parts;
+                document.getElementById("total-parts").innerHTML =
+                    machine.parts.total_parts;
+                // oee
+                document.getElementById("availability").innerHTML =
+                    machine.oee.availability + " %";
+                document.getElementById("performance").innerHTML =
+                    machine.oee.performance + " %";
+                document.getElementById("quality").innerHTML =
+                    machine.oee.quality + " %";
+                // Availability
+                document.getElementById("planned-runtime").innerHTML =
+                    machine.availability.planned_runtime + " minute";
+                document.getElementById("actual-runtime").innerHTML =
+                    machine.availability.actual_runtime + " minute";
+                document.getElementById("unplanned-downtime").innerHTML =
+                    machine.availability.unplanned_downtime + " minute";
+                // Performance
+                document.getElementById("planned-quantity").innerHTML =
+                    machine.performance.planned_quantity + " parts";
+                document.getElementById("actual-quantity").innerHTML =
+                    machine.performance.actual_quantity + " parts";
+                // Quality
+                document.getElementById("total-quantity").innerHTML =
+                    machine.quality.actual_quantity + " parts";
+                document.getElementById("reject-quantity").innerHTML =
+                    machine.quality.reject_quantity + " parts";
+                //Detail
+                document.getElementById("expected-quantity").innerHTML =
+                    machine.parts.expected_quantity
+                    // horizontal bar chart
+                    // let qtChart = document
+                    //     .getElementById("quantityBarChart")
+                    //     .getContext("2d");
+                    // var mixedChart = new Chart(qtChart, {
+                    //     type: 'horizontalBar',
+                    //     data: {
+                    //         datasets: [{
+                    //             label: 'Bar Dataset',
+                    //             data: [0, `${machine.parts.total_parts}`, 0],
+                    //             backgroundColor: "#31ce77",
+                    //             borderColor: "#777",
+                    //             borderWidth: 1,
+                    //         }, {
+                    //             label: 'Expected Quantity',
+                    //             data: [
+                    //                 `${machine.parts.expected_quantity}`,
+                    //                 `${machine.parts.expected_quantity}`,
+                    //                 `${machine.parts.expected_quantity}`,
+                    //             ],
+
+                //             backgroundColor: "#74c69d",
+                //             borderColor: "#777",
+                //             borderWidth: 1,
+                //             // Changes this dataset to become a line
+                //             type: 'line'
+                //         }],
+                //         labels: ["", "Product Quantity", ""],
+                //     },
+                // });
+
+                // let quantitybarChart = new Chart(qtChart, {
+                //   data: {
+                //     labels: ["", "Product Quantity", ""],
+                //     datasets: [{
+                //         type: "bar",
+                //         label: "quantity",
+                //         axis: "x",
+                //         data: [0, `${machine.parts.total_parts}`, 0],
+                //         fill: false,
+                //         backgroundColor: "#74c69d",
+                //         borderColor: "#777",
+                //         borderWidth: 1,
+                //       },
+                //       {
+                //         type: "line",
+                //         label: "Expected Quantity",
+                //         data: [
+                //           `${machine.parts.expected_quantity}`,
+                //           `${machine.parts.expected_quantity}`,
+                //           `${machine.parts.expected_quantity}`,
+                //         ],
+                //         fill: false,
+                //         borderColor: "rgb(54, 162, 235)",
+                //         pointStyle: "circle",
+                //       },
+                //     ],
+                //   },
+                //   options: {
+                //     color: "#f2e8cf",
+                //     indexAxis: "y",
+                //     // labels:{
+                //     //   fontColor : "#f2e8cf",
+                //     // }
+                //   },
+                //   // plugins: [plugin]
+                // });
+
+                // OEE-doughnut chart
+                let dnChart = document.getElementById("oeeChart").getContext("2d");
+                let oeeDn = new Chart(dnChart, {
+                    type: "doughnut",
+                    data: {
+                        datasets: [{
+                            label: "OEE",
+                            data: [
+                                `${oee}`,
+                                `${100-oee}`,
+                            ],
+                            backgroundColor: ["#31ce77", "#f2e8cf"],
+                            borderWidth: 1,
+                            borderColor: "#777",
+                            hoverBorderWidth: 3,
+                            hoverBorderColor: "#000",
+                        }, ],
+                    },
+                    options: {
+                        title: {
+                            display: true,
+                            text: "OEE",
+                            fontSize: 25,
+                        },
+                        legend: {
+                            display: true,
+                            position: "right",
+                        },
+                        plugins: {
+                            doughnutlabel: {
+                                labels: [{
+                                    text: `${oee} %`,
+                                    font: {
+                                        size: '25',
+                                    },
+                                    color: "#fff"
+                                }]
+                            }
+                        }
+                    }
+                });
+                //  semi circle chart
+                // let scChart = document
+                //   .getElementById("semiCircleChart")
+                //   .getContext("2d");
+                // let semiCirlceChart = new Chart(scChart, {
+                //   type: "doughnut",
+                //   data: {
+                //     datasets: [
+                //       {
+                //         label: "OEE",
+                //         data: [86, 14],
+                //         backgroundColor: ["#74c69d", "#f2e8cf"],
+                //         borderWidth: 1,
+                //         borderColor: "#777",
+                //         hoverBorderWidth: 3,
+                //         hoverBorderColor: "#000",
+                //       },
+                //     ],
+                //   },
+                //   options: {
+                //     rotation: -90,
+                //     circumference: 180,
+                //     cutout: "70%",
+                //     title: {
+                //       display: false,
+                //     },
+                //     legend: {
+                //       display: true,
+                //       position: "right",
+                //     },
+                //     layout: {
+                //       padding: {
+                //         left: 50,
+                //         right: 0,
+                //         top: 0,
+                //         bottom: 0,
+                //       },
+                //     },
+                //   },
+                // });
+                // dont touch this backet
+            });
+        </script>
 </body>
 
 </html>
