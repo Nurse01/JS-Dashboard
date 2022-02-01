@@ -20,8 +20,10 @@ canvas {
 }
 
 .pointer:hover {
+    transition-duration: 1s;
     cursor: pointer;
     background-color: #00000030;
+    box-shadow: 0 0 15px 10px #737A82;
 }
 
 .good-value {
@@ -33,9 +35,11 @@ canvas {
 }
 
 .good-border {
+    border-style: groove;
     border-color: #31ce77;
 }
 
 .bad-border {
+    border-style: groove;
     border-color: #F83F40;
 }
