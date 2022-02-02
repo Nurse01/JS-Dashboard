@@ -213,7 +213,7 @@
 
         </div>
         <div class="col-4 p-3 mb-3 box-content border border-white">
-            <p class="col-12 fs-3 mx-2">Status History</p>
+            <!-- <p class="col-12 fs-3 mx-2">Status History</p> -->
             <canvas id="stateChart"></canvas>
         </div>
         <script src="/socket.io/socket.io.js"></script>
@@ -283,10 +283,12 @@
             socket.emit("sendMachineId", machineId);
 
             socket.on("machineDetail", (data) => {
-                let machine = data;
+                let machine = data.mcDetail;
+
+                // console.log(data2)
                 // calculate OEE
-                let oee = ((machine.oee.availability / 100) * (machine.oee.performance / 100) * (machine.oee.quality / 100) * 100).toFixed(2)
-                console.log(oee)
+                let oee = ((machine.oee.availability / 100) * (machine.oee.performance / 100) * (machine.oee
+                    .quality / 100) * 100).toFixed(2)
 
                 // Overall
                 document.getElementById("machine-name").innerHTML = machine.mc_name;
@@ -470,43 +472,96 @@
                 //     },
                 //   },
                 // });
+
+                // Calculate Time 
+                let time = data.prodTime;
+                // stacked bar chart
                 let stackedBarChart = document.getElementById("stateChart").getContext("2d");
                 let stateChart = new Chart(stackedBarChart, {
-                        type: 'bar',
-                        label: ["state"],
+                    type: 'horizontalBar',
+                    data: {
+                        labels: ['State History'],
                         datasets: [{
                             label: 'Low',
                             data: [67.8],
-                            backgroundColor: '#D6E9C6' // green
+                            backgroundColor: '#D6E9C6',
                         }, {
                             label: 'Moderate',
                             data: [20.7],
-                            backgroundColor: '#FAEBCC' // yellow
+                            backgroundColor: '#FAEBCC',
                         }, {
                             label: 'High',
                             data: [11.4],
-                            backgroundColor: '#EBCCD1' // red
-                        }],
-                        stack: "standing costs",
-                        options: {
-                            plugins: {
-                                title: {
-                                    display: true,
-                                    text: 'Chart.js Bar Chart - Stacked'
-                                },
-                            },
-                            responsive: true,
-                            scales: {
-                                x: {
-                                    stacked: true,
-                                },
-                                y: {
-                                    stacked: true
+                            backgroundColor: '#EBCCD1',
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            xAxes: [{
+                                stacked: true,
+                                time: {
+                                    unit: 'hour'
                                 }
-                            }
+                            }],
+                            yAxes: [{
+                                stacked: true
+                            }]
                         }
-                    })
-                    // dont touch this backet
+                    }
+                });
+
+
+                // for (let i = 0; i < time.length; i++) {
+                //     if (time[i].register_data != 0) {
+                //         stateChart.data.datasets.push({
+                //             data: [11.4],
+                //             backgroundColor: `${greenColorCode}`
+                //         })
+                //         console.log([i] + "green" + time[i].register_data)
+                //     } else {
+                //         stateChart.data.datasets.push({
+                //             data: [5.3],
+                //             backgroundColor: `${redColorCode}`
+                //         })
+                //         console.log([i] + "red" + time[i].register_data);
+                //     }
+                // }
+
+
+                // dont touch this backet
+                // backup
+                // let myChart = new Chart(stackedBarChart, {
+                //     type: 'horizontalBar',
+                //     data: {
+                //         labels: ['Risk Level'],
+                //         datasets: [{
+                //             label: 'Low',
+                //             data: [67.8],
+                //             backgroundColor: '#D6E9C6',
+                //         }, {
+                //             label: 'Moderate',
+                //             data: [20.7],
+                //             backgroundColor: '#FAEBCC',
+                //         }, {
+                //             label: 'High',
+                //             data: [11.4],
+                //             backgroundColor: '#EBCCD1',
+                //         }]
+                //     },
+                //     options: {
+                //         scales: {
+                //             xAxes: [{
+                //                 stacked: true,
+                //                 time: {
+                //                     unit: 'hour'
+                //                 }
+                //             }],
+                //             yAxes: [{
+                //                 stacked: true
+                //             }]
+                //         }
+                //     }
+                // });
             });
         </script>
 </body>
