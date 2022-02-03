@@ -217,9 +217,9 @@
             <canvas id="stateChart"></canvas>
         </div>
         <script src="/socket.io/socket.io.js"></script>
-        <script src="./assets/Chart_2.9.4.js"></script>
+        <script src="./assets/Chart_2.9.3.js"></script>
         <script src="./assets/Chart_doughnutlabel.js"></script>
-        <script src="./assets/filler_plugin.js"></script>
+        <!-- <script src="./assets/filler_plugin.js"></script> -->
         <script>
             // const plugin = {
             //   beforeDraw: function (chart) {
@@ -476,49 +476,38 @@
 
                 // Calculate Time 
                 let time = data.prodTime;
-                // stacked bar chart
-                let lineChart = document.getElementById("stateChart").getContext("2d");
-                let stateLineChart = new Chart(lineChart, {
-                    type: 'line',
-                    data: {
-                        datasets: [{
-                            label: 'line Dataset1',
-                            data: [1, 1, 1, 1, 1, 1, 1],
-                            fill: true,
-                            steppedLine: true,
-                        }, {
-                            label: 'Line Dataset2',
-                            data: [0, 0, 1, 0, 0, 1, 0, 0],
-                            borderColor: `${redColorCode}`,
-                            backgroundColor: `${redColorCode}`,
-                            fill: true,
-                            steppedLine: true,
-                            type: 'line'
-                        }],
-                        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August']
-                    },
+                // 2 line chart
+                let xyValues = [{
+                    x: (10 - 7) * 3600 * 1000,
+                    y: 1
+                }, {
+                    x: (12.9 - 7) * 3600 * 1000,
+                    y: 1
+                }]
+                let xyValues2 = [{
+                    x: (0 - 7) * 3600 * 1000,
+                    y: 1
+                }, {
+                    x: (24 - 7) * 3600 * 1000,
+                    y: 1
+                }]
 
-                })
+                for (let i = 0; i < time.length - 1; i++) {
+                    console.log(time[i].time_stamp)
+                    let date2 = new Date(time[i].time_stamp);
+                    console.log(date2);
+                }
 
                 // for (let i = 0; i < time.length - 1; i++) {
                 //     function addData(chart, label, data) {
-                //         if (time[i].register_data != 0) {
+                //         if (time[i].register_data == 0) {
                 //             chart.data.datasets.push({
                 //                 label: label,
                 //                 data: data,
                 //                 backgroundColor: `${greenColorCode}`
                 //             })
                 //             console.log([i] + "green" + time[i].register_data)
-
-                //         } else {
-                //             chart.data.datasets.push({
-                //                 label: label,
-                //                 data: data,
-                //                 backgroundColor: `${redColorCode}`
-                //             })
-                //             console.log([i] + "red" + time[i].register_data);
-
-                //         }
+                //         } 
                 //         chart.update();
                 //     }
                 //     // console.log(time[i - 1].time_stamp)
@@ -526,6 +515,53 @@
                 //     console.log(diffTime)
                 //     addData(stateChart, 'state', `${diffTime}`);
                 // }
+
+                let lineChart = document.getElementById("stateChart").getContext("2d");
+                let stateLineChart = new Chart(lineChart, {
+                    type: 'line',
+                    data: {
+                        datasets: [{
+                            label: 'Line Dataset2',
+                            data: xyValues,
+                            borderWidth: 0,
+                            backgroundColor: `${redColorCode}`,
+                            fill: true,
+                            steppedLine: true,
+                            pointRadius: 0,
+                        }, {
+                            label: 'line Dataset1',
+                            data: xyValues2,
+                            borderWidth: 0,
+                            backgroundColor: `${greenColorCode}`,
+                            fill: true,
+                            steppedLine: true,
+                            pointRadius: 0,
+                            type: 'line'
+                        }],
+                    },
+                    options: {
+                        legend: {
+                            display: false
+                        },
+                        scales: {
+                            xAxes: [{
+                                type: 'time',
+                                ticks: {
+                                    min: 0 - 7 * 3600 * 1000,
+                                    max: (24 - 7) * 3600 * 1000
+                                }
+                            }],
+                            yAxes: [{
+                                ticks: {
+                                    min: 0,
+                                    max: 1
+                                }
+                            }],
+                        },
+                    }
+                })
+
+
 
                 // dont touch this backet
                 // let stackedBarChart = document.getElementById("stateChart").getContext("2d");
