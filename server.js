@@ -200,51 +200,51 @@ let prodTime = [{
     },
     {
         register_data: 0,
-        create_time: "1643785248276",
+        time_stamp: "1643785248276",
     },
     {
         register_data: 0.047,
-        create_time: "1643788847284",
+        time_stamp: "1643788847284",
     },
     {
         register_data: 0.049,
-        create_time: "1643792446788",
+        time_stamp: "1643792446788",
     },
     {
         register_data: 227.096,
-        create_time: "1643792446276",
+        time_stamp: "1643792446276",
     },
     {
         register_data: 227.512,
-        create_time: "1643796480284",
+        time_stamp: "1643796480284",
     },
     {
         register_data: 227.235,
-        create_time: "1643796644773",
+        time_stamp: "1643796644773",
     },
     {
         register_data: 228.768,
-        create_time: "1643797844276",
+        time_stamp: "1643797844276",
     },
     {
         register_data: 228.732,
-        create_time: "1643799643285",
+        time_stamp: "1643799643285",
     },
     {
         register_data: 228.696,
-        create_time: "1643803242773",
+        time_stamp: "1643803242773",
     },
     {
         register_data: 0.049,
-        create_time: "1643806842277",
+        time_stamp: "1643806842277",
     },
     {
         register_data: 227.374,
-        create_time: "1643807140277",
+        time_stamp: "1643807140277",
     },
     {
         register_data: 0,
-        create_time: "1643808640277",
+        time_stamp: "1643808640277",
     },
 ];
 app.use(

@@ -217,8 +217,9 @@
             <canvas id="stateChart"></canvas>
         </div>
         <script src="/socket.io/socket.io.js"></script>
-        <script src="./assets/Chart_2.9.3.js"></script>
+        <script src="./assets/Chart_2.9.4.js"></script>
         <script src="./assets/Chart_doughnutlabel.js"></script>
+        <script src="./assets/filler_plugin.js"></script>
         <script>
             // const plugin = {
             //   beforeDraw: function (chart) {
@@ -476,88 +477,80 @@
                 // Calculate Time 
                 let time = data.prodTime;
                 // stacked bar chart
-                let stackedBarChart = document.getElementById("stateChart").getContext("2d");
-                let stateChart = new Chart(stackedBarChart, {
-                    type: 'horizontalBar',
+                let lineChart = document.getElementById("stateChart").getContext("2d");
+                let stateLineChart = new Chart(lineChart, {
+                    type: 'line',
                     data: {
-                        labels: ['State History'],
                         datasets: [{
-                            label: 'Low',
-                            data: [67.8],
-                            backgroundColor: '#D6E9C6',
+                            label: 'line Dataset1',
+                            data: [1, 1, 1, 1, 1, 1, 1],
+                            fill: true,
+                            steppedLine: true,
                         }, {
-                            label: 'Moderate',
-                            data: [20.7],
-                            backgroundColor: '#FAEBCC',
-                        }, {
-                            label: 'High',
-                            data: [11.4],
-                            backgroundColor: '#EBCCD1',
-                        }]
+                            label: 'Line Dataset2',
+                            data: [0, 0, 1, 0, 0, 1, 0, 0],
+                            borderColor: `${redColorCode}`,
+                            backgroundColor: `${redColorCode}`,
+                            fill: true,
+                            steppedLine: true,
+                            type: 'line'
+                        }],
+                        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August']
                     },
-                    options: {
-                        scales: {
-                            xAxes: [{
-                                stacked: true,
-                                time: {
-                                    unit: 'hour'
-                                }
-                            }],
-                            yAxes: [{
-                                stacked: true
-                            }]
-                        }
-                    }
-                });
 
+                })
 
-                // for (let i = 0; i < time.length; i++) {
-                //     if (time[i].register_data != 0) {
-                //         stateChart.data.datasets.push({
-                //             data: [11.4],
-                //             backgroundColor: `${greenColorCode}`
-                //         })
-                //         console.log([i] + "green" + time[i].register_data)
-                //     } else {
-                //         stateChart.data.datasets.push({
-                //             data: [5.3],
-                //             backgroundColor: `${redColorCode}`
-                //         })
-                //         console.log([i] + "red" + time[i].register_data);
+                // for (let i = 0; i < time.length - 1; i++) {
+                //     function addData(chart, label, data) {
+                //         if (time[i].register_data != 0) {
+                //             chart.data.datasets.push({
+                //                 label: label,
+                //                 data: data,
+                //                 backgroundColor: `${greenColorCode}`
+                //             })
+                //             console.log([i] + "green" + time[i].register_data)
+
+                //         } else {
+                //             chart.data.datasets.push({
+                //                 label: label,
+                //                 data: data,
+                //                 backgroundColor: `${redColorCode}`
+                //             })
+                //             console.log([i] + "red" + time[i].register_data);
+
+                //         }
+                //         chart.update();
                 //     }
+                //     // console.log(time[i - 1].time_stamp)
+                //     let diffTime = Math.abs(((time[i].time_stamp - time[i + 1].time_stamp) / (1000 * 60 * 60)) % 24);
+                //     console.log(diffTime)
+                //     addData(stateChart, 'state', `${diffTime}`);
                 // }
 
-
                 // dont touch this backet
-                // backup
-                // let myChart = new Chart(stackedBarChart, {
+                // let stackedBarChart = document.getElementById("stateChart").getContext("2d");
+                // let stateChart = new Chart(stackedBarChart, {
                 //     type: 'horizontalBar',
                 //     data: {
-                //         labels: ['Risk Level'],
-                //         datasets: [{
-                //             label: 'Low',
-                //             data: [67.8],
-                //             backgroundColor: '#D6E9C6',
-                //         }, {
-                //             label: 'Moderate',
-                //             data: [20.7],
-                //             backgroundColor: '#FAEBCC',
-                //         }, {
-                //             label: 'High',
-                //             data: [11.4],
-                //             backgroundColor: '#EBCCD1',
-                //         }]
+                //         labels: ['state'],
+                //         datasets: [],
                 //     },
                 //     options: {
+                //         legend: {
+                //             display: false,
+                //         },
                 //         scales: {
                 //             xAxes: [{
                 //                 stacked: true,
+                //                 type: 'time',
                 //                 time: {
-                //                     unit: 'hour'
-                //                 }
+                //                     unit: 'month'
+                //                 },
+
                 //             }],
                 //             yAxes: [{
                 //                 stacked: true
+
                 //             }]
                 //         }
                 //     }
