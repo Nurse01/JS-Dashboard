@@ -102,9 +102,12 @@
                 </div> -->
             </div>
 
-            <canvas id="ch-Doughnut"></canvas>
+
             <!-- each machine -->
-            <div id="machines" class="row p-0 m-0 d-flex justify-content-around py-3 gap-4"></div>
+
+            <div id="machines" class=" row p-0 m-0 d-flex justify-content-around py-3 gap-4"></div>
+
+
         </div>
     </div>
 
@@ -211,6 +214,7 @@
             },
         });
         var socket = io();
+        // calculate
         let simpleOEE = 0;
         let oee = 0;
         let oeeTarget = 59;
@@ -219,6 +223,11 @@
         let sumExpectedQuantity = 0;
         let totalWorkingMachines = 0;
         let totalDowntime = 0;
+        // oee benchmarks
+        let worldClass = 85;
+        let typical = 60;
+        let low = 40;
+
 
         socket.on("allMachines", (allMachines) => {
             console.log(allMachines);
@@ -342,19 +351,13 @@
 
             // Machine semi-circle
             let html_machines = "";
-
+            let barColor = "";
             for (let i = 0; i < allMachines.length; i++) {
                 oee = ((allMachines[i].oee.availability / 100) * (allMachines[i].oee.performance / 100) * (allMachines[i].oee.quality / 100) * 100).toFixed(2)
-                let borderType = "";
-                if (oee <= `${oeeTarget}`) {
-                    borderType = "bad-border";
-                } else {
-                    borderType = "good-border";
-                }
                 html_machines +=
                     /*html*/
                     `
-                    <div id ="border-${allMachines[i].mc_id}" class=" box-content ${borderType} pointer col-3 p-0 m-0 text-center" onclick="selectMachine(${allMachines[i].mc_id})" >
+                    <div id ="border-${allMachines[i].mc_id}" class=" box-content pointer col-3 p-0 m-0 text-center" onclick="selectMachine(${allMachines[i].mc_id})" >
                         <p class="fs-3">${allMachines[i].mc_name}</p>
                         <canvas id="${allMachines[i].mc_id}" class=" p-3" ></canvas>
                         <p class="fs-4">${oee} %</p>
@@ -363,22 +366,28 @@
             }
             document.getElementById("machines").innerHTML = html_machines;
             for (let i = 0; i < allMachines.length; i++) {
+                oee = ((allMachines[i].oee.availability / 100) * (allMachines[i].oee.performance / 100) * (allMachines[i].oee.quality / 100) * 100).toFixed(2)
+                if (oee >= worldClass) {
+                    barColor = "#31ce77"
+                } else if (oee >= typical && oee < worldClass) {
+                    barColor = "#FABA13"
+                } else {
+                    barColor = "#F83F40"
+                }
+
                 let canvasElem = document
                     .getElementById(`${allMachines[i].mc_id}`)
                     .getContext("2d");
                 let semiChart = new Chart(canvasElem, {
                     type: "doughnut",
                     data: {
-                        labels: ["total parts", "left parts"],
+                        labels: ["oee", "loss"],
                         datasets: [{
                             data: [
-                                `${allMachines[i].parts.total_parts}`,
-                                `${
-                      allMachines[i].parts.expected_quantity -
-                      allMachines[i].parts.total_parts
-                    }`,
+                                `${oee}`,
+                                `${100 -oee}`,
                             ],
-                            backgroundColor: ["#40916c", "#fefae0"],
+                            backgroundColor: [`${barColor}`, "#fefae0"],
                             borderColor: "#777",
                             borderWidth: 1,
                         }, ],
@@ -394,6 +403,35 @@
 
                 });
             }
+
+            // carousel
+            let maxMachine = 6;
+            let totalPage = totalWorkingMachines / maxMachine;
+            console.log(totalPage)
+
+
+            // function displayMachine(machinesElem, newIndex) {
+            //     let lastIndex = machinesElem.length - 1;
+            //     if (newIndex < 0) {
+            //         newIndex = lastIndex;
+            //     } else if (newIndex > lastIndex) {
+            //         newIndex = 0;
+            //     }
+            //     let newPage = machinesElems[newIndex];
+            //     newPage.scrollIntoView({
+            //         behavior: 'smooth'
+            //     });
+            //     currentIndex = newIndex;
+            // }
+
+            // function carousel() {
+            //     let machinesElems = document.querySelectorAll("div");
+            //     let previousBtnElem = document.querySelector(".previous");
+            //     let nextBtnElem = document.querySelector(".next");
+
+            //     previousBtnElem.addEventListener('click', () => displayMachine(machinesElems, currentIndex - 1))
+            //     nextBtnElem.addEventListener('click', () => displayMachine(machinesElems, currentIndex + 1))
+            // }
         });
 
         function selectMachine(id) {

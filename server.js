@@ -137,7 +137,7 @@ let allMachines = [{
             reject_quantity: 0,
         },
         oee: {
-            availability: 79.17,
+            availability: 100.17,
             performance: 87.72,
             quality: 100.0,
         },
@@ -168,83 +168,244 @@ let allMachines = [{
             performance: 87.72,
             quality: 100.0,
         },
+    }, {
+        mc_id: "mc007",
+        mc_name: "JamesBond007",
+        parts: {
+            expected_quantity: 1100,
+            good_parts: 1000,
+            total_parts: 1000,
+        },
+        availability: {
+            planned_runtime: 480,
+            actual_runtime: 360,
+            unplanned_downtime: 0,
+        },
+        performance: {
+            planned_quantity: 1000,
+            actual_quantity: 900,
+        },
+        quality: {
+            actual_quantity: 900,
+            reject_quantity: 0,
+        },
+        oee: {
+            availability: 79.17,
+            performance: 87.72,
+            quality: 100.0,
+        },
+    },
+    {
+        mc_id: "mc008",
+        mc_name: "Machine008",
+        parts: {
+            expected_quantity: 1000,
+            good_parts: 757,
+            total_parts: 800,
+        },
+        availability: {
+            planned_runtime: 550,
+            actual_runtime: 540,
+            unplanned_downtime: 10,
+        },
+        performance: {
+            planned_quantity: 1000,
+            actual_quantity: 800,
+        },
+        quality: {
+            actual_quantity: 800,
+            reject_quantity: 43,
+        },
+        oee: {
+            availability: 90.0,
+            performance: 49.38,
+            quality: 94.63,
+        },
+    },
+    {
+        mc_id: "mc009",
+        mc_name: "Machine009",
+        parts: {
+            expected_quantity: 1200,
+            good_parts: 980,
+            total_parts: 1000,
+        },
+        availability: {
+            planned_runtime: 540,
+            actual_runtime: 520,
+            unplanned_downtime: 20,
+        },
+        performance: {
+            planned_quantity: 1200,
+            actual_quantity: 1000,
+        },
+        quality: {
+            actual_quantity: 1000,
+            reject_quantity: 20,
+        },
+        oee: {
+            availability: 86.67,
+            performance: 64.1,
+            quality: 98.0,
+        },
+    },
+    {
+        mc_id: "mc010",
+        mc_name: "Machine010",
+        parts: {
+            expected_quantity: 3500,
+            good_parts: 2700,
+            total_parts: 3100,
+        },
+        availability: {
+            planned_runtime: 480,
+            actual_runtime: 360,
+            unplanned_downtime: 0,
+        },
+        performance: {
+            planned_quantity: 1000,
+            actual_quantity: 900,
+        },
+        quality: {
+            actual_quantity: 900,
+            reject_quantity: 0,
+        },
+        oee: {
+            availability: 79.17,
+            performance: 87.72,
+            quality: 100.0,
+        },
+    },
+    {
+        mc_id: "mc011",
+        mc_name: "ive011",
+        parts: {
+            expected_quantity: 3500,
+            good_parts: 1800,
+            total_parts: 2000,
+        },
+        availability: {
+            planned_runtime: 480,
+            actual_runtime: 360,
+            unplanned_downtime: 0,
+        },
+        performance: {
+            planned_quantity: 1000,
+            actual_quantity: 900,
+        },
+        quality: {
+            actual_quantity: 900,
+            reject_quantity: 0,
+        },
+        oee: {
+            availability: 100.17,
+            performance: 87.72,
+            quality: 100.0,
+        },
+    },
+    {
+        mc_id: "mc012",
+        mc_name: "Machine012",
+        parts: {
+            expected_quantity: 3500,
+            good_parts: 2700,
+            total_parts: 3100,
+        },
+        availability: {
+            planned_runtime: 480,
+            actual_runtime: 360,
+            unplanned_downtime: 0,
+        },
+        performance: {
+            planned_quantity: 1000,
+            actual_quantity: 900,
+        },
+        quality: {
+            actual_quantity: 900,
+            reject_quantity: 0,
+        },
+        oee: {
+            availability: 79.17,
+            performance: 87.72,
+            quality: 100.0,
+        },
     },
 ];
 let prodTime = [{
-        register_data: 229.162,
-        time_stamp: "1643763656273",
+        register_data: 227.35,
+        time_stamp: 1643938200000,
     },
     {
         register_data: 229.16,
-        time_stamp: "1643767255282",
+        time_stamp: 1643940000000,
     },
     {
         register_data: 229.153,
-        time_stamp: "1643774454786",
+        time_stamp: 1643941200000,
     },
     {
         register_data: 0,
-        time_stamp: "1643774450787",
+        time_stamp: 1643944200000,
     },
     {
         register_data: 0,
-        time_stamp: "1643776250275",
+        time_stamp: 1643946600000,
     },
     {
         register_data: 228.924,
-        time_stamp: "1643778000283",
+        time_stamp: 1643947475000,
     },
     {
         register_data: 228.953,
-        time_stamp: "1643781648787",
+        time_stamp: 1643950074000,
     },
     {
         register_data: 0,
-        time_stamp: "1643785248276",
+        time_stamp: 1643950800000,
     },
     {
         register_data: 0.047,
-        time_stamp: "1643788847284",
+        time_stamp: 1643954400000,
     },
     {
         register_data: 0.049,
-        time_stamp: "1643792446788",
+        time_stamp: 1643959241000,
     },
     {
         register_data: 227.096,
-        time_stamp: "1643792446276",
+        time_stamp: 1643792446276,
     },
     {
         register_data: 227.512,
-        time_stamp: "1643796480284",
+        time_stamp: 1643796480284,
     },
     {
         register_data: 227.235,
-        time_stamp: "1643796644773",
+        time_stamp: 1643796644773,
     },
     {
         register_data: 228.768,
-        time_stamp: "1643797844276",
+        time_stamp: 1643797844276,
     },
     {
         register_data: 228.732,
-        time_stamp: "1643799643285",
+        time_stamp: 1643799643285,
     },
     {
         register_data: 228.696,
-        time_stamp: "1643803242773",
+        time_stamp: 1643959481000,
     },
     {
         register_data: 0.049,
-        time_stamp: "1643806842277",
+        time_stamp: 1643968442000,
     },
     {
         register_data: 227.374,
-        time_stamp: "1643807140277",
+        time_stamp: 1643970382000,
     },
     {
         register_data: 0,
-        time_stamp: "1643808640277",
+        time_stamp: 1643972400000,
     },
 ];
 app.use(
