@@ -425,7 +425,7 @@
                                 labels: [{
                                     text: `${oee} %`,
                                     font: {
-                                        size: '25',
+                                       size: '25',
                                     },
                                     color: "#fff"
                                 }]
@@ -476,7 +476,7 @@
 
                 // Calculate Time 
                 let time = data.prodTime;
-                // 2 line chart
+                // state history calculation
                 let xyValues = [];
                 let xyValues2 = [{
                     x: (0 - 7) * 3600 * 1000,
@@ -487,55 +487,29 @@
                 }]
 
                 for (let i = 0; i < time.length - 1; i++) {
-                    // let previous = time[i].time_stamp
-                    // let previousTime = new Date(previous);
-                    // let hourPreviousTime = previousTime.getHours();
-                    // let minPreviousTime = Math.round((previousTime.getMinutes()) * 0.6);
-                    // console.log(minPreviousTime)
-                    // let previousDuration = Number(hourPreviousTime + "." + minPreviousTime)
-                    // console.log(previousDuration)
-                    // let current = time[i + 1].time_stamp
-                    // let currentTime = new Date(current);
-                    // let hourCurrentTime = currentTime.getHours();
-                    // let minCurrentTime = Math.round((currentTime.getMinutes()) * 0.6);
-                    // let currentDuration = Number(hourCurrentTime + minCurrentTime)
-                    // console.log(currentDuration)
+                   let currentTimeStamp = time[i].time_stamp;
+                   let currentHour = new Date(currentTimeStamp).getHours();
+                   let currentMinute = new Date(currentTimeStamp).getMinutes();
+                   
+                  let currentTime = currentHour+(currentMinute /100)
+                  let currentTimePercent = (currentHour+((currentTime%1)*1.66666666666666667)).toFixed(2)
+                  console.log(currentTimePercent)
 
-                    // if (time[i].register_data == 0) {
-                    //     let x = (`${previousDuration}` - 7) * 3600 * 1000
-                    //     let y = 1
+                   let nextTimeStamp = time[i+1].time_stamp;
+                   let diffHourState = (nextTimeStamp-currentTimeStamp)/60000 /60;
+                   console.log("diffHour "+diffHourState);
 
-                    // } else {
-                    //     yValue = 1
-                    //     return yValue
-                    //     console.log(yValue)
-                    // }
-                    // xyValues = [, {
-                    //     x: (`${currentDuration}` - 7) * 3600 * 1000,
-                    //     y: 1
-                    // }]
-                    // console.log(xyValues)
+                  //  let diffTimeMin = diffTimeStamp*60000;
+                  //  console.log("diffMin"+diffTimeMin)
+
+             
+                   
+
+
 
                 }
 
 
-                // for (let i = 0; i < time.length - 1; i++) {
-                //     function addData(chart, label, data) {
-                //         if (time[i].register_data == 0) {
-                //             chart.data.datasets.push({
-                //                 label: label,
-                //                 data: data,
-                //                 backgroundColor: `${greenColorCode}`
-                //             })
-                //             console.log([i] + "green" + time[i].register_data)
-                //         } 
-                //         chart.update();
-                //     }
-                //     // console.log(time[i - 1].time_stamp)
-                //     let diffTime = Math.abs(((time[i].time_stamp - time[i + 1].time_stamp) / (1000 * 60 * 60)) % 24);
-                //     console.log(diffTime)
-                //     addData(stateChart, 'state', `${diffTime}`);
-                // }
 
                 // let lineChart = document.getElementById("stateChart").getContext("2d");
                 // let stateLineChart = new Chart(lineChart, {
