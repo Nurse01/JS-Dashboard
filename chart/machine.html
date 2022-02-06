@@ -498,63 +498,67 @@
                    let nextTimeStamp = time[i+1].time_stamp;
                    let diffHourState = (nextTimeStamp-currentTimeStamp)/60000 /60;
                    console.log("diffHour "+diffHourState);
-
-                  //  let diffTimeMin = diffTimeStamp*60000;
-                  //  console.log("diffMin"+diffTimeMin)
-
-             
-                   
-
-
-
+                   xyValues.push({
+                     x: (currentTimePercent - 7) * 3600 * 1000,
+                     y: time[i].register_data === 0 ? 1 : 0
+                   })
+                  
+                   //  if (time[i].register_data === 0) {
+                    
+                  //  } else {
+                     
+                  //  }
+                  
                 }
 
+                console.log(xyValues)
 
 
-                // let lineChart = document.getElementById("stateChart").getContext("2d");
-                // let stateLineChart = new Chart(lineChart, {
-                //     type: 'line',
-                //     data: {
-                //         datasets: [{
-                //             label: 'Line Dataset2',
-                //             data: xyValues,
-                //             borderWidth: 0,
-                //             backgroundColor: `${redColorCode}`,
-                //             fill: true,
-                //             steppedLine: true,
-                //             pointRadius: 0,
-                //         }, {
-                //             label: 'line Dataset1',
-                //             data: xyValues2,
-                //             borderWidth: 0,
-                //             backgroundColor: `${greenColorCode}`,
-                //             fill: true,
-                //             steppedLine: true,
-                //             pointRadius: 0,
-                //             type: 'line'
-                //         }],
-                //     },
-                //     options: {
-                //         legend: {
-                //             display: false
-                //         },
-                //         scales: {
-                //             xAxes: [{
-                //                 type: 'time',
-                //                 ticks: {
-                //                     min: 0 - 7 * 3600 * 1000,
-                //                     max: (24 - 7) * 3600 * 1000
-                //                 }
-                //             }],
-                //             yAxes: [{
-                //                 ticks: {
-                //                     min: 0,
-                //                     max: 1
-                //                 }
-                //             }],
-                //         },
-                //     }
-                // })
+
+                let lineChart = document.getElementById("stateChart").getContext("2d");
+                let stateLineChart = new Chart(lineChart, {
+                    type: 'line',
+                    data: {
+                        datasets: [{
+                            label: 'Line Dataset2',
+                            data: xyValues,
+                            borderWidth: 0,
+                            backgroundColor: `${redColorCode}`,
+                            fill: true,
+                            steppedLine: true,
+                            pointRadius: 0,
+                        }, {
+                            label: 'line Dataset1',
+                            data: xyValues2,
+                            borderWidth: 0,
+                            backgroundColor: `${greenColorCode}`,
+                            fill: true,
+                            steppedLine: true,
+                            pointRadius: 0,
+                            type: 'line'
+                        }],
+                    },
+                    options: {
+                        legend: {
+                            display: false
+                        },
+                        scales: {
+                            xAxes: [{
+                                type: 'time',
+                                ticks: {
+                                    min: 0 - 7 * 3600 * 1000,
+                                    max: (24 - 7) * 3600 * 1000
+                                }
+                            }],
+                            yAxes: [{
+                                ticks: {
+                                    min: 0,
+                                    max: 1
+                                }
+                            }],
+                        },
+                    }
+                })
 
 
 
