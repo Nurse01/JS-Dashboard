@@ -8,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="assets/images/dmsicon.ico">
     <title>Hello World ChartJs</title>
 </head>
 
@@ -17,9 +18,9 @@
         <div class="row p-0 m-0 ">
             <!-- <a href="./dashboard.htmls" class="col-1">
         < Back</a> -->
-            <div class="box-content col-4 px-1">
-                <p id="machine-name" class=" fs-1 mx-2"></p>
-                <p class="px-4">Product : DM234 | line: 3</p>
+            <div class="box-content col-4 px-1 text-center">
+                <p id="machine-name" class=" fs-1 mx-2 fw-bold "></p>
+                <p class="px-4 ">Product : DM234 | line: 3 </p>
             </div>
             <div id="statusMachine" class="box-content col  text-center">
                 <p>Status Machine</p>
@@ -167,9 +168,10 @@
                     </div>
 
                 </div>
-                <!-- Product Quantity  -->
-                <div class=" box-content row p-2 p-lg-3 p-xl-4">
-                    <canvas id="quantityBarChart" style="max-height: 150px"></canvas>
+                <!-- Status History -->
+                <div class="box-content row p-lg-3 p-xl-4" style="height: 200px;">
+                    <p class=" text-center">Status History</p>
+                    <canvas id="stateChart" width="500" height="30"></canvas>
                 </div>
             </div>
         </div>
@@ -203,395 +205,318 @@
 
 
 
-            <!-- Status History -->
-
-            <!-- <div class="col-4 p-3 mb-3 box-content border border-white">
-          <p class="col-12 fs-3 mx-2">Production Rate</p>
-          <canvas id="semiCircleChart" style="max-height: 150px"></canvas>
-        </div>
-      </div> -->
 
         </div>
-        <div class="col-4 p-3 mb-3 box-content border border-white">
-            <!-- <p class="col-12 fs-3 mx-2">Status History</p> -->
-            <canvas id="stateChart"></canvas>
-        </div>
-        <script src="/socket.io/socket.io.js"></script>
-        <script src="./assets/Chart_2.9.3.js"></script>
-        <script src="./assets/Chart_doughnutlabel.js"></script>
-        <!-- <script src="./assets/filler_plugin.js"></script> -->
-        <script>
-            // const plugin = {
-            //   beforeDraw: function (chart) {
-            //     if (chart.config.options.elements.center) {
-            //       //Get ctx from string
-            //       var ctx = chart.chart.ctx;
+    </div>
 
-            //       //Get options from the center object in options
-            //       var centerConfig = chart.config.options.elements.center;
-            //       var fontStyle = centerConfig.fontStyle || "Arial";
-            //       var txt = centerConfig.text;
-            //       var color = centerConfig.color || "#000";
-            //       var sidePadding = centerConfig.sidePadding || 20;
-            //       var sidePaddingCalculated =
-            //         (sidePadding / 100) * (chart.innerRadius * 2);
-            //       //Start with a base font of 30px
-            //       ctx.font = "50px " + fontStyle;
+    </div>
 
-            //       //Get the width of the string and also the width of the element minus 10 to give it 5px side padding
-            //       var stringWidth = ctx.measureText(txt).width;
-            //       var elementWidth = chart.innerRadius * 2 - sidePaddingCalculated;
 
-            //       // Find out how much the font can grow in width.
-            //       var widthRatio = elementWidth / stringWidth;
-            //       var newFontSize = Math.floor(30 * widthRatio);
-            //       var elementHeight = chart.innerRadius * 2;
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="./assets/libs/Chart_2.9.3.js"></script>
+    <script src="./assets/libs/Chart_doughnutlabel.js"></script>
+    <!-- <script src="./assets/filler_plugin.js"></script> -->
+    <script>
+        // const plugin = {
+        //   beforeDraw: function (chart) {
+        //     if (chart.config.options.elements.center) {
+        //       //Get ctx from string
+        //       var ctx = chart.chart.ctx;
 
-            //       // Pick a new font size so it will not be larger than the height of label.
-            //       var fontSizeToUse = Math.min(newFontSize, elementHeight);
+        //       //Get options from the center object in options
+        //       var centerConfig = chart.config.options.elements.center;
+        //       var fontStyle = centerConfig.fontStyle || "Arial";
+        //       var txt = centerConfig.text;
+        //       var color = centerConfig.color || "#000";
+        //       var sidePadding = centerConfig.sidePadding || 20;
+        //       var sidePaddingCalculated =
+        //         (sidePadding / 100) * (chart.innerRadius * 2);
+        //       //Start with a base font of 30px
+        //       ctx.font = "50px " + fontStyle;
 
-            //       //Set font settings to draw it correctly.
-            //       ctx.textAlign = "center";
-            //       ctx.textBaseline = "middle";
-            //       var centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
-            //       var centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
-            //       ctx.font = fontSizeToUse + "px " + fontStyle;
-            //       ctx.fillStyle = color;
+        //       //Get the width of the string and also the width of the element minus 10 to give it 5px side padding
+        //       var stringWidth = ctx.measureText(txt).width;
+        //       var elementWidth = chart.innerRadius * 2 - sidePaddingCalculated;
 
-            //       //Draw text in center
-            //       ctx.fillText(txt, centerX, centerY);
-            //     }
-            //   }
-            // };
+        //       // Find out how much the font can grow in width.
+        //       var widthRatio = elementWidth / stringWidth;
+        //       var newFontSize = Math.floor(30 * widthRatio);
+        //       var elementHeight = chart.innerRadius * 2;
 
-            let socket = io();
-            let greenColorCode = "#31ce77";
-            let redColorCode = "#F83F40";
-            let creamColorCode = "#f2e8cf";
-            setInterval(myTimer, 1000);
+        //       // Pick a new font size so it will not be larger than the height of label.
+        //       var fontSizeToUse = Math.min(newFontSize, elementHeight);
 
-            function myTimer() {
-                let dt = new Date();
-                let date =
-                    dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
-                document.getElementById("dateTime").innerHTML = date + " " + dt.toLocaleTimeString();
-            }
+        //       //Set font settings to draw it correctly.
+        //       ctx.textAlign = "center";
+        //       ctx.textBaseline = "middle";
+        //       var centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
+        //       var centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
+        //       ctx.font = fontSizeToUse + "px " + fontStyle;
+        //       ctx.fillStyle = color;
 
-            socket.on("test", (data) => {
-                console.log(data);
-            });
-            let machineId = window.localStorage.getItem("machineId");
-            socket.emit("sendMachineId", machineId);
+        //       //Draw text in center
+        //       ctx.fillText(txt, centerX, centerY);
+        //     }
+        //   }
+        // };
 
-            socket.on("machineDetail", (data) => {
-                let machine = data.mcDetail;
+        let socket = io();
+        let greenColorCode = "#31ce77";
+        let redColorCode = "#F83F40";
+        let whiteColorCode = "#fff";
+        setInterval(myTimer, 1000);
 
-                // console.log(data2)
-                // calculate OEE
-                let oee = ((machine.oee.availability / 100) * (machine.oee.performance / 100) * (machine.oee
-                    .quality / 100) * 100).toFixed(2)
+        function myTimer() {
+            let dt = new Date();
+            let date =
+                dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
+            document.getElementById("dateTime").innerHTML = date + " " + dt.toLocaleTimeString();
+        }
 
-                // Overall
-                document.getElementById("machine-name").innerHTML = machine.mc_name;
-                document.getElementById("good-parts").innerHTML =
-                    machine.parts.good_parts;
-                document.getElementById("total-parts").innerHTML =
-                    machine.parts.total_parts;
-                // oee
-                document.getElementById("availability").innerHTML =
-                    machine.oee.availability + " %";
-                document.getElementById("performance").innerHTML =
-                    machine.oee.performance + " %";
-                document.getElementById("quality").innerHTML =
-                    machine.oee.quality + " %";
-                // Availability
-                document.getElementById("planned-runtime").innerHTML =
-                    machine.availability.planned_runtime + " minute";
-                document.getElementById("actual-runtime").innerHTML =
-                    machine.availability.actual_runtime + " minute";
-                document.getElementById("unplanned-downtime").innerHTML =
-                    machine.availability.unplanned_downtime + " minute";
-                // Performance
-                document.getElementById("planned-quantity").innerHTML =
-                    machine.performance.planned_quantity + " parts";
-                document.getElementById("actual-quantity").innerHTML =
-                    machine.performance.actual_quantity + " parts";
-                // Quality
-                document.getElementById("total-quantity").innerHTML =
-                    machine.quality.actual_quantity + " parts";
-                document.getElementById("reject-quantity").innerHTML =
-                    machine.quality.reject_quantity + " parts";
-                //Detail
-                document.getElementById("expected-quantity").innerHTML =
-                    machine.parts.expected_quantity
-                    // horizontal bar chart
-                    // let qtChart = document
-                    //     .getElementById("quantityBarChart")
-                    //     .getContext("2d");
-                    // var mixedChart = new Chart(qtChart, {
-                    //     type: 'horizontalBar',
-                    //     data: {
-                    //         datasets: [{
-                    //             label: 'Bar Dataset',
-                    //             data: [0, `${machine.parts.total_parts}`, 0],
-                    //             backgroundColor: "#31ce77",
-                    //             borderColor: "#777",
-                    //             borderWidth: 1,
-                    //         }, {
-                    //             label: 'Expected Quantity',
-                    //             data: [
-                    //                 `${machine.parts.expected_quantity}`,
-                    //                 `${machine.parts.expected_quantity}`,
-                    //                 `${machine.parts.expected_quantity}`,
-                    //             ],
+        socket.on("test", (data) => {
+            console.log(data);
+        });
+        let machineId = window.localStorage.getItem("machineId");
+        socket.emit("sendMachineId", machineId);
 
-                //             backgroundColor: "#74c69d",
-                //             borderColor: "#777",
-                //             borderWidth: 1,
-                //             // Changes this dataset to become a line
-                //             type: 'line'
-                //         }],
-                //         labels: ["", "Product Quantity", ""],
-                //     },
-                // });
+        socket.on("machineDetail", (data) => {
+            let machine = data.mcDetail;
 
-                // let quantitybarChart = new Chart(qtChart, {
-                //   data: {
-                //     labels: ["", "Product Quantity", ""],
-                //     datasets: [{
-                //         type: "bar",
-                //         label: "quantity",
-                //         axis: "x",
-                //         data: [0, `${machine.parts.total_parts}`, 0],
-                //         fill: false,
-                //         backgroundColor: "#74c69d",
-                //         borderColor: "#777",
-                //         borderWidth: 1,
-                //       },
-                //       {
-                //         type: "line",
-                //         label: "Expected Quantity",
-                //         data: [
-                //           `${machine.parts.expected_quantity}`,
-                //           `${machine.parts.expected_quantity}`,
-                //           `${machine.parts.expected_quantity}`,
-                //         ],
-                //         fill: false,
-                //         borderColor: "rgb(54, 162, 235)",
-                //         pointStyle: "circle",
-                //       },
-                //     ],
-                //   },
-                //   options: {
-                //     color: "#f2e8cf",
-                //     indexAxis: "y",
-                //     // labels:{
-                //     //   fontColor : "#f2e8cf",
-                //     // }
-                //   },
-                //   // plugins: [plugin]
-                // });
+            // console.log(data2)
+            // calculate OEE
+            let oee = ((machine.oee.availability / 100) * (machine.oee.performance / 100) * (machine.oee
+                .quality / 100) * 100).toFixed(2)
 
-                // OEE-doughnut chart
-                let dnChart = document.getElementById("oeeChart").getContext("2d");
-                let oeeDn = new Chart(dnChart, {
-                    type: "doughnut",
-                    data: {
-                        datasets: [{
-                            label: "OEE",
-                            data: [
-                                `${oee}`,
-                                `${100-oee}`,
-                            ],
-                            backgroundColor: [`${greenColorCode}`, `${creamColorCode}`],
-                            borderWidth: 1,
-                            borderColor: "#777",
-                            hoverBorderWidth: 3,
-                            hoverBorderColor: "#000",
-                        }, ],
+            // Overall
+            document.getElementById("machine-name").innerHTML = machine.mc_name;
+            document.getElementById("good-parts").innerHTML =
+                machine.parts.good_parts;
+            document.getElementById("total-parts").innerHTML =
+                machine.parts.total_parts;
+            // oee
+            document.getElementById("availability").innerHTML =
+                machine.oee.availability + " %";
+            document.getElementById("performance").innerHTML =
+                machine.oee.performance + " %";
+            document.getElementById("quality").innerHTML =
+                machine.oee.quality + " %";
+            // Availability
+            document.getElementById("planned-runtime").innerHTML =
+                machine.availability.planned_runtime + " minute";
+            document.getElementById("actual-runtime").innerHTML =
+                machine.availability.actual_runtime + " minute";
+            document.getElementById("unplanned-downtime").innerHTML =
+                machine.availability.unplanned_downtime + " minute";
+            // Performance
+            document.getElementById("planned-quantity").innerHTML =
+                machine.performance.planned_quantity + " parts";
+            document.getElementById("actual-quantity").innerHTML =
+                machine.performance.actual_quantity + " parts";
+            // Quality
+            document.getElementById("total-quantity").innerHTML =
+                machine.quality.actual_quantity + " parts";
+            document.getElementById("reject-quantity").innerHTML =
+                machine.quality.reject_quantity + " parts";
+            //Detail
+            document.getElementById("expected-quantity").innerHTML =
+                machine.parts.expected_quantity
+
+
+            // OEE-doughnut chart
+            let dnChart = document.getElementById("oeeChart").getContext("2d");
+            let oeeDn = new Chart(dnChart, {
+                type: "doughnut",
+                data: {
+                    datasets: [{
+                        label: "OEE",
+                        data: [
+                            `${oee}`,
+                            `${100-oee}`,
+                        ],
+                        backgroundColor: [`${greenColorCode}`, `${whiteColorCode}`],
+                        borderWidth: 1,
+                        borderColor: "#777",
+                        hoverBorderWidth: 3,
+                        hoverBorderColor: "#000",
+                    }, ],
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: "OEE",
+                        fontSize: 25,
                     },
-                    options: {
-                        title: {
-                            display: true,
-                            text: "OEE",
-                            fontSize: 25,
-                        },
-                        legend: {
-                            display: true,
-                            position: "right",
-                        },
-                        plugins: {
-                            doughnutlabel: {
-                                labels: [{
-                                    text: `${oee} %`,
-                                    font: {
-                                       size: '25',
-                                    },
-                                    color: "#fff"
-                                }]
-                            }
+                    legend: {
+                        display: true,
+                        position: "right",
+                    },
+                    plugins: {
+                        doughnutlabel: {
+                            labels: [{
+                                text: `${oee} %`,
+                                font: {
+                                    size: '25',
+                                },
+                                color: "#fff"
+                            }]
                         }
                     }
-                });
-                //  semi circle chart
-                // let scChart = document
-                //   .getElementById("semiCircleChart")
-                //   .getContext("2d");
-                // let semiCirlceChart = new Chart(scChart, {
-                //   type: "doughnut",
-                //   data: {
-                //     datasets: [
-                //       {
-                //         label: "OEE",
-                //         data: [86, 14],
-                //         backgroundColor: ["#74c69d", "#f2e8cf"],
-                //         borderWidth: 1,
-                //         borderColor: "#777",
-                //         hoverBorderWidth: 3,
-                //         hoverBorderColor: "#000",
-                //       },
-                //     ],
-                //   },
-                //   options: {
-                //     rotation: -90,
-                //     circumference: 180,
-                //     cutout: "70%",
-                //     title: {
-                //       display: false,
-                //     },
-                //     legend: {
-                //       display: true,
-                //       position: "right",
-                //     },
-                //     layout: {
-                //       padding: {
-                //         left: 50,
-                //         right: 0,
-                //         top: 0,
-                //         bottom: 0,
-                //       },
-                //     },
-                //   },
-                // });
-
-                // Calculate Time 
-                let time = data.prodTime;
-                // state history calculation
-                let xyValues = [];
-                let xyValues2 = [{
-                    x: (0 - 7) * 3600 * 1000,
-                    y: 1
-                }, {
-                    x: (24 - 7) * 3600 * 1000,
-                    y: 1
-                }]
-
-                for (let i = 0; i < time.length - 1; i++) {
-                   let currentTimeStamp = time[i].time_stamp;
-                   let currentHour = new Date(currentTimeStamp).getHours();
-                   let currentMinute = new Date(currentTimeStamp).getMinutes();
-                   
-                  let currentTime = currentHour+(currentMinute /100)
-                  let currentTimePercent = (currentHour+((currentTime%1)*1.66666666666666667)).toFixed(2)
-                  console.log(currentTimePercent)
-
-                   let nextTimeStamp = time[i+1].time_stamp;
-                   let diffHourState = (nextTimeStamp-currentTimeStamp)/60000 /60;
-                   console.log("diffHour "+diffHourState);
-                   xyValues.push({
-                     x: (currentTimePercent - 7) * 3600 * 1000,
-                     y: time[i].register_data === 0 ? 1 : 0
-                   })
-                  
-                   //  if (time[i].register_data === 0) {
-                    
-                  //  } else {
-                     
-                  //  }
-                  
                 }
+            });
+            //  semi circle chart
+            // let scChart = document
+            //   .getElementById("semiCircleChart")
+            //   .getContext("2d");
+            // let semiCirlceChart = new Chart(scChart, {
+            //   type: "doughnut",
+            //   data: {
+            //     datasets: [
+            //       {
+            //         label: "OEE",
+            //         data: [86, 14],
+            //         backgroundColor: ["#74c69d", "#f2e8cf"],
+            //         borderWidth: 1,
+            //         borderColor: "#777",
+            //         hoverBorderWidth: 3,
+            //         hoverBorderColor: "#000",
+            //       },
+            //     ],
+            //   },
+            //   options: {
+            //     rotation: -90,
+            //     circumference: 180,
+            //     cutout: "70%",
+            //     title: {
+            //       display: false,
+            //     },
+            //     legend: {
+            //       display: true,
+            //       position: "right",
+            //     },
+            //     layout: {
+            //       padding: {
+            //         left: 50,
+            //         right: 0,
+            //         top: 0,
+            //         bottom: 0,
+            //       },
+            //     },
+            //   },
+            // });
 
-                console.log(xyValues)
+            // state history calculation
+            let time = data.prodTime;
+            let xyValues = [];
+            let xyValues2 = [{
+                x: (0 - 7) * 3600 * 1000,
+                y: 1
+            }, {
+                x: (24 - 7) * 3600 * 1000,
+                y: 1
+            }]
 
+            for (let i = 0; i < time.length - 1; i++) {
+                let currentTimeStamp = time[i].time_stamp;
+                let currentHour = new Date(currentTimeStamp).getHours();
+                let currentMinute = new Date(currentTimeStamp).getMinutes();
 
+                let currentTime = currentHour + (currentMinute / 100)
+                let currentTimePercent = (currentHour + ((currentTime % 1) * 1.66666666666666667)).toFixed(2)
+                console.log(currentTimePercent)
 
-                let lineChart = document.getElementById("stateChart").getContext("2d");
-                let stateLineChart = new Chart(lineChart, {
-                    type: 'line',
-                    data: {
-                        datasets: [{
-                            label: 'Line Dataset2',
-                            data: xyValues,
-                            borderWidth: 0,
-                            backgroundColor: `${redColorCode}`,
-                            fill: true,
-                            steppedLine: true,
-                            pointRadius: 0,
-                        }, {
-                            label: 'line Dataset1',
-                            data: xyValues2,
-                            borderWidth: 0,
-                            backgroundColor: `${greenColorCode}`,
-                            fill: true,
-                            steppedLine: true,
-                            pointRadius: 0,
-                            type: 'line'
-                        }],
-                    },
-                    options: {
-                        legend: {
-                            display: false
-                        },
-                        scales: {
-                            xAxes: [{
-                                type: 'time',
-                                ticks: {
-                                    min: 0 - 7 * 3600 * 1000,
-                                    max: (24 - 7) * 3600 * 1000
-                                }
-                            }],
-                            yAxes: [{
-                                ticks: {
-                                    min: 0,
-                                    max: 1
-                                }
-                            }],
-                        },
-                    }
+                let nextTimeStamp = time[i + 1].time_stamp;
+                let diffHourState = (nextTimeStamp - currentTimeStamp) / 60000 / 60;
+                console.log("diffHour " + diffHourState);
+                xyValues.push({
+                    x: (currentTimePercent - 7) * 3600 * 1000,
+                    y: time[i].register_data === 0 ? 1 : 0
                 })
 
+            }
+            console.log(xyValues)
 
 
-                // dont touch this backet
-                // let stackedBarChart = document.getElementById("stateChart").getContext("2d");
-                // let stateChart = new Chart(stackedBarChart, {
-                //     type: 'horizontalBar',
-                //     data: {
-                //         labels: ['state'],
-                //         datasets: [],
-                //     },
-                //     options: {
-                //         legend: {
-                //             display: false,
-                //         },
-                //         scales: {
-                //             xAxes: [{
-                //                 stacked: true,
-                //                 type: 'time',
-                //                 time: {
-                //                     unit: 'month'
-                //                 },
 
-                //             }],
-                //             yAxes: [{
-                //                 stacked: true
+            let lineChart = document.getElementById("stateChart").getContext("2d");
+            let stateLineChart = new Chart(lineChart, {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        label: 'Line Dataset2',
+                        data: xyValues,
+                        borderWidth: 0,
+                        backgroundColor: `${redColorCode}`,
+                        fill: true,
+                        steppedLine: true,
+                        pointRadius: 0,
+                    }, {
+                        label: 'line Dataset1',
+                        data: xyValues2,
+                        borderWidth: 0,
+                        backgroundColor: `${greenColorCode}`,
+                        fill: true,
+                        steppedLine: true,
+                        pointRadius: 0,
+                        type: 'line'
+                    }],
+                },
+                options: {
 
-                //             }]
-                //         }
-                //     }
-                // });
-            });
-        </script>
+
+                    legend: {
+                        display: false
+                    },
+                    scales: {
+                        xAxes: [{
+                            type: 'time',
+                            ticks: {
+                                min: 0 - 7 * 3600 * 1000,
+                                max: (24 - 7) * 3600 * 1000
+                            }
+                        }],
+                        yAxes: [{
+                            display: false,
+                            ticks: {
+                                min: 0,
+                                max: 1
+                            }
+                        }],
+                    },
+                }
+            })
+
+
+
+            // dont touch this backet
+            // let stackedBarChart = document.getElementById("stateChart").getContext("2d");
+            // let stateChart = new Chart(stackedBarChart, {
+            //     type: 'horizontalBar',
+            //     data: {
+            //         labels: ['state'],
+            //         datasets: [],
+            //     },
+            //     options: {
+            //         legend: {
+            //             display: false,
+            //         },
+            //         scales: {
+            //             xAxes: [{
+            //                 stacked: true,
+            //                 type: 'time',
+            //                 time: {
+            //                     unit: 'month'
+            //                 },
+
+            //             }],
+            //             yAxes: [{
+            //                 stacked: true
+
+            //             }]
+            //         }
+            //     }
+            // });
+        });
+    </script>
 </body>
 
 </html>

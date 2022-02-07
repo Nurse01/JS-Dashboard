@@ -34,13 +34,14 @@ canvas {
     color: #F83F40;
 }
 
-
-/* .good-bar {
-    border-style: groove;
-    border-color: #31ce77;
+.page-link {
+    background-color: #323a46;
+    color: white;
+    border-radius: 5px;
+    border: #323a46;
+    box-shadow: 0 0 15px 10px #00000030;
 }
 
-.bad-bar {
-    border-style: groove;
-    border-color: #F83F40;
-} */
+.page-link:hover {
+    color: #323a46;
+}
