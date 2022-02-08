@@ -9,21 +9,23 @@
     <link rel="stylesheet" href="style.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="icon" href="assets/images/dmsicon.ico">
+    <link rel="stylesheet" type="text/css" href="./assets/libs/Slick_1.8.1.css" />
+
     <title>Hello World ChartJs</title>
 </head>
 
 <body>
     <div class="p-2">
-        <div>
+        <!-- <div>
             <p class="text-center fs-2">Dynamic Spring</p>
-        </div>
+        </div> -->
         <!--//// CONTENT \\\\-->
         <div class="">
-            <div class="row mx-5">
+            <div class="row m-5  border-shadow">
                 <!-- OEE part -->
-                <div class="box-content text-center" style="width: 350px;">
-                    <p class="fs-3">OEE</p>
-                    <canvas id="contentChart"></canvas>
+                <div class="box-content text-center" style="width: 300px;">
+                    <p>OEE</p>
+                    <canvas id="contentChart" width="5" height="5"></canvas>
                 </div>
 
                 <!-- <div class="col-sm-3">
@@ -42,38 +44,41 @@
                 </div> -->
                 <div class="col p-0 m-0">
                     <div class="row p-0 m-0">
+                        <p class="text-center fs-2">Factory name : Dynamic Spring</p>
+                    </div>
+                    <div class="row p-0 m-0">
                         <div class="col box-content   text-center">
-                            <p class="fs-3 ">
+                            <p>
                                 Good Parts <br />
-                                <span id="sum-good-parts" class="fw-bolder good-value"></span>
+                                <span id="sum-good-parts" class="fs-3 good-value"></span>
                             </p>
                         </div>
                         <div class="col box-content   text-center">
-                            <p class="fs-3">
+                            <p>
                                 Total Parts <br />
-                                <span id="sum-total-parts" class="fw-bolder"></span>
+                                <span id="sum-total-parts" class="fs-3"></span>
                             </p>
                         </div>
                     </div>
 
                     <div class="row p-0 m-0 text-center ">
                         <div class="col box-content">
-                            <p class="fs-4 ">
-                                Total Machines<br /><span id="total-machines" class="px-4">10 pieces</span
+                            <p>
+                                Total Machines<br /><span id="total-machines" class="px-4 fs-3">10 pieces</span
                 >
               </p>
             </div>
             <div class="col box-content">
-              <p class="fs-4">
+              <p >
                 Total Working Machines<br /><span
                   id="total-working-machines"
-                  class="px-4"
+                  class="px-4 fs-3"
                 ></span>
                             </p>
                         </div>
                         <div class="col box-content">
-                            <p class="fs-4">
-                                Total Downtime<br /><span id="total-downtime" class="px-4">
+                            <p>
+                                Total Downtime<br /><span id="total-downtime" class="fs-3 px-4">
                 </span>
                             </p>
                         </div>
@@ -102,36 +107,61 @@
                     </div>
                 </div> -->
             </div>
-            <!-- Page controller -->
-            <nav>
-                <ul class="pagination justify-content-center gap-3">
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true" class=>&laquo;</span>
 
-                        </a>
-                    </li>
+            <!-- OEE Benchmarks -->
 
-                    <a class="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                    </li>
-                </ul>
-            </nav>
+            <ul class="py-3 nav justify-content-center gap-4">
+                <li class="nav-item row p-0 m-0">
+                    <div class="rectangle col" style="background-color: #31ce77;">
+                    </div>
+                    <p class="col">World&nbsp;Class</p>
+                </li>
+                <li class="nav-item row p-0 m-0">
+                    <div class="rectangle col" style="background-color: #FABA13;">
+                    </div>
+                    <p class="col">Typical</p>
+                </li>
+
+                <li class="nav-item row p-0 m-0">
+                    <div class="rectangle col" style="background-color: #F83F40;">
+                    </div>
+                    <p class="col"> Low</p>
+                </li>
+            </ul>
+
 
             <!-- each machine -->
 
-            <div id="machines" class=" row p-0 m-0 d-flex justify-content-center py-3 gap-4"></div>
+            <div id="machines" class=" row mx-5 d-flex justify-content-center "></div>
+            <!-- 
+            <button type="button" class="slick-prev">Previous</button>
+            <button type="button" class="slick-next">Next</button> -->
 
-
+            <!-- Page controller -->
+            <!-- <nav>
+                <ul class="pagination justify-content-center gap-4">
+                    <li class="page-item">
+                        <p class="prevArrow">&laquo;</p>
+                    </li>
+                    <li class="page-item">
+                        <p class="nextArrow">&raquo;</p>
+                    </li>
+                </ul>
+            </nav> -->
         </div>
     </div>
 
     <!-- script -->
     <script src="./assets/libs/Chart.bundle.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+    <script src="./assets/libs/Jquery_3.6.0.js"></script>
     <!-- Socket js -->
     <script src="/socket.io/socket.io.js"></script>
+    <!-- Slick -->
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="./assets/libs/Slick_1.8.1.js"></script>
+
     <script>
         Chart.pluginService.register({
             beforeDraw: function(chart) {
@@ -364,7 +394,6 @@
                     },
                 },
             });
-
             // Machine semi-circle
             let html_machines = "";
             let barColor = "";
@@ -373,7 +402,7 @@
                 html_machines +=
                     /*html*/
                     `
-                    <div id ="border-${allMachines[i].mc_id}" class=" box-content pointer col-3 p-0 m-0 text-center" onclick="selectMachine(${allMachines[i].mc_id})" >
+                    <div id ="border-${allMachines[i].mc_id}" class=" box-content pointer col-3 p-0 m-2 text-center" onclick="selectMachine(${allMachines[i].mc_id})" >
                         <p class="fs-3">${allMachines[i].mc_name}</p>
                         <canvas id="${allMachines[i].mc_id}" class=" p-3" ></canvas>
                         <p class="fs-4">${oee} %</p>
@@ -420,10 +449,13 @@
                 });
             }
 
-            // carousel
-            let maxMachine = 6;
-            let totalPage = totalWorkingMachines / maxMachine;
-            console.log(totalPage)
+            // Slick
+            $('#machines').slick({
+                infinite: true,
+                slidesToShow: 3,
+                slidesToScroll: 3,
+                dots: true,
+            });
 
 
             // function displayMachine(machinesElem, newIndex) {

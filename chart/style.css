@@ -19,6 +19,10 @@ canvas {
     box-shadow: 0 0 15px 10px #00000030;
 }
 
+.border-shadow {
+    box-shadow: 0 0 15px 10px #25252530;
+}
+
 .pointer:hover {
     transition-duration: 1s;
     cursor: pointer;
@@ -34,14 +38,48 @@ canvas {
     color: #F83F40;
 }
 
-.page-link {
+
+/* .page-link {
     background-color: #323a46;
     color: white;
     border-radius: 5px;
     border: #323a46;
     box-shadow: 0 0 15px 10px #00000030;
-}
+} */
 
 .page-link:hover {
     color: #323a46;
+}
+
+.rectangle {
+    width: 50px;
+    height: 20px;
+}
+
+.slick-btn {
+    font-size: 30px;
+    background-color: #323a46;
+    color: white;
+    border-radius: 5px;
+    border: #323a46;
+    box-shadow: 0 0 15px 10px #00000030;
+    position: absolute;
+    top: 110%;
+    margin-top: -15px;
+    width: 50px;
+    height: 50px;
+}
+
+.slick-btn:hover {
+    box-shadow: 0 0 5px 3px #737A82;
+}
+
+.previous-btn {
+    left: calc(50vw - 150px);
+    display: inline;
+}
+
+.next-btn {
+    right: calc(50vw - 150px);
+    display: inline;
 }
