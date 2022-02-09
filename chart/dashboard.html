@@ -9,9 +9,10 @@
     <link rel="stylesheet" href="style.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="icon" href="assets/images/dmsicon.ico">
-    <link rel="stylesheet" type="text/css" href="./assets/libs/Slick_1.8.1.css" />
+    <link rel="stylesheet" type="text/css" href="./assets/libs/slick/slick.css" />
+    <link rel="stylesheet" type="text/css" href="./assets/libs/slick/slick-theme.css" />
 
-    <title>Hello World ChartJs</title>
+    <title>dataEdge</title>
 </head>
 
 <body>
@@ -44,7 +45,7 @@
                 </div> -->
                 <div class="col p-0 m-0">
                     <div class="row p-0 m-0">
-                        <p class="text-center fs-2">Factory name : Dynamic Spring</p>
+                        <p class="text-center fs-2">Dynamic Spring</p>
                     </div>
                     <div class="row p-0 m-0">
                         <div class="col box-content   text-center">
@@ -133,21 +134,7 @@
             <!-- each machine -->
 
             <div id="machines" class=" row mx-5 d-flex justify-content-center "></div>
-            <!-- 
-            <button type="button" class="slick-prev">Previous</button>
-            <button type="button" class="slick-next">Next</button> -->
 
-            <!-- Page controller -->
-            <!-- <nav>
-                <ul class="pagination justify-content-center gap-4">
-                    <li class="page-item">
-                        <p class="prevArrow">&laquo;</p>
-                    </li>
-                    <li class="page-item">
-                        <p class="nextArrow">&raquo;</p>
-                    </li>
-                </ul>
-            </nav> -->
         </div>
     </div>
 
@@ -160,8 +147,7 @@
     <!-- Slick -->
     <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-    <script type="text/javascript" src="./assets/libs/Slick_1.8.1.js"></script>
-
+    <script type="text/javascript" src="./assets/libs/slick/slick.js"></script>
     <script>
         Chart.pluginService.register({
             beforeDraw: function(chart) {
@@ -402,10 +388,12 @@
                 html_machines +=
                     /*html*/
                     `
-                    <div id ="border-${allMachines[i].mc_id}" class=" box-content pointer col-3 p-0 m-2 text-center" onclick="selectMachine(${allMachines[i].mc_id})" >
-                        <p class="fs-3">${allMachines[i].mc_name}</p>
-                        <canvas id="${allMachines[i].mc_id}" class=" p-3" ></canvas>
-                        <p class="fs-4">${oee} %</p>
+                    <div id ="border-${allMachines[i].mc_id}" class="border-end border-secondary  pointer col-3 p-2 m-0 text-center" onclick="selectMachine(${allMachines[i].mc_id})" >
+                        <div class="gap-2">
+                            <p class="fs-3">${allMachines[i].mc_name}</p>
+                            <canvas id="${allMachines[i].mc_id}" class=" p-3" ></canvas>
+                            <p class="fs-4">${oee} %</p>
+                            </div>
                     </div>
                     `;
             }
@@ -448,38 +436,16 @@
 
                 });
             }
-
             // Slick
             $('#machines').slick({
                 infinite: true,
+                // rows: 2,
                 slidesToShow: 3,
                 slidesToScroll: 3,
                 dots: true,
+
             });
 
-
-            // function displayMachine(machinesElem, newIndex) {
-            //     let lastIndex = machinesElem.length - 1;
-            //     if (newIndex < 0) {
-            //         newIndex = lastIndex;
-            //     } else if (newIndex > lastIndex) {
-            //         newIndex = 0;
-            //     }
-            //     let newPage = machinesElems[newIndex];
-            //     newPage.scrollIntoView({
-            //         behavior: 'smooth'
-            //     });
-            //     currentIndex = newIndex;
-            // }
-
-            // function carousel() {
-            //     let machinesElems = document.querySelectorAll("div");
-            //     let previousBtnElem = document.querySelector(".previous");
-            //     let nextBtnElem = document.querySelector(".next");
-
-            //     previousBtnElem.addEventListener('click', () => displayMachine(machinesElems, currentIndex - 1))
-            //     nextBtnElem.addEventListener('click', () => displayMachine(machinesElems, currentIndex + 1))
-            // }
         });
 
         function selectMachine(id) {

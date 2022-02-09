@@ -20,11 +20,12 @@ canvas {
 }
 
 .border-shadow {
-    box-shadow: 0 0 15px 10px #25252530;
+    border-radius: 5px;
+    box-shadow: 0 0 15px 10px #00000030;
 }
 
 .pointer:hover {
-    transition-duration: 1s;
+    transition-duration: 0.5s;
     cursor: pointer;
     background-color: #00000030;
     box-shadow: 0 0 15px 10px #737A82;
@@ -57,12 +58,9 @@ canvas {
 }
 
 .slick-btn {
-    font-size: 30px;
-    background-color: #323a46;
-    color: white;
+    font-size: 50px;
     border-radius: 5px;
     border: #323a46;
-    box-shadow: 0 0 15px 10px #00000030;
     position: absolute;
     top: 110%;
     margin-top: -15px;
@@ -70,16 +68,12 @@ canvas {
     height: 50px;
 }
 
-.slick-btn:hover {
-    box-shadow: 0 0 5px 3px #737A82;
-}
-
-.previous-btn {
+.slick-prev {
     left: calc(50vw - 150px);
     display: inline;
 }
 
-.next-btn {
+.slick-next {
     right: calc(50vw - 150px);
     display: inline;
 }

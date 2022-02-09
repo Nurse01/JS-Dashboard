@@ -19,7 +19,7 @@
             <!-- <a href="./dashboard.htmls" class="col-1">
         < Back</a> -->
             <div class="box-content col-4 px-1 text-center">
-                <p id="machine-name" class=" fs-1 mx-2 fw-bold "></p>
+                <p id="machine-name" class=" fs-2 mx-2 fw-bold "></p>
                 <p class="px-4 ">Product : DM234 | line: 3 </p>
             </div>
             <div id="statusMachine" class="box-content col  text-center">
@@ -201,9 +201,7 @@
 
         </div>
     </div>
-
     </div>
-
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="./assets/libs/Chart_2.9.3.js"></script>
@@ -232,7 +230,7 @@
         socket.on("machineDetail", (data) => {
             let machine = data.mcDetail;
 
-            // console.log(data2)
+
             // calculate OEE
             let oee = ((machine.oee.availability / 100) * (machine.oee.performance / 100) * (machine.oee
                 .quality / 100) * 100).toFixed(2)
@@ -386,7 +384,7 @@
             console.log(xyValues)
 
 
-
+            Chart.defaults.global.defaultFontColor = 'white';
             let lineChart = document.getElementById("stateChart").getContext("2d");
             let stateLineChart = new Chart(lineChart, {
                 type: 'line',
@@ -411,18 +409,17 @@
                     }],
                 },
                 options: {
-
-
                     legend: {
-                        display: false
+                        display: false,
                     },
                     scales: {
+
                         xAxes: [{
                             type: 'time',
                             ticks: {
                                 min: 0 - 7 * 3600 * 1000,
                                 max: (24 - 7) * 3600 * 1000
-                            }
+                            },
                         }],
                         yAxes: [{
                             display: false,
