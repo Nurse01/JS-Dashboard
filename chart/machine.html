@@ -22,9 +22,9 @@
                 <p id="machine-name" class=" fs-2 mx-2 fw-bold "></p>
                 <p class="px-4 ">Product : DM234 | line: 3 </p>
             </div>
-            <div id="statusMachine" class="box-content col  text-center">
+            <div class="box-content col text-center">
                 <p>Status Machine</p>
-                <p class="fs-3" style="background-color:#31ce77;">RUNNING</p>
+                <p class="fs-3" id="statusMachine"></p>
             </div>
             <div class="box-content col text-center ">
                 <p>Date Time </p>
@@ -379,6 +379,14 @@
                     x: (currentTimePercent - 7) * 3600 * 1000,
                     y: time[i].register_data === 0 ? 1 : 0
                 })
+                let statusElem = document.getElementById("statusMachine")
+                if (time[time.length - 1].register_data === 0) {
+                    statusElem.innerHTML = "FAILURE";
+                    statusElem.classList.add("bad-bg");
+                } else {
+                    statusElem.innerHTML = "RUNNING";
+                    statusElem.classList.add("good-bg");
+                }
 
             }
             console.log(xyValues)

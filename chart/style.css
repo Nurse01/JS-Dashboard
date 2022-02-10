@@ -39,6 +39,14 @@ canvas {
     color: #F83F40;
 }
 
+.good-bg {
+    background-color: #31ce77;
+}
+
+.bad-bg {
+    background-color: #F83F40;
+}
+
 .rectangle {
     width: 50px;
     height: 20px;
