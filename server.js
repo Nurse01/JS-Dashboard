@@ -368,11 +368,11 @@ let prodTime = [{
         time_stamp: 1643954400000,
     },
     {
-        register_data: 0.049,
+        register_data: 0,
         time_stamp: 1643959241000,
     },
     {
-        register_data: 227.096,
+        register_data: 225,
         time_stamp: 1643792446276,
     },
     {

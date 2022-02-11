@@ -20,7 +20,7 @@
         < Back</a> -->
             <div class="box-content col-4 px-1 text-center">
                 <p id="machine-name" class=" fs-2 mx-2 fw-bold "></p>
-                <p class="px-4 ">Product : DM234 | line: 3 </p>
+                <p id="task-name" class="px-4 ">Product : DM234 | line: 3 </p>
             </div>
             <div class="box-content col text-center">
                 <p>Status Machine</p>
@@ -48,17 +48,21 @@
                 <p>Total Time</p>
                 <p id="totalTime" class="fs-3">1200 minutes</p>
             </div>
-            <div id="remainingTime" class="col box-content ">
+            <div class="col box-content ">
                 <p>Remaining Time</p>
-                <p class="fs-3 good-value">300 minutes</p>
+                <p id="remainingTime" class="fs-3 good-value">300 minutes</p>
+            </div>
+            <div class="col box-content">
+                <p>Predicted End Time</p>
+                <p id="predictedEndTime" class="fs-3"></p>
             </div>
             <div class="col box-content">
                 <p>Production Rate</p>
                 <p id="productionRate" class="fs-3">100 parts/minute</p>
             </div>
-            <div id="totalStoptime" class="col box-content">
+            <div class="col box-content">
                 <p>Total Stoptime</p>
-                <p class="fs-3 bad-value">20 minutes</p>
+                <p id="totalStoptime" class="fs-3 bad-value">20 minutes</p>
             </div>
         </div>
         <!-- 3rd row -->
@@ -72,10 +76,7 @@
                 <div class="row p-0 m-0">
 
                     <!-- Availability -->
-                    <!-- <div class="col">
-            <div class="">
-              <canvas id="availabilityChart"></canvas>
-            </div> -->
+
                     <!-- availability table -->
                     <div class="col box-content p-2 p-lg-3 p-xl-4">
                         <table class="table table-bordered">
@@ -100,14 +101,10 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <!-- </div> -->
+
                     </div>
 
                     <!-- Performance -->
-                    <!-- <div class="col">
-            <div>
-              <canvas id="performanceChart"></canvas>
-            </div> -->
                     <!-- performance table -->
                     <div class="col box-content p-2 p-lg-3 p-xl-4">
                         <table class="table table-bordered">
@@ -128,14 +125,9 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <!-- </div> -->
                     </div>
 
                     <!-- Quality -->
-                    <!-- <div class="col">
-            <div>
-              <canvas id="quantityChart"></canvas>
-            </div> -->
                     <!-- quality table -->
                     <div class="col box-content p-2 p-lg-3 p-xl-4">
                         <table class="table table-bordered">
@@ -156,10 +148,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <!-- </div> -->
-
                     </div>
-
                 </div>
                 <!-- Status History -->
                 <div class="box-content row p-lg-3 p-xl-4" style="height: 200px;">
@@ -173,11 +162,10 @@
         <div class="row p-0 ">
             <div class="col">
                 <div class="row m-0 text-center">
-                    <div id="actual-quantity" class="col box-content">
+                    <div class="col box-content">
                         <p>Actual Quantity</p>
-                        <p class="fs-3">200 parts</p>
+                        <p id="actual-quantity" class="fs-3">200 parts</p>
                     </div>
-
                     <div class="col box-content">
                         <p>Good Parts</p>
                         <p id="good-parts" class="fs-3 good-value"></p>
@@ -195,10 +183,6 @@
                     </div>
                 </div>
             </div>
-
-
-
-
         </div>
     </div>
     </div>
@@ -212,14 +196,10 @@
         let greenColorCode = "#31ce77";
         let redColorCode = "#F83F40";
         let whiteColorCode = "#fff";
-        setInterval(myTimer, 1000);
+        let dateTime = '';
 
-        function myTimer() {
-            let dt = new Date();
-            let date =
-                dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
-            document.getElementById("dateTime").innerHTML = date + " " + dt.toLocaleTimeString();
-        }
+
+
 
         socket.on("test", (data) => {
             console.log(data);
@@ -230,6 +210,23 @@
         socket.on("machineDetail", (data) => {
             let machine = data.mcDetail;
 
+            function myTimer() {
+                let dt = new Date();
+                dateTime =
+                    dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
+                document.getElementById("dateTime").innerHTML = dateTime + " " + dt.toLocaleTimeString();
+                // Perdicted end time
+                let productionRate = 100;
+                let idealCycleTime = productionRate / 60;
+                let remainingQuantity = machine.parts.expected_quantity - machine.parts.total_parts;
+                let predEndMillisec = (idealCycleTime * remainingQuantity) * 60000;
+                let currentTime = new Date();
+                let predEndTime = new Date(currentTime.getTime() + predEndMillisec);
+
+                document.getElementById("predictedEndTime").innerHTML = predEndTime.getFullYear() + "-" + (predEndTime.getMonth() + 1) + "-" + predEndTime.getDate() + " " + predEndTime.toLocaleTimeString();
+
+            }
+            setInterval(myTimer, 1000);
 
             // calculate OEE
             let oee = ((machine.oee.availability / 100) * (machine.oee.performance / 100) * (machine.oee
@@ -268,6 +265,7 @@
             //Detail
             document.getElementById("expected-quantity").innerHTML =
                 machine.parts.expected_quantity
+
 
 
             // OEE-doughnut chart
@@ -443,33 +441,6 @@
 
 
             // dont touch this backet
-            // let stackedBarChart = document.getElementById("stateChart").getContext("2d");
-            // let stateChart = new Chart(stackedBarChart, {
-            //     type: 'horizontalBar',
-            //     data: {
-            //         labels: ['state'],
-            //         datasets: [],
-            //     },
-            //     options: {
-            //         legend: {
-            //             display: false,
-            //         },
-            //         scales: {
-            //             xAxes: [{
-            //                 stacked: true,
-            //                 type: 'time',
-            //                 time: {
-            //                     unit: 'month'
-            //                 },
-
-            //             }],
-            //             yAxes: [{
-            //                 stacked: true
-
-            //             }]
-            //         }
-            //     }
-            // });
         });
     </script>
 </body>
