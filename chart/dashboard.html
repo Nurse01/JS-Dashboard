@@ -50,14 +50,14 @@
                     <div class="row p-0 m-0">
                         <div class="col box-content   text-center">
                             <p>
-                                Good Parts <br />
-                                <span id="sum-good-parts" class="fs-3 good-value"></span>
+                                Total<br />
+                                <span id="sum-total-parts" class="fs-3 good-value"></span>
                             </p>
                         </div>
-                        <div class="col box-content   text-center">
+                        <div class="col box-content text-center">
                             <p>
-                                Total Parts <br />
-                                <span id="sum-total-parts" class="fs-3"></span>
+                                Target <br />
+                                <span id="target-parts" class="fs-3"></span>
                             </p>
                         </div>
                     </div>
@@ -65,7 +65,7 @@
                     <div class="row p-0 m-0 text-center ">
                         <div class="col box-content">
                             <p>
-                                Total Machines<br /><span id="total-machines" class="px-4 fs-3">10 pieces</span
+                                Total Machines<br /><span id="total-machines" class="px-4 fs-3"></span
                 >
               </p>
             </div>
@@ -140,14 +140,13 @@
 
     <!-- script -->
     <script src="./assets/libs/Chart.bundle.min.js"></script>
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
     <script src="./assets/libs/Jquery_3.6.0.js"></script>
     <!-- Socket js -->
     <script src="/socket.io/socket.io.js"></script>
     <!-- Slick -->
     <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-    <!-- <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script> -->
     <script type="text/javascript" src="./assets/libs/slick/slick.js"></script>
+    <script src="./assets/libs/numeral.min.js"></script>
     <script>
         Chart.pluginService.register({
             beforeDraw: function(chart) {
@@ -249,12 +248,12 @@
         // calculate
         let simpleOEE = 0;
         let oee = 0;
-        let oeeTarget = 59;
         let sumGoodParts = 0;
         let sumTotalParts = 0;
         let sumExpectedQuantity = 0;
         let totalWorkingMachines = 0;
         let totalDowntime = 0;
+        let totalMachine = 10;
         // oee benchmarks
         let worldClass = 85;
         let typical = 60;
@@ -277,12 +276,11 @@
                 );
             }
             simpleOEE = ((sumGoodParts / sumExpectedQuantity) * 100).toFixed(2);
-            document.getElementById("sum-good-parts").innerHTML = sumGoodParts;
-            document.getElementById("sum-total-parts").innerHTML = sumTotalParts;
-            document.getElementById("total-working-machines").innerHTML =
-                totalWorkingMachines + " pieces";
-            document.getElementById("total-downtime").innerHTML =
-                totalDowntime + " minutes";
+            document.getElementById("total-machines").innerHTML = totalMachine + " units";
+            document.getElementById("target-parts").innerHTML = numeral(sumExpectedQuantity).format('0,0') + " units";
+            document.getElementById("sum-total-parts").innerHTML = numeral(sumTotalParts).format('0,0') + " units";
+            document.getElementById("total-working-machines").innerHTML = totalWorkingMachines + " units";
+            document.getElementById("total-downtime").innerHTML = totalDowntime + " minutes";
 
             // OEE chart
             // let myChart = document.getElementById("contentChart").getContext("2d");

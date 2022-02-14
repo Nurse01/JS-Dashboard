@@ -404,7 +404,7 @@ let prodTime = [{
         time_stamp: 1643970382000,
     },
     {
-        register_data: 0,
+        register_data: 254,
         time_stamp: 1643972400000,
     },
 ];

@@ -33,7 +33,7 @@
             </div>
             <div class="box-content col text-center">
                 <p>Operation Time</p>
-                <p id="operationTime" class="fs-3">600 minutes</p>
+                <p id="operation-time" class="fs-3"></p>
             </div>
 
         </div>
@@ -46,23 +46,23 @@
       </div> -->
             <div class="box-content col ">
                 <p>Total Time</p>
-                <p id="totalTime" class="fs-3">1200 minutes</p>
+                <p id="total-time" class="fs-3"></p>
             </div>
             <div class="col box-content ">
                 <p>Remaining Time</p>
-                <p id="remainingTime" class="fs-3 good-value">300 minutes</p>
+                <p id="remaining-time" class="fs-3 good-value"></p>
             </div>
             <div class="col box-content">
                 <p>Predicted End Time</p>
-                <p id="predictedEndTime" class="fs-3"></p>
+                <p id="predicted-end-time" class="fs-3"></p>
             </div>
             <div class="col box-content">
                 <p>Production Rate</p>
-                <p id="productionRate" class="fs-3">100 parts/minute</p>
+                <p id="production-rate" class="fs-3"></p>
             </div>
             <div class="col box-content">
                 <p>Total Stoptime</p>
-                <p id="totalStoptime" class="fs-3 bad-value">20 minutes</p>
+                <p id="total-stop-time" class="fs-3 bad-value"></p>
             </div>
         </div>
         <!-- 3rd row -->
@@ -163,21 +163,21 @@
             <div class="col">
                 <div class="row m-0 text-center">
                     <div class="col box-content">
-                        <p>Actual Quantity</p>
-                        <p id="actual-quantity" class="fs-3">200 parts</p>
+                        <p>Actual</p>
+                        <p id="actual-parts" class="fs-3"></p>
                     </div>
                     <div class="col box-content">
-                        <p>Good Parts</p>
+                        <p>Good</p>
                         <p id="good-parts" class="fs-3 good-value"></p>
 
                     </div>
                     <div class="col box-content">
-                        <p>Total Parts </p>
+                        <p>Total</p>
                         <p id="total-parts" class="fs-3"></p>
 
                     </div>
                     <div class="col box-content">
-                        <p>Expected Quantity<br />
+                        <p>Expected<br />
                             <p id="expected-quantity" class="fs-3"></p>
                         </p>
                     </div>
@@ -190,6 +190,7 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="./assets/libs/Chart_2.9.3.js"></script>
     <script src="./assets/libs/Chart_doughnutlabel.js"></script>
+    <script src="./assets/libs/numeral.min.js"></script>
     <!-- <script src="./assets/filler_plugin.js"></script> -->
     <script>
         let socket = io();
@@ -197,8 +198,11 @@
         let redColorCode = "#F83F40";
         let whiteColorCode = "#fff";
         let dateTime = '';
-
-
+        let totalTime = 0;
+        let remainingTime = 0;
+        let totalStopTime = 0;
+        let operationTime = 0;
+        let productionRate = 100; // parts/min
 
 
         socket.on("test", (data) => {
@@ -216,18 +220,23 @@
                     dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
                 document.getElementById("dateTime").innerHTML = dateTime + " " + dt.toLocaleTimeString();
                 // Perdicted end time
-                let productionRate = 100;
-                let idealCycleTime = productionRate / 60;
+
+                let idealCycleTime = productionRate / 60; //min per parts
                 let remainingQuantity = machine.parts.expected_quantity - machine.parts.total_parts;
                 let predEndMillisec = (idealCycleTime * remainingQuantity) * 60000;
                 let currentTime = new Date();
                 let predEndTime = new Date(currentTime.getTime() + predEndMillisec);
 
-                document.getElementById("predictedEndTime").innerHTML = predEndTime.getFullYear() + "-" + (predEndTime.getMonth() + 1) + "-" + predEndTime.getDate() + " " + predEndTime.toLocaleTimeString();
+                document.getElementById("predicted-end-time").innerHTML = predEndTime.getFullYear() + "-" + (predEndTime.getMonth() + 1) + "-" + predEndTime.getDate() + " " + predEndTime.toLocaleTimeString();
 
             }
             setInterval(myTimer, 1000);
-
+            document.getElementById("operation-time").innerHTML = numeral(operationTime).format('0,0') + " minutes";
+            document.getElementById("total-time").innerHTML = numeral(totalTime).format('0,0') + " minutes";
+            document.getElementById("remaining-time").innerHTML = numeral(remainingTime).format('0,0') + " minutes";
+            document.getElementById("production-rate").innerHTML = productionRate + " units / minute"
+            document.getElementById("total-stop-time").innerHTML = numeral(totalStopTime).format('0,0') + " minutes";
+            document.getElementById("actual-parts").innerHTML = numeral(machine.performance.actual_quantity).format('0,0') + " units";
             // calculate OEE
             let oee = ((machine.oee.availability / 100) * (machine.oee.performance / 100) * (machine.oee
                 .quality / 100) * 100).toFixed(2)
@@ -235,9 +244,9 @@
             // Overall
             document.getElementById("machine-name").innerHTML = machine.mc_name;
             document.getElementById("good-parts").innerHTML =
-                machine.parts.good_parts;
+                numeral(machine.parts.good_parts).format('0,0') + " units";
             document.getElementById("total-parts").innerHTML =
-                machine.parts.total_parts;
+                numeral(machine.parts.total_parts).format('0,0') + " units";
             // oee
             document.getElementById("availability").innerHTML =
                 machine.oee.availability + " %";
@@ -247,24 +256,24 @@
                 machine.oee.quality + " %";
             // Availability
             document.getElementById("planned-runtime").innerHTML =
-                machine.availability.planned_runtime + " minute";
+                numeral(machine.availability.planned_runtime).format('0,0') + " minute";
             document.getElementById("actual-runtime").innerHTML =
-                machine.availability.actual_runtime + " minute";
+                numeral(machine.availability.actual_runtime).format('0,0') + " minute";
             document.getElementById("unplanned-downtime").innerHTML =
-                machine.availability.unplanned_downtime + " minute";
+                numeral(machine.availability.unplanned_downtime).format('0,0') + " minute";
             // Performance
             document.getElementById("planned-quantity").innerHTML =
-                machine.performance.planned_quantity + " parts";
+                numeral(machine.performance.planned_quantity).format('0,0') + " units";
             document.getElementById("actual-quantity").innerHTML =
-                machine.performance.actual_quantity + " parts";
+                numeral(machine.performance.actual_quantity).format('0,0') + " units";
             // Quality
             document.getElementById("total-quantity").innerHTML =
-                machine.quality.actual_quantity + " parts";
+                numeral(machine.quality.actual_quantity).format('0,0') + " units";
             document.getElementById("reject-quantity").innerHTML =
-                machine.quality.reject_quantity + " parts";
+                numeral(machine.quality.reject_quantity).format('0,0') + " units";
             //Detail
             document.getElementById("expected-quantity").innerHTML =
-                machine.parts.expected_quantity
+                numeral(machine.parts.expected_quantity).format('0,0') + " units";
 
 
 
