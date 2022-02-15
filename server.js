@@ -10,10 +10,10 @@ var io = require("socket.io")(http);
 let allMachines = [{
         mc_id: "mc001",
         mc_name: "Spark01",
-        parts: {
-            expected_quantity: 1100,
-            good_parts: 1000,
-            total_parts: 1000,
+        units: {
+            target_units: 1100,
+            good_units: 1000,
+            total_units: 1000,
         },
         availability: {
             planned_runtime: 480,
@@ -21,12 +21,12 @@ let allMachines = [{
             unplanned_downtime: 0,
         },
         performance: {
-            planned_quantity: 1000,
-            actual_quantity: 900,
+            planned_units: 1000,
+            actual_units: 900,
         },
         quality: {
-            actual_quantity: 900,
-            reject_quantity: 0,
+            actual_units: 900,
+            reject_units: 0,
         },
         oee: {
             availability: 79.17,
@@ -37,10 +37,10 @@ let allMachines = [{
     {
         mc_id: "mc002",
         mc_name: "Copper02",
-        parts: {
-            expected_quantity: 1000,
-            good_parts: 757,
-            total_parts: 800,
+        units: {
+            target_units: 1000,
+            good_units: 757,
+            total_units: 800,
         },
         availability: {
             planned_runtime: 550,
@@ -48,12 +48,12 @@ let allMachines = [{
             unplanned_downtime: 10,
         },
         performance: {
-            planned_quantity: 1000,
-            actual_quantity: 800,
+            planned_units: 1000,
+            actual_units: 800,
         },
         quality: {
-            actual_quantity: 800,
-            reject_quantity: 43,
+            actual_units: 800,
+            reject_units: 43,
         },
         oee: {
             availability: 90.0,
@@ -64,10 +64,10 @@ let allMachines = [{
     {
         mc_id: "mc003",
         mc_name: "Socket003",
-        parts: {
-            expected_quantity: 1200,
-            good_parts: 980,
-            total_parts: 1000,
+        units: {
+            target_units: 1200,
+            good_units: 980,
+            total_units: 1000,
         },
         availability: {
             planned_runtime: 540,
@@ -75,12 +75,12 @@ let allMachines = [{
             unplanned_downtime: 20,
         },
         performance: {
-            planned_quantity: 1200,
-            actual_quantity: 1000,
+            planned_units: 1200,
+            actual_units: 1000,
         },
         quality: {
-            actual_quantity: 1000,
-            reject_quantity: 20,
+            actual_units: 1000,
+            reject_units: 20,
         },
         oee: {
             availability: 86.67,
@@ -91,10 +91,10 @@ let allMachines = [{
     {
         mc_id: "mc004",
         mc_name: "Cole004",
-        parts: {
-            expected_quantity: 3500,
-            good_parts: 2700,
-            total_parts: 3100,
+        units: {
+            target_units: 3500,
+            good_units: 2700,
+            total_units: 3100,
         },
         availability: {
             planned_runtime: 480,
@@ -102,12 +102,12 @@ let allMachines = [{
             unplanned_downtime: 0,
         },
         performance: {
-            planned_quantity: 1000,
-            actual_quantity: 900,
+            planned_units: 1000,
+            actual_units: 900,
         },
         quality: {
-            actual_quantity: 900,
-            reject_quantity: 0,
+            actual_units: 900,
+            reject_units: 0,
         },
         oee: {
             availability: 79.17,
@@ -118,10 +118,10 @@ let allMachines = [{
     {
         mc_id: "mc005",
         mc_name: "Evxx005",
-        parts: {
-            expected_quantity: 3500,
-            good_parts: 1800,
-            total_parts: 2000,
+        units: {
+            target_units: 3500,
+            good_units: 1800,
+            total_units: 2000,
         },
         availability: {
             planned_runtime: 480,
@@ -129,12 +129,12 @@ let allMachines = [{
             unplanned_downtime: 0,
         },
         performance: {
-            planned_quantity: 1000,
-            actual_quantity: 900,
+            planned_units: 1000,
+            actual_units: 900,
         },
         quality: {
-            actual_quantity: 900,
-            reject_quantity: 0,
+            actual_units: 900,
+            reject_units: 0,
         },
         oee: {
             availability: 100.17,
@@ -145,10 +145,10 @@ let allMachines = [{
     {
         mc_id: "mc006",
         mc_name: "Max006",
-        parts: {
-            expected_quantity: 3500,
-            good_parts: 2700,
-            total_parts: 3100,
+        units: {
+            target_units: 3500,
+            good_units: 2700,
+            total_units: 3100,
         },
         availability: {
             planned_runtime: 480,
@@ -156,12 +156,12 @@ let allMachines = [{
             unplanned_downtime: 0,
         },
         performance: {
-            planned_quantity: 1000,
-            actual_quantity: 900,
+            planned_units: 1000,
+            actual_units: 900,
         },
         quality: {
-            actual_quantity: 900,
-            reject_quantity: 0,
+            actual_units: 900,
+            reject_units: 0,
         },
         oee: {
             availability: 79.17,
@@ -171,10 +171,10 @@ let allMachines = [{
     }, {
         mc_id: "mc007",
         mc_name: "JamesBond007",
-        parts: {
-            expected_quantity: 1100,
-            good_parts: 1000,
-            total_parts: 1000,
+        units: {
+            target_units: 1100,
+            good_units: 1000,
+            total_units: 1000,
         },
         availability: {
             planned_runtime: 480,
@@ -182,12 +182,12 @@ let allMachines = [{
             unplanned_downtime: 0,
         },
         performance: {
-            planned_quantity: 1000,
-            actual_quantity: 900,
+            planned_units: 1000,
+            actual_units: 900,
         },
         quality: {
-            actual_quantity: 900,
-            reject_quantity: 0,
+            actual_units: 900,
+            reject_units: 0,
         },
         oee: {
             availability: 79.17,
@@ -198,10 +198,10 @@ let allMachines = [{
     {
         mc_id: "mc008",
         mc_name: "Machine008",
-        parts: {
-            expected_quantity: 1000,
-            good_parts: 757,
-            total_parts: 800,
+        units: {
+            target_units: 1000,
+            good_units: 757,
+            total_units: 800,
         },
         availability: {
             planned_runtime: 550,
@@ -209,12 +209,12 @@ let allMachines = [{
             unplanned_downtime: 10,
         },
         performance: {
-            planned_quantity: 1000,
-            actual_quantity: 800,
+            planned_units: 1000,
+            actual_units: 800,
         },
         quality: {
-            actual_quantity: 800,
-            reject_quantity: 43,
+            actual_units: 800,
+            reject_units: 43,
         },
         oee: {
             availability: 90.0,
@@ -225,10 +225,10 @@ let allMachines = [{
     {
         mc_id: "mc009",
         mc_name: "Machine009",
-        parts: {
-            expected_quantity: 1200,
-            good_parts: 980,
-            total_parts: 1000,
+        units: {
+            target_units: 1200,
+            good_units: 980,
+            total_units: 1000,
         },
         availability: {
             planned_runtime: 540,
@@ -236,12 +236,12 @@ let allMachines = [{
             unplanned_downtime: 20,
         },
         performance: {
-            planned_quantity: 1200,
-            actual_quantity: 1000,
+            planned_units: 1200,
+            actual_units: 1000,
         },
         quality: {
-            actual_quantity: 1000,
-            reject_quantity: 20,
+            actual_units: 1000,
+            reject_units: 20,
         },
         oee: {
             availability: 86.67,
@@ -252,10 +252,10 @@ let allMachines = [{
     {
         mc_id: "mc010",
         mc_name: "Machine010",
-        parts: {
-            expected_quantity: 3500,
-            good_parts: 2700,
-            total_parts: 3100,
+        units: {
+            target_units: 3500,
+            good_units: 2700,
+            total_units: 3100,
         },
         availability: {
             planned_runtime: 480,
@@ -263,12 +263,12 @@ let allMachines = [{
             unplanned_downtime: 0,
         },
         performance: {
-            planned_quantity: 1000,
-            actual_quantity: 900,
+            planned_units: 1000,
+            actual_units: 900,
         },
         quality: {
-            actual_quantity: 900,
-            reject_quantity: 0,
+            actual_units: 900,
+            reject_units: 0,
         },
         oee: {
             availability: 79.17,
@@ -279,10 +279,10 @@ let allMachines = [{
     {
         mc_id: "mc011",
         mc_name: "ive011",
-        parts: {
-            expected_quantity: 3500,
-            good_parts: 1800,
-            total_parts: 2000,
+        units: {
+            target_units: 3500,
+            good_units: 1800,
+            total_units: 2000,
         },
         availability: {
             planned_runtime: 480,
@@ -290,12 +290,12 @@ let allMachines = [{
             unplanned_downtime: 0,
         },
         performance: {
-            planned_quantity: 1000,
-            actual_quantity: 900,
+            planned_units: 1000,
+            actual_units: 900,
         },
         quality: {
-            actual_quantity: 900,
-            reject_quantity: 0,
+            actual_units: 900,
+            reject_units: 0,
         },
         oee: {
             availability: 100.17,
@@ -306,10 +306,10 @@ let allMachines = [{
     {
         mc_id: "mc012",
         mc_name: "Machine012",
-        parts: {
-            expected_quantity: 3500,
-            good_parts: 2700,
-            total_parts: 3100,
+        units: {
+            target_units: 3500,
+            good_units: 2700,
+            total_units: 3100,
         },
         availability: {
             planned_runtime: 480,
@@ -317,12 +317,12 @@ let allMachines = [{
             unplanned_downtime: 0,
         },
         performance: {
-            planned_quantity: 1000,
-            actual_quantity: 900,
+            planned_units: 1000,
+            actual_units: 900,
         },
         quality: {
-            actual_quantity: 900,
-            reject_quantity: 0,
+            actual_units: 900,
+            reject_units: 0,
         },
         oee: {
             availability: 79.17,

@@ -16,76 +16,64 @@
 </head>
 
 <body>
-    <div class="p-2">
+    <div class="p-2 ">
         <!-- <div>
             <p class="text-center fs-2">Dynamic Spring</p>
         </div> -->
         <!--//// CONTENT \\\\-->
-        <div class="">
-            <div class="row m-5  border-shadow">
-                <!-- OEE part -->
-                <div class="box-content text-center" style="width: 300px;">
-                    <p>OEE</p>
-                    <canvas id="contentChart" width="5" height="5"></canvas>
+        <!-- <div class=""> -->
+
+        <div class="row m-5">
+            <div class="row p-0 m-0  box-content">
+                <p class="text-center fs-2">Dynamic Spring</p>
+            </div>
+            <!-- OEE part -->
+            <div class="box-content text-center mt-2 ms-0" style="width: 300px;">
+                <p>OEE</p>
+                <canvas id="contentChart" width="5" height="5"></canvas>
+            </div>
+            <div class="col p-0 m-0">
+
+                <div class="row  p-0 m-0" style="height: 180px;">
+                    <div class="col row p-2 m-1 mt-2 align-content-center box-content  text-center ">
+                        <p class="col">
+                            Total<br />
+                            <span id="sum-total-units" class="fs-3 good-value"></span>
+                        </p>
+
+                    </div>
+                    <div class="col row p-2 m-1 mt-2 me-0  align-content-center box-content text-center">
+                        <p>
+                            Target <br />
+                            <span id="target-units" class="fs-3"></span>
+                        </p>
+                    </div>
                 </div>
 
-                <!-- <div class="col-sm-3">
-                    <div class="box-content m-3 p-2 text-center">
-                        <p class="fs-3 ">
-                            Good Parts <br />
-                            <span id="sum-good-parts" class="fw-bolder good-value"></span>
-                        </p>
-                    </div>
-                    <div class="box-content m-3 p-2 text-center">
-                        <p class="fs-3">
-                            Total Parts <br />
-                            <span id="sum-total-parts" class="fw-bolder"></span>
-                        </p>
-                    </div>
-                </div> -->
-                <div class="col p-0 m-0">
-                    <div class="row p-0 m-0">
-                        <p class="text-center fs-2">Dynamic Spring</p>
-                    </div>
-                    <div class="row p-0 m-0">
-                        <div class="col box-content   text-center">
-                            <p>
-                                Total<br />
-                                <span id="sum-total-parts" class="fs-3 good-value"></span>
-                            </p>
-                        </div>
-                        <div class="col box-content text-center">
-                            <p>
-                                Target <br />
-                                <span id="target-parts" class="fs-3"></span>
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="row p-0 m-0 text-center ">
-                        <div class="col box-content">
-                            <p>
-                                Total Machines<br /><span id="total-machines" class="px-4 fs-3"></span
+                <div class="row p-0 m-0 text-center " style="height: 180px;">
+                    <div class="col row p-2 m-1 mt-2 align-content-center box-content text-center">
+                        <p>
+                            Total Machines<br /><span id="total-machines" class="px-4 fs-3"></span
                 >
               </p>
             </div>
-            <div class="col box-content">
+            <div class="col row p-2 m-1 mt-2 align-content-center box-content">
               <p >
                 Total Working Machines<br /><span
                   id="total-working-machines"
                   class="px-4 fs-3"
                 ></span>
-                            </p>
-                        </div>
-                        <div class="col box-content">
-                            <p>
-                                Total Downtime<br /><span id="total-downtime" class="fs-3 px-4">
+                        </p>
+                    </div>
+                    <div class="col row p-2 m-1 mt-2 me-0 align-content-center box-content">
+                        <p>
+                            Down time<br /><span id="total-downtime" class="fs-3 px-4">
                 </span>
-                            </p>
-                        </div>
+                        </p>
                     </div>
                 </div>
-                <!-- <div class="col-sm-3 text-center m-1">
+            </div>
+            <!-- <div class="col-sm-3 text-center m-1">
                     <div class="box-content">
                         <p class="fs-4 ">
                             Total Machines<br /><span id="total-machines" class="px-4">10 pieces</span
@@ -107,35 +95,35 @@
                         </p>
                     </div>
                 </div> -->
-            </div>
-
-            <!-- OEE Benchmarks -->
-
-            <ul class="py-3 nav justify-content-center gap-4">
-                <li class="nav-item row p-0 m-0">
-                    <div class="rectangle col" style="background-color: #31ce77;">
-                    </div>
-                    <p class="col">World&nbsp;Class</p>
-                </li>
-                <li class="nav-item row p-0 m-0">
-                    <div class="rectangle col" style="background-color: #FABA13;">
-                    </div>
-                    <p class="col">Typical</p>
-                </li>
-
-                <li class="nav-item row p-0 m-0">
-                    <div class="rectangle col" style="background-color: #F83F40;">
-                    </div>
-                    <p class="col"> Low</p>
-                </li>
-            </ul>
-
-
-            <!-- each machine -->
-
-            <div id="machines" class=" row mx-5 d-flex justify-content-center "></div>
-
         </div>
+
+        <!-- OEE Benchmarks -->
+
+        <ul class="py-3 nav justify-content-center gap-4">
+            <li class="nav-item row p-0 m-0">
+                <div class="rectangle col" style="background-color: #31ce77;">
+                </div>
+                <p class="col">World&nbsp;Class</p>
+            </li>
+            <li class="nav-item row p-0 m-0">
+                <div class="rectangle col" style="background-color: #FABA13;">
+                </div>
+                <p class="col">Typical</p>
+            </li>
+
+            <li class="nav-item row p-0 m-0">
+                <div class="rectangle col" style="background-color: #F83F40;">
+                </div>
+                <p class="col"> Low</p>
+            </li>
+        </ul>
+
+
+        <!-- each machine -->
+
+        <div id="machines" class=" row mx-5 d-flex justify-content-center "></div>
+
+        <!-- </div> -->
     </div>
 
     <!-- script -->
@@ -248,9 +236,9 @@
         // calculate
         let simpleOEE = 0;
         let oee = 0;
-        let sumGoodParts = 0;
-        let sumTotalParts = 0;
-        let sumExpectedQuantity = 0;
+        let sumGoodUnits = 0;
+        let sumTotalUnits = 0;
+        let sumTargetUnits = 0;
         let totalWorkingMachines = 0;
         let totalDowntime = 0;
         let totalMachine = 10;
@@ -264,21 +252,21 @@
 
             console.log(allMachines);
             for (let i = 0; i < allMachines.length; i++) {
-                //parts scorecard
-                sumGoodParts += parseInt(allMachines[i].parts.good_parts);
-                sumTotalParts += parseInt(allMachines[i].parts.total_parts);
+                //units scorecard
+                sumGoodUnits += parseInt(allMachines[i].units.good_units);
+                sumTotalUnits += parseInt(allMachines[i].units.total_units);
                 totalWorkingMachines = allMachines.length;
                 totalDowntime += parseInt(
                     allMachines[i].availability.unplanned_downtime
                 );
-                sumExpectedQuantity += parseInt(
-                    allMachines[i].parts.expected_quantity
+                sumTargetUnits += parseInt(
+                    allMachines[i].units.target_units
                 );
             }
-            simpleOEE = ((sumGoodParts / sumExpectedQuantity) * 100).toFixed(2);
+            simpleOEE = ((sumGoodUnits / sumTargetUnits) * 100).toFixed(2);
             document.getElementById("total-machines").innerHTML = totalMachine + " units";
-            document.getElementById("target-parts").innerHTML = numeral(sumExpectedQuantity).format('0,0') + " units";
-            document.getElementById("sum-total-parts").innerHTML = numeral(sumTotalParts).format('0,0') + " units";
+            document.getElementById("target-units").innerHTML = numeral(sumTargetUnits).format('0,0') + " units";
+            document.getElementById("sum-total-units").innerHTML = numeral(sumTotalUnits).format('0,0') + " units";
             document.getElementById("total-working-machines").innerHTML = totalWorkingMachines + " units";
             document.getElementById("total-downtime").innerHTML = totalDowntime + " minutes";
 

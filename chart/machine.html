@@ -12,8 +12,8 @@
     <title>Dashboard</title>
 </head>
 
-<body class="p-5 m-0 ">
-    <div class="p-0 m-0">
+<body>
+    <div class="p-0  m-5">
         <!--1st row -->
         <div class="row p-0 m-0 ">
             <!-- <a href="./dashboard.htmls" class="col-1">
@@ -61,7 +61,7 @@
                 <p id="production-rate" class="fs-3"></p>
             </div>
             <div class="col box-content">
-                <p>Total Stoptime</p>
+                <p>Down time</p>
                 <p id="total-stop-time" class="fs-3 bad-value"></p>
             </div>
         </div>
@@ -116,12 +116,12 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Planned Quantity</td>
-                                    <td id="planned-quantity"></td>
+                                    <td>Planned units</td>
+                                    <td id="planned-units"></td>
                                 </tr>
                                 <tr>
-                                    <td>Actual Quantity</td>
-                                    <td id="actual-quantity"></td>
+                                    <td>Actual units</td>
+                                    <td id="actual-units"></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -139,12 +139,12 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Actual Quantity</td>
-                                    <td id="total-quantity"></td>
+                                    <td>Actual units</td>
+                                    <td id="total-units"></td>
                                 </tr>
                                 <tr>
-                                    <td>Reject Quantity</td>
-                                    <td id="reject-quantity"></td>
+                                    <td>Scrap units</td>
+                                    <td id="reject-units"></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -163,24 +163,26 @@
             <div class="col">
                 <div class="row m-0 text-center">
                     <div class="col box-content">
-                        <p>Actual</p>
-                        <p id="actual-parts" class="fs-3"></p>
-                    </div>
-                    <div class="col box-content">
-                        <p>Good</p>
-                        <p id="good-parts" class="fs-3 good-value"></p>
-
-                    </div>
-                    <div class="col box-content">
-                        <p>Total</p>
-                        <p id="total-parts" class="fs-3"></p>
-
-                    </div>
-                    <div class="col box-content">
-                        <p>Expected<br />
-                            <p id="expected-quantity" class="fs-3"></p>
+                        <p>Target<br />
+                            <p id="target-units" class="fs-3"></p>
                         </p>
                     </div>
+                    <div class="col box-content">
+                        <p>Current</p>
+                        <p id="current-units" class="fs-3 good-value"></p>
+
+                    </div>
+                    <div class="col box-content">
+                        <p>Actual</p>
+                        <p id="actual" class="fs-3"></p>
+                    </div>
+                    <div class="col box-content">
+                        <p>Difference</p>
+                        <p id="diff-units" class="fs-3"></p>
+
+                    </div>
+
+
                 </div>
             </div>
         </div>
@@ -202,7 +204,8 @@
         let remainingTime = 0;
         let totalStopTime = 0;
         let operationTime = 0;
-        let productionRate = 100; // parts/min
+        let productionRate = 100; // units/min
+        let diffUnits = 0;
 
 
         socket.on("test", (data) => {
@@ -221,9 +224,9 @@
                 document.getElementById("dateTime").innerHTML = dateTime + " " + dt.toLocaleTimeString();
                 // Perdicted end time
 
-                let idealCycleTime = productionRate / 60; //min per parts
-                let remainingQuantity = machine.parts.expected_quantity - machine.parts.total_parts;
-                let predEndMillisec = (idealCycleTime * remainingQuantity) * 60000;
+                let idealCycleTime = productionRate / 60; //min per units
+                let remainingUnits = machine.units.target_units - machine.units.total_units;
+                let predEndMillisec = (idealCycleTime * remainingUnits) * 60000;
                 let currentTime = new Date();
                 let predEndTime = new Date(currentTime.getTime() + predEndMillisec);
 
@@ -236,17 +239,20 @@
             document.getElementById("remaining-time").innerHTML = numeral(remainingTime).format('0,0') + " minutes";
             document.getElementById("production-rate").innerHTML = productionRate + " units / minute"
             document.getElementById("total-stop-time").innerHTML = numeral(totalStopTime).format('0,0') + " minutes";
-            document.getElementById("actual-parts").innerHTML = numeral(machine.performance.actual_quantity).format('0,0') + " units";
+            document.getElementById("actual").innerHTML = numeral(machine.performance.actual_units).format('0,0') + " units";
+            // diffUnits
+            diffUnits = machine.performance
+            document.getElementById("diff-units").innerHTML = numeral(diffUnits).format('0,0') + " units";
             // calculate OEE
             let oee = ((machine.oee.availability / 100) * (machine.oee.performance / 100) * (machine.oee
                 .quality / 100) * 100).toFixed(2)
 
             // Overall
             document.getElementById("machine-name").innerHTML = machine.mc_name;
-            document.getElementById("good-parts").innerHTML =
-                numeral(machine.parts.good_parts).format('0,0') + " units";
-            document.getElementById("total-parts").innerHTML =
-                numeral(machine.parts.total_parts).format('0,0') + " units";
+            // document.getElementById("good-units").innerHTML =
+            //     numeral(machine.units.good_units).format('0,0') + " units";
+            document.getElementById("current-units").innerHTML =
+                numeral(machine.units.total_units).format('0,0') + " units";
             // oee
             document.getElementById("availability").innerHTML =
                 machine.oee.availability + " %";
@@ -262,18 +268,18 @@
             document.getElementById("unplanned-downtime").innerHTML =
                 numeral(machine.availability.unplanned_downtime).format('0,0') + " minute";
             // Performance
-            document.getElementById("planned-quantity").innerHTML =
-                numeral(machine.performance.planned_quantity).format('0,0') + " units";
-            document.getElementById("actual-quantity").innerHTML =
-                numeral(machine.performance.actual_quantity).format('0,0') + " units";
+            document.getElementById("planned-units").innerHTML =
+                numeral(machine.performance.planned_units).format('0,0') + " units";
+            document.getElementById("actual-units").innerHTML =
+                numeral(machine.performance.actual_units).format('0,0') + " units";
             // Quality
-            document.getElementById("total-quantity").innerHTML =
-                numeral(machine.quality.actual_quantity).format('0,0') + " units";
-            document.getElementById("reject-quantity").innerHTML =
-                numeral(machine.quality.reject_quantity).format('0,0') + " units";
+            document.getElementById("total-units").innerHTML =
+                numeral(machine.quality.actual_units).format('0,0') + " units";
+            document.getElementById("reject-units").innerHTML =
+                numeral(machine.quality.reject_units).format('0,0') + " units";
             //Detail
-            document.getElementById("expected-quantity").innerHTML =
-                numeral(machine.parts.expected_quantity).format('0,0') + " units";
+            document.getElementById("target-units").innerHTML =
+                numeral(machine.units.target_units).format('0,0') + " units";
 
 
 
