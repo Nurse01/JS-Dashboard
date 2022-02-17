@@ -7,10 +7,10 @@
     <!-- Title icon-->
     <link rel="icon" href="assets/images/dmsicon.ico">
 
-    <!-- App CSS -->
-    <link rel="stylesheet" type="text/css" href="assets/libs/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="assets/libs/css/icons.min.css">
-    <link rel="stylesheet" type="text/css" href="assets/libs/css/app.min.css">
+    <!-- App css -->
+    <link href="assets/libs/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/libs/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/libs/css/app.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <link rel="stylesheet" href="style.css" />
@@ -130,16 +130,22 @@
 
         <!-- </div> -->
     </div>
-
+    <!-- Insert this line above script imports  -->
+    <script>
+        if (typeof module === 'object') {
+            window.module = module;
+            module = undefined;
+        }
+    </script>
     <!-- script -->
     <!-- Vendor js -->
     <script src="assets/libs/js/vendor.min.js"></script>
 
-    <!-- Chart js -->
-    <script src="assets/libs/js/chart.bundle.min.js"></script>
-
     <!-- App js -->
     <script src="assets/libs/js/app.min.js"></script>
+
+    <!-- Chart js -->
+    <script src="assets/libs/js/chart.bundle.min.js"></script>
 
     <script src="assets/libs/js/jquery_3.6.0.js"></script>
     <!-- Socket js -->

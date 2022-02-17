@@ -15,7 +15,7 @@
 
     <link rel="stylesheet" href="style.css" />
 
-    <link rel="text/css" href="assets/libs/css/materialDesign_6.5.95.css">
+    <!-- <link rel="text/css" href="assets/libs/css/materialDesign_6.5.95.css"> -->
     <title>Dashboard</title>
 </head>
 
@@ -180,7 +180,9 @@
 
                     </div>
                     <div class="col box-content">
-                        <p>Actual</p>
+                        <p>Actual
+                            <span class="tooltip-test" title="The units should be" data-bs-placement="right"><i class="mdi mdi-information-outline"></i></span>
+                        </p>
 
                         <p id="actual" class="fs-3"></p>
                     </div>
@@ -193,13 +195,18 @@
             </div>
         </div>
     </div>
-    <i class="mdi mdi-information-outline"></i>
-    <span class="mdi mdi-information-outline"></span>
-    <p class="tooltip-test" title="Tooltip" data-bs-placement="right">hover Info </p>
+
     <!-- <button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="right" title="Tooltip on right">
         Tooltip on right
       </button> -->
     </div>
+    <!-- Insert this line above script imports  -->
+    <script>
+        if (typeof module === 'object') {
+            window.module = module;
+            module = undefined;
+        }
+    </script>
     <!-- Vendor js -->
     <script src="assets/libs/js/vendor.min.js"></script>
 
