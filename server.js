@@ -13,7 +13,7 @@ let allMachines = [{
         units: {
             target_units: 1100,
             good_units: 1000,
-            total_units: 1000,
+            current_units: 1000,
         },
         availability: {
             planned_runtime: 480,
@@ -39,8 +39,8 @@ let allMachines = [{
         mc_name: "Copper02",
         units: {
             target_units: 1000,
-            good_units: 757,
-            total_units: 800,
+            good_units: 700,
+            current_units: 700,
         },
         availability: {
             planned_runtime: 550,
@@ -67,7 +67,7 @@ let allMachines = [{
         units: {
             target_units: 1200,
             good_units: 980,
-            total_units: 1000,
+            current_units: 1000,
         },
         availability: {
             planned_runtime: 540,
@@ -94,7 +94,7 @@ let allMachines = [{
         units: {
             target_units: 3500,
             good_units: 2700,
-            total_units: 3100,
+            current_units: 3100,
         },
         availability: {
             planned_runtime: 480,
@@ -121,7 +121,7 @@ let allMachines = [{
         units: {
             target_units: 3500,
             good_units: 1800,
-            total_units: 2000,
+            current_units: 2000,
         },
         availability: {
             planned_runtime: 480,
@@ -148,7 +148,7 @@ let allMachines = [{
         units: {
             target_units: 3500,
             good_units: 2700,
-            total_units: 3100,
+            current_units: 3100,
         },
         availability: {
             planned_runtime: 480,
@@ -174,7 +174,7 @@ let allMachines = [{
         units: {
             target_units: 1100,
             good_units: 1000,
-            total_units: 1000,
+            current_units: 1000,
         },
         availability: {
             planned_runtime: 480,
@@ -201,7 +201,7 @@ let allMachines = [{
         units: {
             target_units: 1000,
             good_units: 757,
-            total_units: 800,
+            current_units: 800,
         },
         availability: {
             planned_runtime: 550,
@@ -228,7 +228,7 @@ let allMachines = [{
         units: {
             target_units: 1200,
             good_units: 980,
-            total_units: 1000,
+            current_units: 1000,
         },
         availability: {
             planned_runtime: 540,
@@ -255,7 +255,7 @@ let allMachines = [{
         units: {
             target_units: 3500,
             good_units: 2700,
-            total_units: 3100,
+            current_units: 3100,
         },
         availability: {
             planned_runtime: 480,
@@ -282,7 +282,7 @@ let allMachines = [{
         units: {
             target_units: 3500,
             good_units: 1800,
-            total_units: 2000,
+            current_units: 2000,
         },
         availability: {
             planned_runtime: 480,
@@ -309,7 +309,7 @@ let allMachines = [{
         units: {
             target_units: 3500,
             good_units: 2700,
-            total_units: 3100,
+            current_units: 3100,
         },
         availability: {
             planned_runtime: 480,

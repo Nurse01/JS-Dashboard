@@ -181,7 +181,8 @@
                     </div>
                     <div class="col box-content">
                         <p>Actual
-                            <span class="tooltip-test" title="The units should be" data-bs-placement="right"><i class="mdi mdi-information-outline"></i></span>
+                            <span class="tooltip-test" title="The units should be" data-bs-placement="right"><i
+                                    class="mdi mdi-information-outline"></i></span>
                         </p>
 
                         <p id="actual" class="fs-3"></p>
@@ -238,7 +239,14 @@
         let totalStopTime = 0;
         let operationTime = 0;
         let productionRate = 100; // units/min
+        let actualUnits = 0;
         let diffUnits = 0;
+        let idealCycleTime = 0;
+        // oee
+        let availability = 0;
+        let performance = 0;
+        let quality = 0;
+        let oee = 0;
 
 
         socket.on("test", (data) => {
@@ -257,35 +265,72 @@
                 document.getElementById("dateTime").innerHTML = dateTime + " " + dt.toLocaleTimeString();
                 // Perdicted end time
 
-                let idealCycleTime = productionRate / 60; //min per units
-                let remainingUnits = machine.units.target_units - machine.units.total_units;
+                idealCycleTime = productionRate / 60; //min per units
+                let remainingUnits = machine.units.target_units - machine.units.current_units;
                 let predEndMillisec = (idealCycleTime * remainingUnits) * 60000;
                 let currentTime = new Date();
                 let predEndTime = new Date(currentTime.getTime() + predEndMillisec);
 
-                document.getElementById("predicted-end-time").innerHTML = predEndTime.getFullYear() + "-" + (predEndTime.getMonth() + 1) + "-" + predEndTime.getDate() + " " + predEndTime.toLocaleTimeString();
+                document.getElementById("predicted-end-time").innerHTML = predEndTime.getFullYear() + "-" + (
+                        predEndTime.getMonth() + 1) + "-" + predEndTime.getDate() + " " + predEndTime
+                    .toLocaleTimeString();
 
             }
             setInterval(myTimer, 1000);
-            document.getElementById("operation-time").innerHTML = numeral(operationTime).format('0,0') + " minutes";
-            document.getElementById("total-time").innerHTML = numeral(totalTime).format('0,0') + " minutes";
-            document.getElementById("remaining-time").innerHTML = numeral(remainingTime).format('0,0') + " minutes";
-            document.getElementById("production-rate").innerHTML = productionRate + " units / minute"
-            document.getElementById("total-stop-time").innerHTML = numeral(totalStopTime).format('0,0') + " minutes";
-            document.getElementById("actual").innerHTML = numeral(machine.performance.actual_units).format('0,0') + " units";
+
             // diffUnits
-            diffUnits = machine.performance
-            document.getElementById("diff-units").innerHTML = numeral(diffUnits).format('0,0') + " units";
-            // calculate OEE
-            let oee = ((machine.oee.availability / 100) * (machine.oee.performance / 100) * (machine.oee
-                .quality / 100) * 100).toFixed(2)
+            function calDiffUnits() {
+                actualUnits = productionRate * operationTime;
+                diffUnits = machine.quality.actual_units - machine.units.current_units;
+                console.log(diffUnits)
+
+                let textArray = String(diffUnits).split('');
+                let sign = textArray[0];
+                let newText = '';
+
+                if (sign == '-') {
+                    textArray.shift()
+                    newText = textArray.join('')
+
+                    document.getElementById("diff-units").innerHTML =
+                        `<i class="mdi mdi-arrow-down mdi-rotate-180 good-value"></i>${newText} units`
+                } else {
+                    newText = textArray.join('')
+                    document.getElementById("diff-units").innerHTML =
+                        `<i class="mdi mdi-arrow-down bad-value"></i>${newText} units`
+                }
+
+            }
+            calDiffUnits();
+            document.getElementById("operation-time").innerHTML = numeral(operationTime).format('0,0') +
+                " minutes";
+            document.getElementById("total-time").innerHTML = numeral(totalTime).format('0,0') + " minutes";
+            document.getElementById("remaining-time").innerHTML = numeral(remainingTime).format('0,0') +
+                " minutes";
+            document.getElementById("production-rate").innerHTML = productionRate + " units / minute"
+            document.getElementById("total-stop-time").innerHTML = numeral(totalStopTime).format('0,0') +
+                " minutes";
+            document.getElementById("actual").innerHTML = numeral(machine.performance.actual_units).format(
+                '0,0') + " units";
+
+            function calOEE() {
+                // calculate avalibility = runtime / planned prod time
+
+                // calculate performance = (ideal cycle time * total count)/run time
+
+                // calculate quality = good count / total count
+
+                // calculate OEE
+                oee = ((machine.oee.availability / 100) * (machine.oee.performance / 100) * (machine.oee
+                    .quality / 100) * 100).toFixed(2)
+
+            }
+            calOEE();
 
             // Overall
             document.getElementById("machine-name").innerHTML = machine.mc_name;
-            // document.getElementById("good-units").innerHTML =
-            //     numeral(machine.units.good_units).format('0,0') + " units";
             document.getElementById("current-units").innerHTML =
-                numeral(machine.units.total_units).format('0,0') + " units";
+                numeral(machine.units.current_units).format('0,0') + " units";
             // oee
             document.getElementById("availability").innerHTML =
                 machine.oee.availability + " %";
@@ -324,8 +369,7 @@
                     datasets: [{
                         label: "OEE",
                         data: [
-                            `${oee}`,
-                            `${100-oee}`,
+                            `${oee}`, `${100 - oee}`,
                         ],
                         backgroundColor: [`${greenColorCode}`, `${whiteColorCode}`],
                         borderWidth: 1,
@@ -347,7 +391,7 @@
                     plugins: {
                         doughnutlabel: {
                             labels: [{
-                                text: `${oee} %`,
+                                text: `${oee} % `,
                                 font: {
                                     size: '25',
                                 },
@@ -416,11 +460,11 @@
 
                 let currentTime = currentHour + (currentMinute / 100)
                 let currentTimePercent = (currentHour + ((currentTime % 1) * 1.66666666666666667)).toFixed(2)
-                console.log(currentTimePercent)
+                    // console.log(currentTimePercent)
 
                 let nextTimeStamp = time[i + 1].time_stamp;
                 let diffHourState = (nextTimeStamp - currentTimeStamp) / 60000 / 60;
-                console.log("diffHour " + diffHourState);
+                // console.log("diffHour " + diffHourState);
                 xyValues.push({
                     x: (currentTimePercent - 7) * 3600 * 1000,
                     y: time[i].register_data === 0 ? 1 : 0
@@ -435,7 +479,7 @@
                 }
 
             }
-            console.log(xyValues)
+            // console.log(xyValues)
 
 
             Chart.defaults.global.defaultFontColor = 'white';
@@ -455,7 +499,7 @@
                         label: 'line Dataset1',
                         data: xyValues2,
                         borderWidth: 0,
-                        backgroundColor: `${greenColorCode}`,
+                        backgroundColor: `${greenColorCode} `,
                         fill: true,
                         steppedLine: true,
                         pointRadius: 0,
@@ -485,8 +529,6 @@
                     },
                 }
             })
-
-
 
             // dont touch this backet
         });

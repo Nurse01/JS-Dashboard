@@ -43,7 +43,7 @@
                     <div class="col row p-2 m-1 mt-2 align-content-center box-content  text-center ">
                         <p class="col">
                             Total<br />
-                            <span id="sum-total-units" class="fs-3 good-value"></span>
+                            <span id="sum-current-units" class="fs-3 good-value"></span>
                         </p>
 
                     </div>
@@ -256,7 +256,7 @@
         let simpleOEE = 0;
         let oee = 0;
         let sumGoodUnits = 0;
-        let sumTotalUnits = 0;
+        let sumCurrentUnits = 0;
         let sumTargetUnits = 0;
         let totalWorkingMachines = 0;
         let totalDowntime = 0;
@@ -273,7 +273,7 @@
             for (let i = 0; i < allMachines.length; i++) {
                 //units scorecard
                 sumGoodUnits += parseInt(allMachines[i].units.good_units);
-                sumTotalUnits += parseInt(allMachines[i].units.total_units);
+                sumCurrentUnits += parseInt(allMachines[i].units.current_units);
                 totalWorkingMachines = allMachines.length;
                 totalDowntime += parseInt(
                     allMachines[i].availability.unplanned_downtime
@@ -285,7 +285,7 @@
             simpleOEE = ((sumGoodUnits / sumTargetUnits) * 100).toFixed(2);
             document.getElementById("total-machines").innerHTML = totalMachine + " units";
             document.getElementById("target-units").innerHTML = numeral(sumTargetUnits).format('0,0') + " units";
-            document.getElementById("sum-total-units").innerHTML = numeral(sumTotalUnits).format('0,0') + " units";
+            document.getElementById("sum-current-units").innerHTML = numeral(sumCurrentUnits).format('0,0') + " units";
             document.getElementById("total-working-machines").innerHTML = totalWorkingMachines + " units";
             document.getElementById("total-downtime").innerHTML = totalDowntime + " minutes";
 
