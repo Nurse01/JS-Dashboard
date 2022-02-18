@@ -234,11 +234,11 @@
         let redColorCode = "#F83F40";
         let whiteColorCode = "#fff";
         let dateTime = '';
-        let totalTime = 0;
-        let remainingTime = 0;
+        let totalTime = 480;
+        let remainingTime = 300;
         let totalStopTime = 0;
-        let operationTime = 0;
-        let productionRate = 100; // units/min
+        let operationTime = 160;
+        let productionRate = 50; // units/min
         let actualUnits = 0;
         let diffUnits = 0;
         let idealCycleTime = 0;
@@ -247,7 +247,6 @@
         let performance = 0;
         let quality = 0;
         let oee = 0;
-
 
         socket.on("test", (data) => {
             console.log(data);
@@ -263,9 +262,10 @@
                 dateTime =
                     dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
                 document.getElementById("dateTime").innerHTML = dateTime + " " + dt.toLocaleTimeString();
-                // Perdicted end time
 
-                idealCycleTime = productionRate / 60; //min per units
+                // Perdicted end time
+                idealCycleTime = 60 / machine.production_rate; //min per units
+
                 let remainingUnits = machine.units.target_units - machine.units.current_units;
                 let predEndMillisec = (idealCycleTime * remainingUnits) * 60000;
                 let currentTime = new Date();
@@ -275,69 +275,32 @@
                         predEndTime.getMonth() + 1) + "-" + predEndTime.getDate() + " " + predEndTime
                     .toLocaleTimeString();
 
-            }
-            setInterval(myTimer, 1000);
-
-            // diffUnits
-            function calDiffUnits() {
-                actualUnits = productionRate * operationTime;
-                diffUnits = machine.quality.actual_units - machine.units.current_units;
-                console.log(diffUnits)
-
-                let textArray = String(diffUnits).split('');
-                let sign = textArray[0];
-                let newText = '';
-
-                if (sign == '-') {
-                    textArray.shift()
-                    newText = textArray.join('')
-
-                    document.getElementById("diff-units").innerHTML =
-                        `<i class="mdi mdi-arrow-down mdi-rotate-180 good-value"></i>${newText} units`
-                } else {
-                    newText = textArray.join('')
-                    document.getElementById("diff-units").innerHTML =
-                        `<i class="mdi mdi-arrow-down bad-value"></i>${newText} units`
-                }
-
-            }
-            calDiffUnits();
-            document.getElementById("operation-time").innerHTML = numeral(operationTime).format('0,0') +
-                " minutes";
-            document.getElementById("total-time").innerHTML = numeral(totalTime).format('0,0') + " minutes";
-            document.getElementById("remaining-time").innerHTML = numeral(remainingTime).format('0,0') +
-                " minutes";
-            document.getElementById("production-rate").innerHTML = productionRate + " units / minute"
-            document.getElementById("total-stop-time").innerHTML = numeral(totalStopTime).format('0,0') +
-                " minutes";
-            document.getElementById("actual").innerHTML = numeral(machine.performance.actual_units).format(
-                '0,0') + " units";
-
-            function calOEE() {
                 // calculate avalibility = runtime / planned prod time
+                availability = ((machine.availability.actual_runtime / machine.availability.planned_runtime) * 100).toFixed(2);
 
-                // calculate performance = (ideal cycle time * total count)/run time
+                // calculate performance = (Total count / Runtime)/Ideal run rate
+                performance = (((machine.units.current_units / operationTime) / machine.production_rate) * 100).toFixed(2);
 
                 // calculate quality = good count / total count
+                quality = ((machine.units.good_units / machine.units.current_units) * 100).toFixed(2);
 
                 // calculate OEE
-                oee = ((machine.oee.availability / 100) * (machine.oee.performance / 100) * (machine.oee
-                    .quality / 100) * 100).toFixed(2)
+                oee = (((availability / 100) * (performance / 100) * (quality / 100)) * 100).toFixed(2);
+
+
+                // oee
+                document.getElementById("availability").innerHTML = availability + " %";
+                document.getElementById("performance").innerHTML = performance + " %";
+                document.getElementById("quality").innerHTML = quality + " %";
 
             }
-            calOEE();
+            setInterval(myTimer, 1000);
 
             // Overall
             document.getElementById("machine-name").innerHTML = machine.mc_name;
             document.getElementById("current-units").innerHTML =
                 numeral(machine.units.current_units).format('0,0') + " units";
-            // oee
-            document.getElementById("availability").innerHTML =
-                machine.oee.availability + " %";
-            document.getElementById("performance").innerHTML =
-                machine.oee.performance + " %";
-            document.getElementById("quality").innerHTML =
-                machine.oee.quality + " %";
+
             // Availability
             document.getElementById("planned-runtime").innerHTML =
                 numeral(machine.availability.planned_runtime).format('0,0') + " minute";
@@ -349,16 +312,52 @@
             document.getElementById("planned-units").innerHTML =
                 numeral(machine.performance.planned_units).format('0,0') + " units";
             document.getElementById("actual-units").innerHTML =
-                numeral(machine.performance.actual_units).format('0,0') + " units";
+                numeral(machine.performance.current_units).format('0,0') + " units";
             // Quality
             document.getElementById("total-units").innerHTML =
-                numeral(machine.quality.actual_units).format('0,0') + " units";
+                numeral(machine.quality.current_units).format('0,0') + " units";
             document.getElementById("reject-units").innerHTML =
                 numeral(machine.quality.reject_units).format('0,0') + " units";
             //Detail
             document.getElementById("target-units").innerHTML =
                 numeral(machine.units.target_units).format('0,0') + " units";
 
+            // diffUnits
+            function calDiffUnits() {
+                actualUnits = machine.production_rate * operationTime;
+                console.log(actualUnits)
+                diffUnits = actualUnits - machine.units.current_units;
+                console.log(diffUnits)
+
+                let textArray = String(diffUnits).split('');
+                let sign = textArray[0];
+                let newText = ''
+
+                if (sign == '-') {
+                    textArray.shift()
+                    newText = textArray.join('')
+
+                    document.getElementById("diff-units").innerHTML =
+                        `<i class="mdi mdi-arrow-down mdi-rotate-180 good-value"></i>${numeral(newText).format('0,0')} units`
+                } else {
+                    newText = textArray.join('')
+                    document.getElementById("diff-units").innerHTML =
+                        `<i class="mdi mdi-arrow-down bad-value"></i>${numeral(newText).format('0,0')} units`
+                }
+
+            }
+            calDiffUnits();
+
+            document.getElementById("operation-time").innerHTML = numeral(operationTime).format('0,0') +
+                " minutes";
+            document.getElementById("total-time").innerHTML = numeral(totalTime).format('0,0') + " minutes";
+            document.getElementById("remaining-time").innerHTML = numeral(remainingTime).format('0,0') +
+                " minutes";
+            document.getElementById("production-rate").innerHTML = machine.production_rate + " units / minute"
+            document.getElementById("total-stop-time").innerHTML = numeral(machine.availability.unplanned_downtime).format('0,0') +
+                " minutes";
+            document.getElementById("actual").innerHTML = numeral(actualUnits).format(
+                '0,0') + " units";
 
 
             // OEE-doughnut chart
@@ -477,7 +476,6 @@
                     statusElem.innerHTML = "RUNNING";
                     statusElem.classList.add("good-bg");
                 }
-
             }
             // console.log(xyValues)
 

@@ -10,22 +10,23 @@ var io = require("socket.io")(http);
 let allMachines = [{
         mc_id: "mc001",
         mc_name: "Spark01",
+        production_rate: 70,
         units: {
-            target_units: 1100,
-            good_units: 1000,
-            current_units: 1000,
+            target_units: 33700,
+            good_units: 11100,
+            current_units: 11100,
         },
         availability: {
-            planned_runtime: 480,
-            actual_runtime: 360,
-            unplanned_downtime: 0,
+            planned_runtime: 540, //include break time
+            actual_runtime: 480, //real operation
+            unplanned_downtime: 20,
         },
         performance: {
-            planned_units: 1000,
-            actual_units: 900,
+            planned_units: 33700,
+            current_units: 12600,
         },
         quality: {
-            actual_units: 900,
+            current_units: 11100,
             reject_units: 0,
         },
         oee: {
@@ -37,6 +38,7 @@ let allMachines = [{
     {
         mc_id: "mc002",
         mc_name: "Copper02",
+        production_rate: 85,
         units: {
             target_units: 1000,
             good_units: 700,
@@ -49,10 +51,10 @@ let allMachines = [{
         },
         performance: {
             planned_units: 1000,
-            actual_units: 800,
+            current_units: 800,
         },
         quality: {
-            actual_units: 800,
+            current_units: 800,
             reject_units: 43,
         },
         oee: {
@@ -64,6 +66,7 @@ let allMachines = [{
     {
         mc_id: "mc003",
         mc_name: "Socket003",
+        production_rate: 120,
         units: {
             target_units: 1200,
             good_units: 980,
@@ -76,10 +79,10 @@ let allMachines = [{
         },
         performance: {
             planned_units: 1200,
-            actual_units: 1000,
+            current_units: 1000,
         },
         quality: {
-            actual_units: 1000,
+            current_units: 1000,
             reject_units: 20,
         },
         oee: {
@@ -91,6 +94,7 @@ let allMachines = [{
     {
         mc_id: "mc004",
         mc_name: "Cole004",
+        production_rate: 400,
         units: {
             target_units: 3500,
             good_units: 2700,
@@ -103,10 +107,10 @@ let allMachines = [{
         },
         performance: {
             planned_units: 1000,
-            actual_units: 900,
+            current_units: 900,
         },
         quality: {
-            actual_units: 900,
+            current_units: 900,
             reject_units: 0,
         },
         oee: {
@@ -118,6 +122,7 @@ let allMachines = [{
     {
         mc_id: "mc005",
         mc_name: "Evxx005",
+        production_rate: 98,
         units: {
             target_units: 3500,
             good_units: 1800,
@@ -130,10 +135,10 @@ let allMachines = [{
         },
         performance: {
             planned_units: 1000,
-            actual_units: 900,
+            current_units: 900,
         },
         quality: {
-            actual_units: 900,
+            current_units: 900,
             reject_units: 0,
         },
         oee: {
@@ -145,6 +150,7 @@ let allMachines = [{
     {
         mc_id: "mc006",
         mc_name: "Max006",
+        production_rate: 86,
         units: {
             target_units: 3500,
             good_units: 2700,
@@ -157,10 +163,10 @@ let allMachines = [{
         },
         performance: {
             planned_units: 1000,
-            actual_units: 900,
+            current_units: 900,
         },
         quality: {
-            actual_units: 900,
+            current_units: 900,
             reject_units: 0,
         },
         oee: {
@@ -168,9 +174,11 @@ let allMachines = [{
             performance: 87.72,
             quality: 100.0,
         },
-    }, {
+    },
+    {
         mc_id: "mc007",
         mc_name: "JamesBond007",
+        production_rate: 74,
         units: {
             target_units: 1100,
             good_units: 1000,
@@ -183,10 +191,10 @@ let allMachines = [{
         },
         performance: {
             planned_units: 1000,
-            actual_units: 900,
+            current_units: 900,
         },
         quality: {
-            actual_units: 900,
+            current_units: 900,
             reject_units: 0,
         },
         oee: {
@@ -198,6 +206,7 @@ let allMachines = [{
     {
         mc_id: "mc008",
         mc_name: "Machine008",
+        production_rate: 90,
         units: {
             target_units: 1000,
             good_units: 757,
@@ -210,10 +219,10 @@ let allMachines = [{
         },
         performance: {
             planned_units: 1000,
-            actual_units: 800,
+            current_units: 800,
         },
         quality: {
-            actual_units: 800,
+            current_units: 800,
             reject_units: 43,
         },
         oee: {
@@ -225,6 +234,7 @@ let allMachines = [{
     {
         mc_id: "mc009",
         mc_name: "Machine009",
+        production_rate: 58,
         units: {
             target_units: 1200,
             good_units: 980,
@@ -237,10 +247,10 @@ let allMachines = [{
         },
         performance: {
             planned_units: 1200,
-            actual_units: 1000,
+            current_units: 1000,
         },
         quality: {
-            actual_units: 1000,
+            current_units: 1000,
             reject_units: 20,
         },
         oee: {
@@ -252,6 +262,7 @@ let allMachines = [{
     {
         mc_id: "mc010",
         mc_name: "Machine010",
+        production_rate: 76,
         units: {
             target_units: 3500,
             good_units: 2700,
@@ -264,10 +275,10 @@ let allMachines = [{
         },
         performance: {
             planned_units: 1000,
-            actual_units: 900,
+            current_units: 900,
         },
         quality: {
-            actual_units: 900,
+            current_units: 900,
             reject_units: 0,
         },
         oee: {
@@ -279,6 +290,7 @@ let allMachines = [{
     {
         mc_id: "mc011",
         mc_name: "ive011",
+        production_rate: 96,
         units: {
             target_units: 3500,
             good_units: 1800,
@@ -291,10 +303,10 @@ let allMachines = [{
         },
         performance: {
             planned_units: 1000,
-            actual_units: 900,
+            current_units: 900,
         },
         quality: {
-            actual_units: 900,
+            current_units: 900,
             reject_units: 0,
         },
         oee: {
@@ -306,6 +318,7 @@ let allMachines = [{
     {
         mc_id: "mc012",
         mc_name: "Machine012",
+        production_rate: 94,
         units: {
             target_units: 3500,
             good_units: 2700,
@@ -318,10 +331,10 @@ let allMachines = [{
         },
         performance: {
             planned_units: 1000,
-            actual_units: 900,
+            current_units: 900,
         },
         quality: {
-            actual_units: 900,
+            current_units: 900,
             reject_units: 0,
         },
         oee: {
