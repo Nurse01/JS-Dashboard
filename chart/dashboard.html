@@ -58,48 +58,22 @@
                 <div class="row p-0 m-0 text-center " style="height: 180px;">
                     <div class="col row p-2 m-1 mt-2 align-content-center box-content text-center">
                         <p>
-                            Total Machines<br /><span id="total-machines" class="px-4 fs-3"></span
-                >
-              </p>
-            </div>
-            <div class="col row p-2 m-1 mt-2 align-content-center box-content">
-              <p >
-                Total Working Machines<br /><span
-                  id="total-working-machines"
-                  class="px-4 fs-3"
-                ></span>
+                            Total Machines<br /><span id="total-machines" class="px-4 fs-3"></span>
+                        </p>
+                    </div>
+                    <div class="col row p-2 m-1 mt-2 align-content-center box-content">
+                        <p>
+                            Total Working Machines<br /><span id="total-working-machines" class="px-4 fs-3"></span>
                         </p>
                     </div>
                     <div class="col row p-2 m-1 mt-2 me-0 align-content-center box-content">
                         <p>
                             Down time<br /><span id="total-downtime" class="fs-3 px-4">
-                </span>
+                            </span>
                         </p>
                     </div>
                 </div>
             </div>
-            <!-- <div class="col-sm-3 text-center m-1">
-                    <div class="box-content">
-                        <p class="fs-4 ">
-                            Total Machines<br /><span id="total-machines" class="px-4">10 pieces</span
-                >
-              </p>
-            </div>
-            <div class="box-content">
-              <p class="fs-4">
-                Total Working Machines<br /><span
-                  id="total-working-machines"
-                  class="px-4"
-                ></span>
-                        </p>
-                    </div>
-                    <div class="box-content">
-                        <p class="fs-4">
-                            Total Downtime<br /><span id="total-downtime" class="px-4">
-                </span>
-                        </p>
-                    </div>
-                </div> -->
         </div>
 
         <!-- OEE Benchmarks -->
@@ -119,7 +93,7 @@
             <li class="nav-item row p-0 m-0">
                 <div class="rectangle col" style="background-color: #F83F40;">
                 </div>
-                <p class="col"> Low</p>
+                <p class="col">Low</p>
             </li>
         </ul>
 
@@ -254,7 +228,6 @@
         var socket = io();
         // calculate
         let simpleOEE = 0;
-        let oee = 0;
         let sumGoodUnits = 0;
         let sumCurrentUnits = 0;
         let sumTargetUnits = 0;
@@ -268,7 +241,6 @@
 
 
         socket.on("allMachines", (allMachines) => {
-
             console.log(allMachines);
             for (let i = 0; i < allMachines.length; i++) {
                 //units scorecard
@@ -290,66 +262,13 @@
             document.getElementById("total-downtime").innerHTML = totalDowntime + " minutes";
 
             // OEE chart
-            // let myChart = document.getElementById("contentChart").getContext("2d");
-            // let massPopChart = new Chart(myChart, {
-            //   type: "doughnut",
-            //   data: {
-            //     labels: ["Done", "not done"],
-            //     datasets: [
-            //       {
-            //         data: [80, 20],
-            //         backgroundColor: ["#1d8c51", "#f2e8cf"],
-            //         borderWidth: 1,
-            //         borderColor: "#777",
-            //         hoverBorderWidth: 3,
-            //         hoverBorderColor: "#000",
-            //       },
-            //     ],
-            //   },
-            //   options: {
-            //     responsive: true,
-            //     title: {
-            //       display: false,
-            //     },
-            //     legend: {
-            //       display: false,
-            //       position: "right",
-            //       labels: {
-            //         fontColor: "#000",
-            //       },
-            //     },
-            //     tooltips: {
-            //       enabled: true,
-            //     },
-            //   },
-            // });
-
-            // Chart.pluginService.register({
-            //   beforeDraw: function (chart) {
-            //     var width = chart.chart.width,
-            //       height = chart.chart.height,
-            //       ctx = chart.chart.ctx;
-
-            //     ctx.restore();
-            //     var fontSize = (height / 114).toFixed(2);
-            //     ctx.font = fontSize + "em sans-serif";
-            //     ctx.textBaseline = "middle";
-
-            //     var text = "75%",
-            //       textX = Math.round((width - ctx.measureText(text).width) / 2),
-            //       textY = height / 2;
-
-            //     ctx.fillText(text, textX, textY);
-            //     ctx.save();
-            //   },
-            // });
             let myChart = document.getElementById("contentChart").getContext("2d");
             let massPopChart = new Chart(myChart, {
                 type: "doughnut",
                 data: {
                     labels: ["Done", "not done"],
                     datasets: [{
-                        data: [`${simpleOEE}`, `${100-simpleOEE}`],
+                        data: [`${simpleOEE}`, `${100 - simpleOEE}`],
                         backgroundColor: ["#1d8c51", "#fff"],
                         borderWidth: 1,
                         borderColor: "#777",
@@ -386,48 +305,45 @@
                     },
                 },
             });
+
+        });
+        socket.on("oeeValue", (oeeValue) => {
+            let value = oeeValue
+            console.log(oeeValue);
             // Machine semi-circle
             let html_machines = "";
             let barColor = "";
-            for (let i = 0; i < allMachines.length; i++) {
-                oee = ((allMachines[i].oee.availability / 100) * (allMachines[i].oee.performance / 100) * (allMachines[i].oee.quality / 100) * 100).toFixed(2)
+            for (let i = 0; i < value.length; i++) {
                 html_machines +=
                     /*html*/
                     `
-                    <div id ="border-${allMachines[i].mc_id}" class="pointer col-3 p-2 m-0 text-center" onclick="selectMachine(${allMachines[i].mc_id})" >
+                    <div id ="border-${value[i].mc_id}" class="pointer col-3 p-2 m-0 text-center" onclick="selectMachine(${value[i].mc_id})" >
                         <div class="gap-2">
-                            <p class="fs-3">${allMachines[i].mc_name}</p>
-                            <canvas id="${allMachines[i].mc_id}" class=" p-3" ></canvas>
-                            <p class="fs-4">${oee} %</p>
+                            <p class="fs-3">${value[i].mc_name}</p>
+                            <canvas id="${value[i].mc_id}" class=" p-3" ></canvas>
+                            <p class="fs-4">${value[i].oee} %</p>
                             </div>
                     </div>
                     `;
             }
-            // Slick
-
             document.getElementById("machines").innerHTML = html_machines;
-
-            for (let i = 0; i < allMachines.length; i++) {
-                oee = ((allMachines[i].oee.availability / 100) * (allMachines[i].oee.performance / 100) * (allMachines[i].oee.quality / 100) * 100).toFixed(2)
-                if (oee >= worldClass) {
+            for (let i = 0; i < value.length; i++) {
+                if (value[i].oee >= worldClass) {
                     barColor = "#31ce77"
-                } else if (oee >= typical && oee < worldClass) {
+                } else if (value[i].oee >= typical && value[i].oee < worldClass) {
                     barColor = "#FABA13"
                 } else {
                     barColor = "#F83F40"
                 }
-
-                let canvasElem = document
-                    .getElementById(`${allMachines[i].mc_id}`)
-                    .getContext("2d");
+                let canvasElem = document.getElementById(`${value[i].mc_id}`).getContext("2d");
                 let semiChart = new Chart(canvasElem, {
                     type: "doughnut",
                     data: {
                         labels: ["oee", "loss"],
                         datasets: [{
                             data: [
-                                `${oee}`,
-                                `${100 -oee}`,
+                                `${value[i].oee}`,
+                                `${100 - value[i].oee}`,
                             ],
                             backgroundColor: [`${barColor}`, "#fff"],
                             borderColor: "#777",
@@ -453,9 +369,7 @@
                 dots: true,
 
             });
-
-
-        });
+        })
 
         function selectMachine(id) {
             let mc_id = id.id;

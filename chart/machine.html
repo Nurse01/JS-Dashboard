@@ -253,7 +253,6 @@
         });
         let machineId = window.localStorage.getItem("machineId");
         socket.emit("sendMachineId", machineId);
-
         socket.on("machineDetail", (data) => {
             let machine = data.mcDetail;
 
@@ -265,36 +264,21 @@
 
                 // Perdicted end time
                 idealCycleTime = 60 / machine.production_rate; //min per units
-
                 let remainingUnits = machine.units.target_units - machine.units.current_units;
                 let predEndMillisec = (idealCycleTime * remainingUnits) * 60000;
                 let currentTime = new Date();
                 let predEndTime = new Date(currentTime.getTime() + predEndMillisec);
 
                 document.getElementById("predicted-end-time").innerHTML = predEndTime.getFullYear() + "-" + (
-                        predEndTime.getMonth() + 1) + "-" + predEndTime.getDate() + " " + predEndTime
-                    .toLocaleTimeString();
-
-                // calculate avalibility = runtime / planned prod time
-                availability = ((machine.availability.actual_runtime / machine.availability.planned_runtime) * 100).toFixed(2);
-
-                // calculate performance = (Total count / Runtime)/Ideal run rate
-                performance = (((machine.units.current_units / operationTime) / machine.production_rate) * 100).toFixed(2);
-
-                // calculate quality = good count / total count
-                quality = ((machine.units.good_units / machine.units.current_units) * 100).toFixed(2);
-
-                // calculate OEE
-                oee = (((availability / 100) * (performance / 100) * (quality / 100)) * 100).toFixed(2);
-
-
-                // oee
-                document.getElementById("availability").innerHTML = availability + " %";
-                document.getElementById("performance").innerHTML = performance + " %";
-                document.getElementById("quality").innerHTML = quality + " %";
+                    predEndTime.getMonth() + 1) + "-" + predEndTime.getDate() + " " + predEndTime.toLocaleTimeString();
 
             }
             setInterval(myTimer, 1000);
+            // oee
+            let value = data.valueCalculated;
+            document.getElementById("availability").innerHTML = value.availability + " %";
+            document.getElementById("performance").innerHTML = value.performance + " %";
+            document.getElementById("quality").innerHTML = value.quality + " %";
 
             // Overall
             document.getElementById("machine-name").innerHTML = machine.mc_name;
@@ -325,9 +309,7 @@
             // diffUnits
             function calDiffUnits() {
                 actualUnits = machine.production_rate * operationTime;
-                console.log(actualUnits)
                 diffUnits = actualUnits - machine.units.current_units;
-                console.log(diffUnits)
 
                 let textArray = String(diffUnits).split('');
                 let sign = textArray[0];
@@ -368,7 +350,7 @@
                     datasets: [{
                         label: "OEE",
                         data: [
-                            `${oee}`, `${100 - oee}`,
+                            `${value.oee}`, `${100 - value.oee}`,
                         ],
                         backgroundColor: [`${greenColorCode}`, `${whiteColorCode}`],
                         borderWidth: 1,
@@ -390,7 +372,7 @@
                     plugins: {
                         doughnutlabel: {
                             labels: [{
-                                text: `${oee} % `,
+                                text: `${value.oee} % `,
                                 font: {
                                     size: '25',
                                 },
@@ -477,7 +459,6 @@
                     statusElem.classList.add("good-bg");
                 }
             }
-            // console.log(xyValues)
 
 
             Chart.defaults.global.defaultFontColor = 'white';

@@ -29,11 +29,7 @@ let allMachines = [{
             current_units: 11100,
             reject_units: 0,
         },
-        oee: {
-            availability: 79.17,
-            performance: 87.72,
-            quality: 100.0,
-        },
+
     },
     {
         mc_id: "mc002",
@@ -57,11 +53,7 @@ let allMachines = [{
             current_units: 800,
             reject_units: 43,
         },
-        oee: {
-            availability: 90.0,
-            performance: 49.38,
-            quality: 94.63,
-        },
+
     },
     {
         mc_id: "mc003",
@@ -85,11 +77,7 @@ let allMachines = [{
             current_units: 1000,
             reject_units: 20,
         },
-        oee: {
-            availability: 86.67,
-            performance: 64.1,
-            quality: 98.0,
-        },
+
     },
     {
         mc_id: "mc004",
@@ -113,11 +101,7 @@ let allMachines = [{
             current_units: 900,
             reject_units: 0,
         },
-        oee: {
-            availability: 79.17,
-            performance: 87.72,
-            quality: 100.0,
-        },
+
     },
     {
         mc_id: "mc005",
@@ -141,11 +125,7 @@ let allMachines = [{
             current_units: 900,
             reject_units: 0,
         },
-        oee: {
-            availability: 100.17,
-            performance: 87.72,
-            quality: 100.0,
-        },
+
     },
     {
         mc_id: "mc006",
@@ -169,11 +149,7 @@ let allMachines = [{
             current_units: 900,
             reject_units: 0,
         },
-        oee: {
-            availability: 79.17,
-            performance: 87.72,
-            quality: 100.0,
-        },
+
     },
     {
         mc_id: "mc007",
@@ -197,11 +173,7 @@ let allMachines = [{
             current_units: 900,
             reject_units: 0,
         },
-        oee: {
-            availability: 79.17,
-            performance: 87.72,
-            quality: 100.0,
-        },
+
     },
     {
         mc_id: "mc008",
@@ -225,11 +197,7 @@ let allMachines = [{
             current_units: 800,
             reject_units: 43,
         },
-        oee: {
-            availability: 90.0,
-            performance: 49.38,
-            quality: 94.63,
-        },
+
     },
     {
         mc_id: "mc009",
@@ -253,11 +221,7 @@ let allMachines = [{
             current_units: 1000,
             reject_units: 20,
         },
-        oee: {
-            availability: 86.67,
-            performance: 64.1,
-            quality: 98.0,
-        },
+
     },
     {
         mc_id: "mc010",
@@ -281,11 +245,7 @@ let allMachines = [{
             current_units: 900,
             reject_units: 0,
         },
-        oee: {
-            availability: 79.17,
-            performance: 87.72,
-            quality: 100.0,
-        },
+
     },
     {
         mc_id: "mc011",
@@ -309,11 +269,7 @@ let allMachines = [{
             current_units: 900,
             reject_units: 0,
         },
-        oee: {
-            availability: 100.17,
-            performance: 87.72,
-            quality: 100.0,
-        },
+
     },
     {
         mc_id: "mc012",
@@ -337,11 +293,7 @@ let allMachines = [{
             current_units: 900,
             reject_units: 0,
         },
-        oee: {
-            availability: 79.17,
-            performance: 87.72,
-            quality: 100.0,
-        },
+
     },
 ];
 let prodTime = [{
@@ -421,12 +373,82 @@ let prodTime = [{
         time_stamp: 1643972400000,
     },
 ];
+let operationTime = 160;
+let oeeValues = [];
+
+function calOEE() {
+    oeeValues = []
+    for (let i = 0; i < allMachines.length; i++) {
+        let mc_id = allMachines[i].mc_id;
+        let mc_name = allMachines[i].mc_name;
+        let availability = ((allMachines[i].availability.actual_runtime / allMachines[i].availability.planned_runtime) * 100).toFixed(2);
+        let performance = (((allMachines[i].units.current_units / operationTime) / allMachines[i].production_rate) * 100).toFixed(2);
+        let quality = ((allMachines[i].units.good_units / allMachines[i].units.current_units) * 100).toFixed(2);
+        let oee = (((availability / 100) * (performance / 100) * (quality / 100)) * 100).toFixed(2);
+        oeeValues.push({ mc_id, mc_name, oee });
+    }
+    return oeeValues;
+}
+
+// Socket
+io.on("connection", function(socket) {
+    console.log("Socket connected");
+    socket.on("disconnect", function() {
+        console.log("... socket disconnected");
+    });
+
+    // dashboard page
+    socket.emit("test", "testData");
+    socket.emit("allMachines", allMachines);
+    // socket.emit("oeeValue", () => {
+    //     allMachines.forEach(machine => {
+    //         // console.log(machine)
+    //             // 
+    //             // // calculate avalibility = runtime / planned prod time
+    //             // let availability = ((machine.availability.actual_runtime / machine.availability.planned_runtime) * 100).toFixed(2);
+
+    //         // // calculate performance = (Total count / Runtime)/Ideal run rate
+    //         // let performance = (((machine.units.current_units / operationTime) / machine.production_rate) * 100).toFixed(2);
+
+    //         // // calculate quality = good count / total count
+    //         // let quality = ((machine.units.good_units / mcDetail.units.current_units) * 100).toFixed(2);
+
+    //         // // calculate OEE
+    //         // let oee = (((availability / 100) * (performance / 100) * (quality / 100)) * 100).toFixed(2);
+
+    //         // console.log(oee)
+    //     });
+    // })
+    socket.emit("oeeValue", calOEE());
+
+    // machine page
+    socket.on("sendMachineId", (data) => {
+        console.log("sent mc_id");
+        let machineId = data;
+        let mcDetail = allMachines.find((item) => item.mc_id === machineId);
+        let operationTime = 160;
+        // calculate avalibility = runtime / planned prod time
+        let availability = ((mcDetail.availability.actual_runtime / mcDetail.availability.planned_runtime) * 100).toFixed(2);
+
+        // calculate performance = (Total count / Runtime)/Ideal run rate
+        let performance = (((mcDetail.units.current_units / operationTime) / mcDetail.production_rate) * 100).toFixed(2);
+
+        // calculate quality = good count / total count
+        let quality = ((mcDetail.units.good_units / mcDetail.units.current_units) * 100).toFixed(2);
+
+        // calculate OEE
+        let oee = (((availability / 100) * (performance / 100) * (quality / 100)) * 100).toFixed(2);
+        let valueCalculated = { availability, performance, quality, oee }
+        socket.emit("machineDetail", { mcDetail, prodTime, valueCalculated });
+
+
+    });
+});
 app.use(
     bodyParser.urlencoded({
         extended: true,
     })
 );
-
 // Communication with folder
 app.use(express.static(path.join(__dirname, "chart")));
 
@@ -448,27 +470,6 @@ app.get("/:token", (req, res) => {
     // console.log(machineId)
 });
 
-// Socket
-io.on("connection", function(socket) {
-    console.log("Socket connected");
-
-    socket.on("disconnect", function() {
-        console.log("... socket disconnected");
-    });
-    // dashboard page
-    socket.emit("test", "testData");
-    socket.emit("allMachines", allMachines);
-
-    // machine page
-    socket.on("sendMachineId", (data) => {
-        console.log("sent mc_id");
-        let machineId = data;
-        let mcDetail = allMachines.find((item) => item.mc_id === machineId);
-        socket.emit("machineDetail", { mcDetail, prodTime });
-        // socket.emit("productionTime", prodTime)
-        // socket.emit("machineDetail", productionTime);
-    });
-});
 const PORT = 3000;
 //Set server port
 http.listen(PORT, function() {
