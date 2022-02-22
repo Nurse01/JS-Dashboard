@@ -11,6 +11,7 @@ let allMachines = [{
         mc_id: "mc001",
         mc_name: "Spark01",
         production_rate: 70,
+        operation_time: 160,
         units: {
             target_units: 33700,
             good_units: 11100,
@@ -23,7 +24,7 @@ let allMachines = [{
         },
         performance: {
             planned_units: 33700,
-            current_units: 12600,
+            current_units: 11100,
         },
         quality: {
             current_units: 11100,
@@ -34,55 +35,59 @@ let allMachines = [{
     {
         mc_id: "mc002",
         mc_name: "Copper02",
-        production_rate: 85,
+        production_rate: 30,
+        operation_time: 100,
         units: {
-            target_units: 1000,
-            good_units: 700,
-            current_units: 700,
+            target_units: 7500,
+            good_units: 3067,
+            current_units: 3067,
         },
         availability: {
-            planned_runtime: 550,
-            actual_runtime: 540,
-            unplanned_downtime: 10,
+            planned_runtime: 630,
+            actual_runtime: 100,
+            unplanned_downtime: 40,
         },
         performance: {
-            planned_units: 1000,
-            current_units: 800,
+            planned_units: 7500,
+            current_units: 3067,
         },
         quality: {
-            current_units: 800,
-            reject_units: 43,
+            current_units: 3067,
+            reject_units: 0,
         },
 
     },
     {
         mc_id: "mc003",
         mc_name: "Socket003",
-        production_rate: 120,
+        operation_time: 200,
+        production_rate: 200,
         units: {
-            target_units: 1200,
-            good_units: 980,
-            current_units: 1000,
+            target_units: 42000,
+            good_units: 20000,
+            current_units: 20000,
         },
         availability: {
-            planned_runtime: 540,
-            actual_runtime: 520,
-            unplanned_downtime: 20,
+            planned_runtime: 420,
+            actual_runtime: 200,
+            unplanned_downtime: 60,
         },
         performance: {
-            planned_units: 1200,
-            current_units: 1000,
+            planned_units: 42000,
+            current_units: 20000,
         },
         quality: {
-            current_units: 1000,
-            reject_units: 20,
+            current_units: 20000,
+            reject_units: 0,
         },
 
     },
     {
         mc_id: "mc004",
         mc_name: "Cole004",
+        operation_time: 160,
         production_rate: 400,
+
         units: {
             target_units: 3500,
             good_units: 2700,
@@ -107,6 +112,7 @@ let allMachines = [{
         mc_id: "mc005",
         mc_name: "Evxx005",
         production_rate: 98,
+        operation_time: 160,
         units: {
             target_units: 3500,
             good_units: 1800,
@@ -131,6 +137,7 @@ let allMachines = [{
         mc_id: "mc006",
         mc_name: "Max006",
         production_rate: 86,
+        operation_time: 160,
         units: {
             target_units: 3500,
             good_units: 2700,
@@ -155,6 +162,7 @@ let allMachines = [{
         mc_id: "mc007",
         mc_name: "JamesBond007",
         production_rate: 74,
+        operation_time: 160,
         units: {
             target_units: 1100,
             good_units: 1000,
@@ -179,6 +187,7 @@ let allMachines = [{
         mc_id: "mc008",
         mc_name: "Machine008",
         production_rate: 90,
+        operation_time: 160,
         units: {
             target_units: 1000,
             good_units: 757,
@@ -203,6 +212,7 @@ let allMachines = [{
         mc_id: "mc009",
         mc_name: "Machine009",
         production_rate: 58,
+        operation_time: 160,
         units: {
             target_units: 1200,
             good_units: 980,
@@ -227,6 +237,7 @@ let allMachines = [{
         mc_id: "mc010",
         mc_name: "Machine010",
         production_rate: 76,
+        operation_time: 160,
         units: {
             target_units: 3500,
             good_units: 2700,
@@ -251,6 +262,7 @@ let allMachines = [{
         mc_id: "mc011",
         mc_name: "ive011",
         production_rate: 96,
+        operation_time: 160,
         units: {
             target_units: 3500,
             good_units: 1800,
@@ -275,6 +287,7 @@ let allMachines = [{
         mc_id: "mc012",
         mc_name: "Machine012",
         production_rate: 94,
+        operation_time: 160,
         units: {
             target_units: 3500,
             good_units: 2700,
@@ -396,30 +409,16 @@ io.on("connection", function(socket) {
     socket.on("disconnect", function() {
         console.log("... socket disconnected");
     });
+    socket.on("loadMachineInfo", (data) => {
+        console.log(data)
+        let dashboardInfo = allMachines
+        socket.emit("allMachines", dashboardInfo)
+        socket.emit("oeeValue", calOEE());
+
+    });
 
     // dashboard page
     socket.emit("test", "testData");
-    socket.emit("allMachines", allMachines);
-    // socket.emit("oeeValue", () => {
-    //     allMachines.forEach(machine => {
-    //         // console.log(machine)
-    //             // 
-    //             // // calculate avalibility = runtime / planned prod time
-    //             // let availability = ((machine.availability.actual_runtime / machine.availability.planned_runtime) * 100).toFixed(2);
-
-    //         // // calculate performance = (Total count / Runtime)/Ideal run rate
-    //         // let performance = (((machine.units.current_units / operationTime) / machine.production_rate) * 100).toFixed(2);
-
-    //         // // calculate quality = good count / total count
-    //         // let quality = ((machine.units.good_units / mcDetail.units.current_units) * 100).toFixed(2);
-
-    //         // // calculate OEE
-    //         // let oee = (((availability / 100) * (performance / 100) * (quality / 100)) * 100).toFixed(2);
-
-    //         // console.log(oee)
-    //     });
-    // })
-    socket.emit("oeeValue", calOEE());
 
     // machine page
     socket.on("sendMachineId", (data) => {

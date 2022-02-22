@@ -239,6 +239,7 @@
         let typical = 60;
         let low = 40;
 
+        socket.emit("loadMachineInfo", "callInfo")
 
         socket.on("allMachines", (allMachines) => {
             console.log(allMachines);

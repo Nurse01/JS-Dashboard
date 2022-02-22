@@ -237,7 +237,7 @@
         let totalTime = 480;
         let remainingTime = 300;
         let totalStopTime = 0;
-        let operationTime = 160;
+
         let productionRate = 50; // units/min
         let actualUnits = 0;
         let diffUnits = 0;
@@ -248,12 +248,14 @@
         let quality = 0;
         let oee = 0;
 
+
         socket.on("test", (data) => {
             console.log(data);
         });
         let machineId = window.localStorage.getItem("machineId");
         socket.emit("sendMachineId", machineId);
         socket.on("machineDetail", (data) => {
+
             let machine = data.mcDetail;
 
             function myTimer() {
@@ -308,7 +310,7 @@
 
             // diffUnits
             function calDiffUnits() {
-                actualUnits = machine.production_rate * operationTime;
+                actualUnits = machine.production_rate * machine.operation_time;
                 diffUnits = actualUnits - machine.units.current_units;
 
                 let textArray = String(diffUnits).split('');
@@ -330,7 +332,7 @@
             }
             calDiffUnits();
 
-            document.getElementById("operation-time").innerHTML = numeral(operationTime).format('0,0') +
+            document.getElementById("operation-time").innerHTML = numeral(machine.operation_time).format('0,0') +
                 " minutes";
             document.getElementById("total-time").innerHTML = numeral(totalTime).format('0,0') + " minutes";
             document.getElementById("remaining-time").innerHTML = numeral(remainingTime).format('0,0') +
